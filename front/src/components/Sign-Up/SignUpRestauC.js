@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-function SignInRestauC(){
+function SignUpRestauC(){
     return(
 <div style={{
                 backgroundColor: '#FED330',
@@ -12,4 +12,4 @@ function SignInRestauC(){
             </div>
     )
 }
-export default SignInRestauC;
+export default SignUpRestauC;

@@ -1,11 +1,11 @@
 import React from 'react'
 
 
-function SignInRestauB(){
+function SignUpRestauB(){
     return(
             <div>
                 test
             </div>
     )
 }
-export default SignInRestauB;
+export default SignUpRestauB;

@@ -6,9 +6,9 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 import ScreenHome from './components/Home/ScreenHome'
 
-import SignInRestauA from './components/Sign-In/SignInRestauA';
-import SignInRestauB from './components/Sign-In/SignInRestauB';
-import SignInRestauC from './components/Sign-In/SignInRestauC';
+import SignUpRestauA from './components/Sign-Up/SignUpRestauA';
+import SignUpRestauB from './components/Sign-Up/SignUpRestauB';
+import SignUpRestauC from './components/Sign-Up/SignUpRestauC';
 
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
     <Router>
         <Switch>
           <Route path="/" exact component={ScreenHome}/>
-          <Route path="/signInRestauA" component={SignInRestauA}/>
-          <Route path="/signInRestauB" component={SignInRestauB}/>
-          <Route path="/signInRestauC" component={SignInRestauC}/>
+          <Route path="/signInRestauA" component={SignUpRestauA}/>
+          <Route path="/signInRestauB" component={SignUpRestauB}/>
+          <Route path="/signInRestauC" component={SignUpRestauC}/>
         </Switch>
       </Router>
   );

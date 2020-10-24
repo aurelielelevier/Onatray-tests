@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
+
 import 'antd/dist/antd.css';
 import { Row, Col } from 'antd';
 import { Steps } from 'antd';
@@ -8,7 +9,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 
 const { Step } = Steps;
 
-function SignInRestauA(){
+function SignUpRestauA(){
     const [restaurantName, setRestaurantName] = useState('')
     const [restaurantAdress, setRestaurantAdress] = useState('')
     const [restaurantSiret, setRestaurantSiret] = useState('')
@@ -40,6 +41,10 @@ function SignInRestauA(){
           range: '${label} must be between ${min} and ${max}',
         },
       };
+
+      var sendFormValues = () => {
+          fetch('/restaurants/createRestaurant')
+      }
       
 
     return(
@@ -251,7 +256,7 @@ function SignInRestauA(){
                         </Form.Item>
 
                         <Form.Item >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit"  onClick={()=> sendFormValues()}>
                                 Submit
                             </Button>
                         </Form.Item>
@@ -264,4 +269,4 @@ function SignInRestauA(){
         </div>
     )
 }
-export default SignInRestauA;
+export default SignUpRestauA;
