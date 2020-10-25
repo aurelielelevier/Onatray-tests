@@ -11,7 +11,14 @@ const whishListRestaurantSchema = mongoose.Schema({
 })
 
 const restaurantSchema = mongoose.Schema({
-    name: String,
+		name: String,
+		email : String,
+		salt:String,
+		password:String,
+		token :String,
+		siret : String,
+		website : String,
+		phone: String,
 		streetName:String,
 		city:String,
 		zipCode:String,
@@ -19,8 +26,6 @@ const restaurantSchema = mongoose.Schema({
 		pricing:Number,
 		typeOfRestaurant:Array,
 		typeOfFood:Array,
-		salt:String,
-		password:String,
 		wishlistRestaurant:[whishListRestaurantSchema],
     
 })

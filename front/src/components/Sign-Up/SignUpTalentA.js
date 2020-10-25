@@ -1,36 +1,30 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
 
-
 import {Link} from 'react-router-dom'
-
 
 const { Step } = Steps;
 
-function SignUpRestauA(){
-    const [restaurantName, setRestaurantName] = useState('')
-    const [restaurantAdress, setRestaurantAdress] = useState('')
-    const [restaurantSiret, setRestaurantSiret] = useState('')
-    const [restaurantWebsite, setRestaurantWebsite] = useState('')
-    const [phoneRestaurant, setPhoneRestaurant] = useState('')
+function SignUpTalentA(){
+    const [talentFirstName, setTalentFirstName] = useState('')
+    const [talentLastName, setTalentLastName] = useState('')
+    const [talentPhone, setTalentPhone] = useState('')
     
-    const [restaurantEmail, setRestaurantEmail] = useState('')
-    const [verifyRestaurantEmail, setVerifyRestaurantEmail] = useState('')
+    const [talentEmail, setTalentEmail] = useState('')
+    const [verifyTalentEmail, setVerifyTalentEmail] = useState('')
     
-    const [restaurantPassword, setRestaurantPassword] = useState('')
-    const [verifyRestaurantPassword, setVerifyRestaurantPassword] = useState('')
-    
-    
+    const [talentPassword, setTalentPassword] = useState('')
+    const [verifyTalentPassword, setVerifyTalentPassword] = useState('')
+
 
     var sendFormValues = async () => {
-            await  fetch('restaurants/createAccount', {
-            method:'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${restaurantAdress}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
-        })
-       
-    }
+        await  fetch('talents/createAccount', {
+        method:'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body : `firstName=${talentFirstName}&lastName=${talentLastName}&phone=${talentPhone}&email=${talentEmail}&password=${talentPassword}`
+    })
+}
 
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -52,19 +46,14 @@ function SignUpRestauA(){
         },
       };
 
-      
-     
-
     return(
         <div>
-
             <Row style={{height:'80px'}}>
                 <Col style={{
                     backgroundColor: '#FED330',
                     }} span={24}>navbar
                 </Col>
             </Row>
-
             <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
                 <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
                 </Col>
@@ -81,7 +70,6 @@ function SignUpRestauA(){
                 </Col>
                 <Col span={4}></Col>
             </Row>
-            
             <Form
                 validateMessages={validateMessages}
                 style={{paddingTop:'60px'}}
@@ -95,16 +83,16 @@ function SignUpRestauA(){
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
                         <Form.Item
-                            label="Nom du restaurant"
-                            name="restaurantName"
+                            label="Prenom"
+                            name="TalentFirstName"
                             rules={[
                             {
                                 required: true,
                             },
                             ]}
                         >
-                        <Input onChange={(e) => setRestaurantName(e.target.value)} 
-                        value={restaurantName}
+                        <Input onChange={(e) => setTalentFirstName(e.target.value)} 
+                        value={talentFirstName}
                         />
                         </Form.Item>
                     </Col>
@@ -112,7 +100,7 @@ function SignUpRestauA(){
                         <Form.Item
                             colon={false}
                             label="Email"
-                            name="restaurantEmail"
+                            name="talentEmail"
                             rules={[
                             {
                                 required: true,
@@ -120,8 +108,8 @@ function SignUpRestauA(){
                             },
                             ]}
                         >
-                        <Input onChange={(e) => setRestaurantEmail(e.target.value)} 
-                        value={restaurantEmail}
+                        <Input onChange={(e) => setTalentEmail(e.target.value)} 
+                        value={talentEmail}
                         />
                         </Form.Item>
                     </Col>
@@ -129,8 +117,8 @@ function SignUpRestauA(){
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
                         <Form.Item
-                            label="Adresse"
-                            name="restaurantAdress"
+                            label="Nom de famille"
+                            name="talentLastName"
                             rules={[
                             {
                                 required: true,
@@ -138,16 +126,16 @@ function SignUpRestauA(){
                             },
                             ]}
                         >
-                        <Input onChange={(e) => setRestaurantAdress(e.target.value)} 
-                        value={restaurantAdress}
+                        <Input onChange={(e) => setTalentLastName(e.target.value)} 
+                        value={talentLastName}
                         />
                         </Form.Item>
                     </Col>
                     <Col offset={2} span={6}>
                         <Form.Item
                         label="Confirmez votre email"
-                        dependencies={['restaurantEmail']}
-                        name="verifyRestaurantEmail"
+                        dependencies={['talentEmail']}
+                        name="verifyTalentEmail"
                         rules={[
                             {
                               required: true,
@@ -155,7 +143,7 @@ function SignUpRestauA(){
                             },
                             ({ getFieldValue }) => ({
                               validator(rule, value) {
-                                if (!value || getFieldValue('restaurantEmail') === value) {
+                                if (!value || getFieldValue('talentEmail') === value) {
                                   return Promise.resolve();
                                 }
                                 return Promise.reject('Les emails ne correspondent pas !');
@@ -163,8 +151,8 @@ function SignUpRestauA(){
                             }),
                           ]}
                         >
-                        <Input onChange={(e)=> setVerifyRestaurantEmail(e.target.value)}  
-                        value={verifyRestaurantEmail} 
+                        <Input onChange={(e)=> setVerifyTalentEmail(e.target.value)}  
+                        value={verifyTalentEmail} 
                         />
                         </Form.Item>
                     </Col>
@@ -173,11 +161,11 @@ function SignUpRestauA(){
                     <Col offset={4} span={6}>
                         <Form.Item
                                 colon={false}
-                                label="N° de siret"
-                                name="restaurantSiret"
+                                label="N° de telephone"
+                                name="talentPhone"
                         >
-                        <Input onChange={(e) => setRestaurantSiret(e.target.value)} 
-                        value={restaurantSiret}
+                        <Input onChange={(e) => setTalentPhone(e.target.value)} 
+                        value={talentPhone}
                         />
                         </Form.Item>
                     </Col>
@@ -185,7 +173,7 @@ function SignUpRestauA(){
                         <Form.Item
                             colon={false}
                             label="Mot de passe"
-                            name="restaurantPassword"
+                            name="talentPassword"
                             rules={[
                             {
                                 required: true,
@@ -194,15 +182,15 @@ function SignUpRestauA(){
                             },
                             ]}
                         >
-                        <Input.Password onChange={(e) => setRestaurantPassword(e.target.value)} 
-                        value={restaurantPassword}
+                        <Input.Password onChange={(e) => setTalentPassword(e.target.value)} 
+                        value={talentPassword}
                         />
                         </Form.Item>
                     </Col>
                 </Row>  
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
-                        <Form.Item
+                        {/* <Form.Item
                             label="Website"
                             name="restaurantWebsite"
                             
@@ -210,13 +198,13 @@ function SignUpRestauA(){
                         <Input onChange={(e) => setRestaurantWebsite(e.target.value)} 
                         value={restaurantWebsite}
                         />
-                        </Form.Item>
+                        </Form.Item> */}
                     </Col>
                     <Col offset={2} span={6}>
                         <Form.Item
                             colon={false}
                             label="Confirmez votre mot de passe"
-                            name="verifyRestaurantPassword"
+                            name="verifyTalentPassword"
                             rules={[
                                 {
                                   required: true,
@@ -224,7 +212,7 @@ function SignUpRestauA(){
                                 },
                                 ({ getFieldValue }) => ({
                                   validator(rule, value) {
-                                    if (!value || getFieldValue('restaurantPassword') === value) {
+                                    if (!value || getFieldValue('talentPassword') === value) {
                                       return Promise.resolve();
                                     }
                                     return Promise.reject('Les mots de passe ne correspondent pas !');
@@ -232,39 +220,19 @@ function SignUpRestauA(){
                                 }),
                               ]}
                         >
-                        <Input.Password onChange={(e) => setVerifyRestaurantPassword(e.target.value)} 
-                        value={verifyRestaurantPassword}
+                        <Input.Password onChange={(e) => setVerifyTalentPassword(e.target.value)} 
+                        value={verifyTalentPassword}
                         />
                         </Form.Item>
                     </Col>
                 </Row>  
-                <Row>
-                    <Col offset={4} span={6}>
-                    <Form.Item
-                            colon={false}
-                            label="N° telephone"
-                            name="phoneRestaurant"
-                            rules={[
-                            {
-                                required: true,
-                                
-                            },
-                            ]}
-                        >
-                        <Input onChange={(e) => setPhoneRestaurant(e.target.value)} 
-                        value={phoneRestaurant}
-                        />
-                        </Form.Item>
-                    </Col>
-                </Row>
                 <Row >
                     <Col offset={14}  style={{display:'flex'}}>
                         <Form.Item name="remember" valuePropName="checked">
                                 <Checkbox>Se souvenir de moi</Checkbox>
                         </Form.Item>
-
                         <Form.Item >
-                            <Link to='signUpRestauB/'>
+                            <Link to='signUpTalentB/'>
                             <Button  type="primary"  onClick={()=> sendFormValues()}>
                                 Submit
                             </Button>
@@ -274,9 +242,8 @@ function SignUpRestauA(){
                 </Row>
 
             </Form>
-            
-            
         </div>
     )
 }
-export default SignUpRestauA;
+
+export default SignUpTalentA;
