@@ -1,9 +1,121 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import '../../App.less';
+import 'antd/dist/antd.less';
+import '../../index.less';
+import { Layout, Card, Row, Col, Button, AutoComplete} from 'antd';
+import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import HeaderScreen from '../Header';
+
+const { Content } = Layout;
 
 function SignUpTalentC(){
+    const [polygone, setPolygone] = useState([])
+    // il faudra faire une requette en BDD au chargement pour savoir si déjà défini par le Talent et que le 
+    // périmètre soir dessiné au chargement et puisse être modifié
+    const [polygoneinverse, setPolygoneinverse] = useState([])
+    const[markers, setMarkers] = useState([])
+    const[adresse, setAdresse] = useState('')
+    const[adressesProposees, setAdressesProposees] = useState('')
+    const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
+
+    useEffect(() => {
+        let tableauAdresse = adresse.split(' ')
+        let requete = ''
+        for(var i=0; i<tableauAdresse.length; i++){
+          if(i===tableauAdresse.length-1){
+            requete += tableauAdresse[i]
+          } else {
+            requete += tableauAdresse[i] + '+'
+          }
+        }
+        async function autocompletion(){
+          var rawResponse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${requete}`)
+          var response = await rawResponse.json()
+          var liste = []
+          for(var i=0; i<response.features.length; i++){
+            liste.push({value : response.features[i].properties.label})
+          }
+          setAdressesProposees(liste)
+          if(response.features[0]){
+            setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
+          }
+        } 
+        autocompletion()
+      }, [adresse])
+
+      async function envoiPolygone(){
+        var listePoints = await JSON.stringify(polygoneinverse)
+        // var rawResponse = await fetch('/envoi-secteur', {
+        //   method:'POST',
+        //   headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        //   body:`id=1&liste=${listePoints}`
+          // Ajouter id du talent à la requête POST
+        //})
+        //var response = await rawResponse.json();
+       // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
+       // setMarkers(responsecorrigee)
+      }
+    
     return(
-        <div>
-            test
+        <div >
+        
+        <HeaderScreen/>
+
+        <Row style={{ marginTop: '50px', textAlign:'center', justifyContent:'center'}}>
+            <h3>Afin de définir vos critères de recherche, commencez par renseigner votre adresse :</h3>
+        </Row>
+
+        <Row style={{justifyContent:'center'}}>
+            <AutoComplete
+                        style={{ width: 400 }}
+                        options={adressesProposees}
+                        placeholder="Entrez votre adresse"
+                        filterOption={(inputValue, option) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                        onChange={(e)=>{setAdresse(e)}}
+                        value={adresse}
+                    />
+        </Row>
+
+        <Row style={{justifyContent:'center', marginTop:'30px'}}>
+            <h3>
+            Ensuite, dessinez sur la carte le périmètre dans lequel vous seriez intéressé 
+            pour recevoir des offres de travail, n'oubliez pas de valider !</h3>
+            <p>(cliquez pour dessiner tous les contours de votre périmètre)</p>
+        
+        </Row>
+
+        <Row style={{justifyContent:'center'}}>
+            <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
+                    ou 
+             <Button type='primary' onClick={(e) => envoiPolygone()}> Valider le périmètre</Button>
+        </Row>
+        
+        <Row>
+           
+            <Content style={{ padding: '0 24px', minHeight: 280}}>
+
+                <Card style={{ width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
+                <div>
+                    <Map center={latlngDomicile} zoom={12} onClick={(e) => {setPolygone([...polygone, [e.latlng.lat, e.latlng.lng]]); setPolygoneinverse([...polygoneinverse, [e.latlng.lng, e.latlng.lat]]); console.log(adresse)}}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            />
+                            
+                            {/* {markers.map((user,i)=>{ 
+                            return (<Marker position={user}></Marker>)
+                            })} */}
+                        <Polygon positions={polygone} color="red" />
+                        <Marker position={latlngDomicile}>
+                            <Popup> Mon domicile <br/></Popup>
+                        </Marker>
+                    </Map>
+                    </div>
+                </Card>
+            </Content>
+        </Row>
         </div>
     )
 }
