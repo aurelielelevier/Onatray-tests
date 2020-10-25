@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'front/build')));
 
 app.use('/', indexRouter);
 app.use('/talents', talentsRouter);
-app.use('restaurats', restaurantsRouter);
+app.use('/restaurants', restaurantsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
