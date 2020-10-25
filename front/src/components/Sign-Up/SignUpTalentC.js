@@ -5,6 +5,9 @@ import '../../index.less';
 import { Layout, Card, Row, Col, Button, AutoComplete} from 'antd';
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import HeaderScreen from '../Header';
+import L from 'leaflet';
+
+
 
 const { Content } = Layout;
 
@@ -55,7 +58,21 @@ function SignUpTalentC(){
        // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
        // setMarkers(responsecorrigee)
       }
-    
+      
+      var greenIcon = L.icon({
+        iconUrl: '../../../images/point-carte-vert.png',
+        iconSize: [30, 50],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+        
+      }); 
+      var redIcon = L.icon({
+        iconUrl: '../../../images/point-carte-rouge.png',
+        iconSize: [30, 50],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+      }); 
+      
     return(
         <div >
         
@@ -82,7 +99,7 @@ function SignUpTalentC(){
             <h3>
             Ensuite, dessinez sur la carte le périmètre dans lequel vous seriez intéressé 
             pour recevoir des offres de travail, n'oubliez pas de valider !</h3>
-            <p>(cliquez pour dessiner tous les contours de votre périmètre)</p>
+            <p>(cliquez plusieurs fois pour dessiner les points de contours de votre choix)</p>
         
         </Row>
 
@@ -108,7 +125,7 @@ function SignUpTalentC(){
                             return (<Marker position={user}></Marker>)
                             })} */}
                         <Polygon positions={polygone} color="red" />
-                        <Marker position={latlngDomicile}>
+                        <Marker position={latlngDomicile} icon={greenIcon}>
                             <Popup> Mon domicile <br/></Popup>
                         </Marker>
                     </Map>
