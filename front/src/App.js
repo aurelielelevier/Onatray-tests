@@ -14,11 +14,8 @@ import SignUpTalentA from './components/Sign-Up/SignUpTalentA';
 import SignUpTalentB from './components/Sign-Up/SignUpTalentB';
 import SignUpTalentC from './components/Sign-Up/SignUpTalentC';
 
-<<<<<<< HEAD
 import MessageRoom from './components/Messaging/MessageRoom'
-=======
 import MessagerieListe from './components/MessagerieListe';
->>>>>>> listemessages
 
 import Test from './components/Test';
 
