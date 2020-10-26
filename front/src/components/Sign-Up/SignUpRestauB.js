@@ -168,6 +168,7 @@ function SignUpRestauB(){
                     </Select>
                     </Form.Item>
                 </Col>
+                
                 <Col style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-end', paddingRight:5}} span={6}><span>Ajoutez vos propres infos :</span> </Col>
                 <Col span={6}> 
                     <Input 
