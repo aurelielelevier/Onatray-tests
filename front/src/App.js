@@ -11,6 +11,8 @@ function App() {
         <Switch>
           <Route path="/" exact component={ScreenHome}/>
           <Route path="/registerRestaurantStepOne" component={RegisterRestaurantStepOne}/>
+                    <Route path="/registerRestaurantStepOne" component={RegisterRestaurantStepOne}/>
+
         </Switch>
       </Router>
   );
