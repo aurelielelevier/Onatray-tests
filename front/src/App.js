@@ -15,6 +15,7 @@ import SignUpTalentB from './components/Sign-Up/SignUpTalentB';
 import SignUpTalentC from './components/Sign-Up/SignUpTalentC';
 
 import Test from './components/Test';
+import RecherchetalentA from './components/RecherchetalentA';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/signUpTalentA" component={SignUpTalentA}/>
           <Route path="/signUpTalentB" component={SignUpTalentB}/>
           <Route path="/signUpTalentC" component={SignUpTalentC}/>
+          <Route path="/recherchetalentA" component={RecherchetalentA}/>
           <Route path='/test' component={Test}/>
         </Switch>
       </Router>
