@@ -142,7 +142,7 @@ function SignUpRestauB(){
                     <Button style={{ height: 30 }} type="primary" onClick={()=>addClienteleItem(clienteleOptionToAdd)}>Add</Button>
                 </Col>    
             </Row>
-            </Col>  
+        </Col>  
         </Row>
         <Row  style={{paddingTop:40}}>
             <Col offset={3} span={3}>
