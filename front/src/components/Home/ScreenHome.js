@@ -63,7 +63,7 @@ function ScreenHome() {
           </Carousel>
           <p style={stylesheets.styleCarousel2}>Restaurants : Recrutez du personnel fiable et adapté à votre établissement</p>
           <p style={stylesheets.styleCarousel2}>Talents : Mettez en valeur vos diplômes et votre expérience pour trouver un emploi à votre juste valeur</p>
-        <Button type="primary" style={stylesheets.styleButton2} onClick={() => setVisible(true)} >> Rejoignez-nous !</Button>
+        <Button type="primary" style={stylesheets.styleButton2} onClick={() => setVisible(true)} > Rejoignez-nous !</Button>
 
         </div>
     )
