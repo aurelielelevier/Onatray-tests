@@ -19,7 +19,7 @@ const restaurantSchema = mongoose.Schema({
 		siret : String,
 		website : String,
 		phone: String,
-		streetName:String,
+		adress:String,
 		city:String,
 		zipCode:String,
 		clientele:Array,

@@ -26,6 +26,7 @@ router.post('/createAccount', async function(req,res,next){
       siret : req.body.restaurantSiret,
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
+      adress : req.body.restaurantAdresss
 
     })
     var restauSaved = await newRestau.save();
@@ -40,8 +41,9 @@ router.post('/createAccount', async function(req,res,next){
 
 
 
-router.post('/informations', function(req,res,next){
+router.put('/informations', async function(req,res,next){
   console.log('its body', req.body)
+  await restaurantModel.updateOne({token:req.body.token},{clientele: req.body.clienteleOption, typeOfRestaurant : req.body.restaurantOption, typeOfFood:req.body.foodOption})
 })
 
 module.exports = router;

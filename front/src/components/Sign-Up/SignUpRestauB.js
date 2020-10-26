@@ -3,11 +3,15 @@ import React, {useState} from 'react'
 import { Row, Col, Steps , Button, Input, Select, Divider, Radio, Form} from 'antd';
 
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux';
 
 const { Step } = Steps;
 const { Option } = Select;
 
-function SignUpRestauB(){
+function SignUpRestauB(props){
+
+    
+
     const [pricing, SetPricing] = useState()
 
     const [clienteleOptionChoosen, setClienteleOptionChoosen] = useState([])
@@ -51,12 +55,11 @@ function SignUpRestauB(){
         return <Option value = {option.value}>{option.label}</Option>
     })
 
-
       const sendFormValues = async () => {
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `clienteleOption=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
+            body : `token=6lNO4ob7AidBwfkjqaceyYjg2YKMUFkG&clienteleOption=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
         })
         
       };
@@ -233,4 +236,11 @@ function SignUpRestauB(){
     </div>
     )
 }
-export default SignUpRestauB;
+function mapStateToProps(state) {
+    return { tokenToDisplay: state.token }
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(SignUpRestauB);
