@@ -20,10 +20,10 @@ function HeaderScreen() {
          
           <Menu style={{padding:'20px'}} mode="horizontal" defaultSelectedKeys={['1']}>
             
-              <Image
+          <Link to={'/'}><Image
                         width={'50px'}
                         src="./images/logo-onatray.png"
-                      /> 
+                      /> </Link>
 
               <Menu.Item  key="1"><Link to={'/'}>Accueil</Link></Menu.Item>
               <Menu.Item  key="1"><Link to={'/'}>Rechercher des talents</Link></Menu.Item>

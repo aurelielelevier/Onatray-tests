@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import Header from '../Header'
 
 import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
 
@@ -48,12 +49,7 @@ function SignUpTalentA(){
 
     return(
         <div>
-            <Row style={{height:'80px'}}>
-                <Col style={{
-                    backgroundColor: '#FED330',
-                    }} span={24}>navbar
-                </Col>
-            </Row>
+            <Header/>
             <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
                 <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
                 </Col>
