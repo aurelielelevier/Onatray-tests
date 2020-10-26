@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.less';
-import '../App.less';
-import HeaderRestaurant from './HeaderRestaurant';
-import HeaderScreen from './Header';
-import HeaderTalent from './HeaderTalent';
+import HeaderRestaurant from '../HeaderRestaurant';
+import HeaderScreen from '../Header';
+import HeaderTalent from '../HeaderTalent';
 import {Button, Select, Avatar, AutoComplete, Row, Col, Comment, Tooltip} from 'antd';
 import moment from 'moment';
 import {Link} from 'react-router-dom';

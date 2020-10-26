@@ -15,7 +15,7 @@ import SignUpTalentB from './components/Sign-Up/SignUpTalentB';
 import SignUpTalentC from './components/Sign-Up/SignUpTalentC';
 
 import MessageRoom from './components/Messaging/MessageRoom'
-import MessagerieListe from './components/MessagerieListe';
+import MessagerieListe from './components/Messaging/MessagerieListe';
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
