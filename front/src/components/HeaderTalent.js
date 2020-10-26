@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { Layout, Menu, Image, Button, Row, Col, Form, Checkbox, Input, Modal, Carousel } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Layout, Menu, Image, Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.less';
 import '../App.less'
 
@@ -24,10 +24,10 @@ function HeaderScreen() {
          
           <Menu style={{padding:'20px'}} mode="horizontal" defaultSelectedKeys={['1']}>
             
-              <Image
+          <Link to={'/'}><Image
                         width={'50px'}
                         src="./images/logo-onatray.png"
-                      /> 
+                      /> </Link>
 
               <Menu.Item  key="1"><Link to={'/'}>Accueil</Link></Menu.Item>
               <Menu.Item  key="1"><Link to={'/'}>Voir les restaurants</Link></Menu.Item>

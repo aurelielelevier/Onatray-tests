@@ -4,13 +4,15 @@ import '../../App.less';
 import HeaderScreen from '../Header';
 import HeaderRestaurant from '../HeaderRestaurant';
 import HeaderTalent from '../HeaderTalent'
-import {Button, Carousel } from 'antd';
+import {Button, Carousel, Modal} from 'antd';
+import {Link} from 'react-router-dom';
 
 // ajouter condition pour affichage du bon composant si utilisateur non connecté/restaurant/talent
 
             
 function ScreenHome() {
   const [user, setUser] = useState('')
+  const [visible, setVisible] = useState(false)
   
   if(!user){
     var header = <HeaderScreen/>
@@ -23,11 +25,30 @@ function ScreenHome() {
   return (
         <div style={{textAlign:'center'}}>
             {header}
+          
           <div>
             <div style={{color:'#4b6584', fontWeight:'bold', fontSize:'30px'}}>On a Tray</div>
             <div style={{color:'#4b6584', fontSize:'25px'}}>Une communauté pour les restaurants et leurs personnels</div>
-
           </div>
+          <Modal
+            title="Inscription On a Tray"
+            centered
+            visible={visible}
+            onOk={() => setVisible(false)}
+            onCancel={() => setVisible(false)}
+            width={700}
+            style={{
+              justifyContent:'center',
+              textAlign:'center'
+            }
+            }
+          >
+            <p>Pour vous inscrire, précisez si vous êtes :</p>
+            <Button type="primary" style={{marginRight:'30px', marginTop:'30px'}}><Link to={'/signUpRestauA'}>Un restaurateur</Link></Button>
+            ou
+            <Button type="primary" style={{marginLeft:'30px'}} ><Link to={'/signUpTalentA'}>Un Talent</Link></Button>
+          </Modal>
+
           <Carousel autoplay>
             <div>
               <h3 style={stylesheets.contentStyle}>
@@ -42,7 +63,7 @@ function ScreenHome() {
           </Carousel>
           <p style={stylesheets.styleCarousel2}>Restaurants : Recrutez du personnel fiable et adapté à votre établissement</p>
           <p style={stylesheets.styleCarousel2}>Talents : Mettez en valeur vos diplômes et votre expérience pour trouver un emploi à votre juste valeur</p>
-        <Button type="primary" style={stylesheets.styleButton2}> Rejoignez-nous !</Button>
+        <Button type="primary" style={stylesheets.styleButton2} onClick={() => setVisible(true)} >> Rejoignez-nous !</Button>
 
         </div>
     )
