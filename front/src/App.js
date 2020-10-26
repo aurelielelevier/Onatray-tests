@@ -16,13 +16,9 @@ import SignUpTalentC from './components/Sign-Up/SignUpTalentC';
 import SignUpTalentD from './components/Sign-Up/SignUpTalentD'
 
 import MessageRoom from './components/Messaging/MessageRoom'
-<<<<<<< HEAD
-import MessagerieListe from './components/MessagerieListe';
-=======
 import MessagerieListe from './components/Messaging/MessagerieListe';
 
 import ListeRestaurants from './components/Talents/ListeRestaurants';
->>>>>>> listeresto
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
@@ -39,11 +35,8 @@ function App() {
           <Route path="/signUpTalentA" component={SignUpTalentA}/>
           <Route path="/signUpTalentB" component={SignUpTalentB}/>
           <Route path="/signUpTalentC" component={SignUpTalentC}/>
-<<<<<<< HEAD
-=======
 
           <Route path="/restaurants" component={ListeRestaurants}/>
->>>>>>> listeresto
           <Route path="/messagerie" component={MessagerieListe}/>
           <Route path="/recherchetalentA" component={RecherchetalentA}/>
           <Route path="/signUpTalentD" component={SignUpTalentD}/>
