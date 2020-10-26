@@ -3,7 +3,7 @@ import 'antd/dist/antd.less';
 import '../App.less'
 import Header from './Header'
 import { Button, Select, Form, Col, Row,Card } from 'antd';
-import Cardtalent from './Cardtalent'
+import Cardtalent from './Cartestalents/Cardtalent'
 
 const { Option } = Select
 const { Meta } = Card
@@ -99,7 +99,7 @@ for (var i= 0; i<2; i++){
 
 var talentslist = talents.map((talents,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talentName={talents.name} formationyear1={formationshorten[0].year} formationyear2={formationshorten[1].year} formationschool1={formationshorten[0].school} formationschool2={formationshorten[1].school} formationname1={formationshorten[0].name} formationname2={formationshorten[1].name} experienceyear1={experienceshorten[0].year} experienceyear2={experienceshorten[1].year} experiencename1={experienceshorten[0].name} experiencename2={experienceshorten[1].name}/>
+       <Cardtalent key={i} src={talents.src} talentFirstName={talents.name} formationyear1={formationshorten[0].year} formationyear2={formationshorten[1].year} formationschool1={formationshorten[0].school} formationschool2={formationshorten[1].school} formationname1={formationshorten[0].name} formationname2={formationshorten[1].name} experienceyear1={experienceshorten[0].year} experienceyear2={experienceshorten[1].year} experiencename1={experienceshorten[0].name} experiencename2={experienceshorten[1].name}/>
     )
   })
 
@@ -159,8 +159,6 @@ return(
     {talentslist}
     
 </Row>
-
-
 
 </div>
 
