@@ -23,27 +23,33 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
 
+import token from './reducers/token'
+import {Provider} from 'react-redux'
+import {createStore, combineReducers}  from 'redux';
+const store = createStore(combineReducers({token}));
 
 function App() {
   return (
-    <Router>
-        <Switch>
-          <Route path="/" exact component={ScreenHome}/>
-          <Route path="/signUpRestauA" component={SignUpRestauA}/>
-          <Route path="/signUpRestauB" component={SignUpRestauB}/>
-          <Route path="/signUpRestauC" component={SignUpRestauC}/>
-          <Route path="/signUpTalentA" component={SignUpTalentA}/>
-          <Route path="/signUpTalentB" component={SignUpTalentB}/>
-          <Route path="/signUpTalentC" component={SignUpTalentC}/>
+    <Provider store={store}>
+      <Router>
+          <Switch>
+            <Route path="/" exact component={ScreenHome}/>
+            <Route path="/signUpRestauA" component={SignUpRestauA}/>
+            <Route path="/signUpRestauB" component={SignUpRestauB}/>
+            <Route path="/signUpRestauC" component={SignUpRestauC}/>
+            <Route path="/signUpTalentA" component={SignUpTalentA}/>
+            <Route path="/signUpTalentB" component={SignUpTalentB}/>
+            <Route path="/signUpTalentC" component={SignUpTalentC}/>
 
-          <Route path="/restaurants" component={ListeRestaurants}/>
-          <Route path="/messagerie" component={MessagerieListe}/>
-          <Route path="/recherchetalentA" component={RecherchetalentA}/>
-          <Route path="/signUpTalentD" component={SignUpTalentD}/>
-          <Route path='/test' component={Test}/>
-          <Route path='/messageRoom' component={MessageRoom}/>
-        </Switch>
-      </Router>
+            <Route path="/restaurants" component={ListeRestaurants}/>
+            <Route path="/messagerie" component={MessagerieListe}/>
+            <Route path="/recherchetalentA" component={RecherchetalentA}/>
+            <Route path="/signUpTalentD" component={SignUpTalentD}/>
+            <Route path='/test' component={Test}/>
+            <Route path='/messageRoom' component={MessageRoom}/>
+          </Switch>
+        </Router>
+      </Provider>
   );
 }
 

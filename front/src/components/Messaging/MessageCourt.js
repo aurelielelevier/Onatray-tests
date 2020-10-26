@@ -37,4 +37,7 @@ function MessageCourt(props){
         </Link>
     )}
 
-    export default MessageCourt
+    export default connect(
+        null, 
+        mapDispatchToProps
+      )(MessageCourt);
