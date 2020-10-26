@@ -13,6 +13,7 @@ import SignUpRestauC from './components/Sign-Up/SignUpRestauC';
 import SignUpTalentA from './components/Sign-Up/SignUpTalentA';
 import SignUpTalentB from './components/Sign-Up/SignUpTalentB';
 import SignUpTalentC from './components/Sign-Up/SignUpTalentC';
+import SignUpTalentD from './components/Sign-Up/SignUpTalentD'
 
 import MessageRoom from './components/Messaging/MessageRoom'
 import MessagerieListe from './components/MessagerieListe';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/signUpTalentC" component={SignUpTalentC}/>
           <Route path="/messagerie" component={MessagerieListe}/>
           <Route path="/recherchetalentA" component={RecherchetalentA}/>
+          <Route path="/signUpTalentD" component={SignUpTalentD}/>
           <Route path='/test' component={Test}/>
           <Route path='/messageRoom' component={MessageRoom}/>
         </Switch>

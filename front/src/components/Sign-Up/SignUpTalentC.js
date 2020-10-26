@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react'
+
 import '../../App.less';
 import 'antd/dist/antd.less';
 import '../../index.less';
-import { Layout, Card, Row, Col, Button, AutoComplete} from 'antd';
+
+import { Layout, Card, Row, Col, Button, AutoComplete, Steps} from 'antd';
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+
 import HeaderScreen from '../Header';
 import L from 'leaflet';
 
 
-
+const { Step } = Steps;
 const { Content } = Layout;
 
 function SignUpTalentC(){
@@ -70,7 +73,18 @@ function SignUpTalentC(){
         <div >
         
         <HeaderScreen/>
-
+        <Row>
+                
+                <Col offset={3} span={18}>
+                    <Steps current={2} style={{paddingTop:40}}>
+                        <Step title="Créer un compte" />
+                        <Step title="Renseigner vos informations" />
+                        <Step title="Où voulez vous travailler ?" />
+                        <Step title="Récapitulatif"/>
+                    </Steps>
+                </Col>
+                <Col span={4}></Col>
+            </Row>
         <Row style={{ marginTop: '50px', textAlign:'center', justifyContent:'center'}}>
             <h3>Afin de définir vos critères de recherche, commencez par renseigner votre adresse :</h3>
         </Row>

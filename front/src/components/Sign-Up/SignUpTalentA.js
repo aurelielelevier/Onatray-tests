@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Header from '../Header'
+import Header from '../HeaderTalent'
 
 import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
 
@@ -61,6 +61,7 @@ function SignUpTalentA(){
                     <Steps current={0} style={{paddingTop:40}}>
                         <Step title="Créer un compte" />
                         <Step title="Renseigner vos informations" />
+                        <Step title="Où voulez vous travailler ?" />
                         <Step title="Récapitulatif"/>
                     </Steps>
                 </Col>
