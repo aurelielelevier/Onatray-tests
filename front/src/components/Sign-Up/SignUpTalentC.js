@@ -58,14 +58,7 @@ function SignUpTalentC(){
        // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
        // setMarkers(responsecorrigee)
       }
-      
-      var greenIcon = L.icon({
-        iconUrl: '../../../images/point-carte-vert.png',
-        iconSize: [30, 50],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-        
-      }); 
+
       var redIcon = L.icon({
         iconUrl: '../../../images/point-carte-rouge.png',
         iconSize: [30, 50],
@@ -125,7 +118,7 @@ function SignUpTalentC(){
                             return (<Marker position={user}></Marker>)
                             })} */}
                         <Polygon positions={polygone} color="red" />
-                        <Marker position={latlngDomicile} icon={greenIcon}>
+                        <Marker position={latlngDomicile}>
                             <Popup> Mon domicile <br/></Popup>
                         </Marker>
                     </Map>
