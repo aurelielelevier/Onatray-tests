@@ -54,7 +54,7 @@ function SignUpRestauB(){
 
       const sendFormValues = async () => {
             await fetch('/restaurants/informations', {
-            method:'POST',
+            method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             body : `clienteleOption=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
         })

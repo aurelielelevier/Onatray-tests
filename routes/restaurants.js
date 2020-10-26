@@ -30,7 +30,7 @@ router.post('/createAccount', async function(req,res,next){
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
-      res.json(true)
+      res.json(token)
     }else{
       res.json(false)
     }

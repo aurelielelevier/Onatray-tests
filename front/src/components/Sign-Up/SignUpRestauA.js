@@ -24,12 +24,13 @@ function SignUpRestauA(){
     
 
     var sendFormValues = async () => {
-            await  fetch('restaurants/createAccount', {
+         var rawResponse =  await  fetch('restaurants/createAccount', {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${restaurantAdress}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
         })
-       
+        var response = await rawResponse.json()
+        
     }
 
     const onFinish = (values) => {
