@@ -21,7 +21,7 @@ const style= {
 const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
 
 function ListeCarsRestaurants(props){
-      
+
     return(
     
         <List
@@ -36,9 +36,10 @@ function ListeCarsRestaurants(props){
             dataSource={props.liste}
             renderItem={item => (
             <List.Item
+                onClick={()=>props.handleClickParent(item._id)}
                 key={item.name}
                 actions={[
-                    <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
+                   // <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
                 ]}
                 extra={
                 <img
@@ -49,14 +50,15 @@ function ListeCarsRestaurants(props){
                 }
             >
                 <List.Item.Meta
-                title={<a href='https://ant.design'>{item.name}</a>}
+                title={item.name}
                 description={<div >
                                 <p style={style.textCard}>{item.adress}</p>
                                 <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{item.phone}</p>
                                 <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {item.email}</p>
                                 <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
                                 <p style={style.textCard}>Note moyenne attribuée par nos talents :</p> 
-                                <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                                <p style={style.textCard}><Rate disabled defaultValue={2} /></p>
+                                <p style={style.textCard}>2 (10 votes)</p>
                             </div>}
                 />
                 </List.Item>

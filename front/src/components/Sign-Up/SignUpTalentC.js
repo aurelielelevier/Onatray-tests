@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import '../../App.less';
 import 'antd/dist/antd.less';
@@ -113,7 +114,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Button type='primary' onClick={(e) => envoiPolygone()}> Valider le périmètre</Button>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => envoiPolygone()}> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>

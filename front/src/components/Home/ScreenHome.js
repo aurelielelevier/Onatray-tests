@@ -6,15 +6,16 @@ import HeaderRestaurant from '../HeaderRestaurant';
 import HeaderTalent from '../HeaderTalent'
 import {Button, Carousel, Modal} from 'antd';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 // ajouter condition pour affichage du bon composant si utilisateur non connecté/restaurant/talent
 
             
-function ScreenHome() {
+function ScreenHome(props) {
   const [user, setUser] = useState('')
   const [visible, setVisible] = useState(false)
   
-  if(!user){
+  if(!props.tokenToDisplay){
     var header = <HeaderScreen/>
   } else if (user == 'restaurant'){
     var header = <HeaderRestaurant/>
@@ -110,4 +111,11 @@ const stylesheets = {
   }
 }
 
-export default ScreenHome;
+function mapStateToProps(state) {
+  return { tokenToDisplay: state.token }
+}
+  
+export default connect(
+  mapStateToProps, 
+  null
+)(ScreenHome);

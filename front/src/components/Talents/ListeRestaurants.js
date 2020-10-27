@@ -5,6 +5,7 @@ import ListeCardsRestaurants from './ListeCardsRestaurants'
 import MapRestaurant from './MapRestaurants'
 import { Layout, Card, Row, Button, Checkbox, Col, Select, Form } from 'antd';
 import HeaderTalent from '../HeaderTalent'
+import ModalDetailRestaurant from './ModalDetailRestaurant'
 
 
 const { Option } = Select
@@ -28,9 +29,6 @@ const zoneFrance= [
 function ListeRestaurants(){
     const [zone, setZone] = useState(zoneFrance)
     const[markers, setMarkers] = useState([])
-    const[adresse, setAdresse] = useState([48, 2.3])// props store  pour obtenir le latlng de l'adresse et le polygone défini par l'utilisateur
-    const[adressesProposees, setAdressesProposees] = useState('')
-    const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
     const [Prix, setPrix] = useState(listePrix)
     const [typeCuisine, setTypeCuisine] = useState(listeCuisines)
     const [Ambiance, setAmbiance] = useState(listeAmbiances)
@@ -40,20 +38,17 @@ function ListeRestaurants(){
     const [prixCoche, setPrixcoche] = useState(listePrix)
     const [typeCuisinecochee, setTypeCuisinecochee] = useState(listeCuisines)
     const [typeRestaurantcochee, setTypeRestaurantcochee] = useState(listeTypes)
+    const[restoAAfficher, setRestoAAfficher] = useState({})
+    const[visible, setVisible] = useState(false)
 
     useEffect(async () => {
         var rechercheListe =  await fetch('/talents/cherche-liste-restaurant');
         var liste = await rechercheListe.json();
         console.log(liste, 'liste retour requete')
         setListeRestaurants(liste)
-    }, [listeAmbiances, listeCuisines, listePrix, listeAmbiances])
+    }, [listeAmbiances, listeCuisines, listePrix, listeAmbiances, zone])
     
     const Submitform = async (values) => {
-        console.log('Received values of form:', values);
-        console.log(ambianceCochee)
-        console.log(typeCuisinecochee)
-        console.log(prixCoche)
-        console.log(typeRestaurantcochee)
         var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee})
         var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
             method:'POST',
@@ -67,6 +62,7 @@ function ListeRestaurants(){
 
       function onChange(e) {
         console.log(`checked = ${e.target.checked}`)
+        
         if(e.target.cheked){
             // setZone à changer pour prendre infos de la bdd concernant zone de recherche du talent
             setZone([
@@ -77,13 +73,30 @@ function ListeRestaurants(){
                 [ 2.324295043945313, 48.82494210585485 ],
                 [ 2.306442260742188, 48.8538656722782 ]
               ])
+        } else {
+            setZone(zoneFrance)
         };
       }
 
+      var handleClickModal = (valeur) =>{
+          setVisible(valeur)
+      }
+      async function handleclick(id){
+        var rawResponse = await fetch(`/talents/detail-restaurant/${id}`);
+        var response = await rawResponse.json()
+        setRestoAAfficher(response)
+        setVisible(<ModalDetailRestaurant restaurant={restoAAfficher} handleClickParent={handleClickModal}/>)
+        console.log(visible)
+      }
+
+      
+
+      
     return(
     <div >
         
         <HeaderTalent/>
+        {visible}
 
         <Row style={style.row2}>
             <Col span={6}>
@@ -171,7 +184,7 @@ function ListeRestaurants(){
         </Row>
          
         <Row style={style.row}>
-            <Checkbox style={{color:'white'}} onChange={()=>{onChange(); setZone(zoneFrance)}}>Afficher seulement les restaurants dans ma zone de recherche</Checkbox>
+            <Checkbox style={{color:'white'}} onChange={onChange}>Afficher seulement les restaurants dans ma zone de recherche</Checkbox>
         </Row>
 
         <Layout style={{ backgroundColor:'white', padding: '0 24px', minHeight: 280}}>
@@ -185,7 +198,7 @@ function ListeRestaurants(){
                 </Col>
 
                 <Col span={12} style={{margin:'30px 0px'}}>
-                    <ListeCardsRestaurants liste={ListeRestaurants}/>
+                    <ListeCardsRestaurants liste={ListeRestaurants} handleClickParent={handleclick} />
                 </Col>
             </Row>
         </Layout>

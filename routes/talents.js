@@ -98,7 +98,7 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   console.log(restaurant)
   var responseAenvoyer = await restaurantModel.find(
     {
-          // adresseLngLat: {
+          // adresselgtlat: {
           //    $geoIntersects: {
           //       $geometry: {
           //          type: "Polygon" ,
@@ -111,15 +111,20 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
           //    }
           // },
           typeOfFood : { $in: restaurant.cuisine},
-          //cuisine : { $in: restaurant.cuisine} ,
-          //typeOfRestaurant : { $in: restaurant.type} ,
-          //clientele: { $in: restaurant.ambiance} ,
-          // prix :{ $in: [restaurant.prix]} 
+          cuisine : { $in: restaurant.cuisine} ,
+          typeOfRestaurant : { $in: restaurant.type} ,
+          clientele: { $in: restaurant.ambiance} ,
+          pricing :{ $in: [restaurant.prix]} 
         }
   )
   
   console.log(responseAenvoyer, 'réponse !!!!!')
   res.json(responseAenvoyer)
+})
+
+router.get('/detail-restaurant/:id', async function(req, res, next){
+  var restaurant = await restaurantModel.findOne({_id:req.params.id})
+  res.json(restaurant)
 })
 
 module.exports = router;
