@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-
+import {connect} from 'react-redux';
 import '../../App.less';
 import 'antd/dist/antd.less';
 import '../../index.less';
@@ -10,14 +10,14 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import HeaderScreen from '../Header';
 import L from 'leaflet';
 const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
+// mettre à jour le token quand sera envoyé au store au moment du signin et signup
 
 const { Step } = Steps;
 const { Content } = Layout;
 
-function SignUpTalentC(){
+function SignUpTalentC(props){
+  console.log(props.tokenToDisplay)
     const [polygone, setPolygone] = useState([])
-    // il faudra faire une requette en BDD au chargement pour savoir si déjà défini par le Talent et que le 
-    // périmètre soir dessiné au chargement et puisse être modifié
     const [polygoneinverse, setPolygoneinverse] = useState([])
     const[markers, setMarkers] = useState([])
     const[adresse, setAdresse] = useState('')
@@ -37,6 +37,7 @@ function SignUpTalentC(){
         async function autocompletion(){
           var rawResponse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${requete}`)
           var response = await rawResponse.json()
+          console.log(response, 'response')
           var liste = []
           for(var i=0; i<response.features.length; i++){
             liste.push({value : response.features[i].properties.label})
@@ -50,15 +51,15 @@ function SignUpTalentC(){
       }, [adresse])
 
       async function envoiPolygone(){
-        var listePoints = await JSON.stringify(polygoneinverse)
+        var listePoints = JSON.stringify(polygoneinverse)
         var rawResponse = await fetch('/talents/envoi-secteur', {
           method:'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
           body:`token=${token}&liste=${listePoints}`
         })
-        var response = await rawResponse.json();
-        var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
-        setMarkers(responsecorrigee)
+        // var response = await rawResponse.json();
+        // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
+        // setMarkers(responsecorrigee)
       }
 
       var redIcon = L.icon({
@@ -142,5 +143,11 @@ function SignUpTalentC(){
         </div>
     )
 }
-
-export default SignUpTalentC;
+function mapStateToProps(state) {
+  return { tokenToDisplay: state.token }
+}
+  
+export default connect(
+  mapStateToProps, 
+  null
+)(SignUpTalentC);
