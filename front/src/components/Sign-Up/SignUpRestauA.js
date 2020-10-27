@@ -1,16 +1,45 @@
 import React, {useState, useEffect} from 'react'
 
-import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
+import { Row, Col, Steps,Form, Input, Button, Checkbox, AutoComplete} from 'antd';
 
-
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 
 
 const { Step } = Steps;
 
-function SignUpRestauA(){
+function SignUpRestauA(props){
+    const[adresse, setAdresse] = useState('')
+    const[adressesProposees, setAdressesProposees] = useState('')
+    const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
+
+    useEffect(() => {
+        let tableauAdresse = adresse.split(' ')
+        let requete = ''
+        for(var i=0; i<tableauAdresse.length; i++){
+          if(i===tableauAdresse.length-1){
+            requete += tableauAdresse[i]
+          } else {
+            requete += tableauAdresse[i] + '+'
+          }
+        }
+        async function autocompletion(){
+          var rawResponse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${requete}`)
+          var response = await rawResponse.json()
+          var liste = []
+          for(var i=0; i<response.features.length; i++){
+            liste.push({value : response.features[i].properties.label})
+          }
+          setAdressesProposees(liste)
+          if(response.features[0]){
+            setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
+          }
+        } 
+        autocompletion()
+      }, [adresse])
+
     const [restaurantName, setRestaurantName] = useState('')
-    const [restaurantAdress, setRestaurantAdress] = useState('')
+    //const [restaurantAdress, setRestaurantAdress] = useState('')
     const [restaurantSiret, setRestaurantSiret] = useState('')
     const [restaurantWebsite, setRestaurantWebsite] = useState('')
     const [phoneRestaurant, setPhoneRestaurant] = useState('')
@@ -27,10 +56,10 @@ function SignUpRestauA(){
          var rawResponse =  await  fetch('restaurants/createAccount', {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${restaurantAdress}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
+            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
         })
         var response = await rawResponse.json()
-        
+        props.onSendToken(response.token)
     }
 
     const onFinish = (values) => {
@@ -139,8 +168,15 @@ function SignUpRestauA(){
                             },
                             ]}
                         >
-                        <Input onChange={(e) => setRestaurantAdress(e.target.value)} 
-                        value={restaurantAdress}
+                        <AutoComplete 
+                        style={{ width: 400 }}
+                        options={adressesProposees}
+                        placeholder="Entrez votre adresse"
+                        filterOption={(inputValue, option) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                        onChange={(e)=>{setAdresse(e)}}
+                        value={adresse}
                         />
                         </Form.Item>
                     </Col>
@@ -280,4 +316,16 @@ function SignUpRestauA(){
         </div>
     )
 }
-export default SignUpRestauA;
+
+function mapDispatchToProps(dispatch) {
+    return {
+      onSendToken: function(token) { 
+          dispatch( {type: 'addToken', token} ) 
+      }
+    }
+  }
+  
+  export default connect(
+      null, 
+      mapDispatchToProps
+  )(SignUpRestauA);

@@ -4,10 +4,11 @@ import Header from '../HeaderTalent'
 import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
 
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux';
 
 const { Step } = Steps;
 
-function SignUpTalentA(){
+function SignUpTalentA(props){
     const [talentFirstName, setTalentFirstName] = useState('')
     const [talentLastName, setTalentLastName] = useState('')
     const [talentPhone, setTalentPhone] = useState('')
@@ -20,11 +21,13 @@ function SignUpTalentA(){
 
 
     var sendFormValues = async () => {
-        await  fetch('talents/createAccount', {
+       var rawResponse = await  fetch('talents/createAccount', {
         method:'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
         body : `firstName=${talentFirstName}&lastName=${talentLastName}&phone=${talentPhone}&email=${talentEmail}&password=${talentPassword}`
     })
+        var response = await rawResponse.json()
+        props.onSendToken(response.token)
 }
 
     const onFinish = (values) => {
@@ -242,5 +245,16 @@ function SignUpTalentA(){
         </div>
     )
 }
+function mapDispatchToProps(dispatch) {
+    return {
+      onSendToken: function(token) { 
+          dispatch( {type: 'addToken', token} ) 
+      }
+    }
+  }
+  
+  export default connect(
+      null, 
+      mapDispatchToProps
+  )(SignUpTalentA);
 
-export default SignUpTalentA;

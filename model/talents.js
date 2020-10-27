@@ -11,22 +11,22 @@ const whishListTalentSchema = mongoose.Schema({
 })
 
 
+
+
 const talentSchema = mongoose.Schema({
-        name: String,
+        firstName: String,
 		lastName:String,
         email: String,
         password: String,
         token: String,
         salt: String, 
-        city: String,
-		streetName: String,
-		zipCode:String,
 		phone: String,
+        adress : String,
 		avatar: String,
 		countFave:Number,
-		filterZipCode: Array,
 		lookingForJob:Boolean,
-		working:Boolean,
+        working:Boolean,
+        speakLangage : Array,
 		wishlistTalent:[whishListTalentSchema],
 })
 

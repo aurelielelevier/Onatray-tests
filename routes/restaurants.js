@@ -14,6 +14,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/createAccount', async function(req,res,next){
+  console.log(req.body)
+  
   var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
   if(restauToCheck === null){
@@ -26,22 +28,24 @@ router.post('/createAccount', async function(req,res,next){
       siret : req.body.restaurantSiret,
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
+      adress : req.body.restaurantAdress
 
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
-      res.json(token)
+      res.json({token:restauSaved.token})
     }else{
       res.json(false)
     }
   }
-  console.log('its body',req.body)
+
 })
 
 
 
-router.post('/informations', function(req,res,next){
+router.put('/informations', async function(req,res,next){
   console.log('its body', req.body)
+  await restaurantModel.updateOne({token:req.body.token},{clientele: req.body.clientele, typeOfRestaurant : req.body.restaurantOption, typeOfFood:req.body.foodOption, pricing : req.body.pricing})
 })
 
 module.exports = router;
