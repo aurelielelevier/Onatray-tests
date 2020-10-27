@@ -9,7 +9,7 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import HeaderScreen from '../Header';
 import L from 'leaflet';
-
+const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
 
 const { Step } = Steps;
 const { Content } = Layout;
@@ -51,15 +51,14 @@ function SignUpTalentC(){
 
       async function envoiPolygone(){
         var listePoints = await JSON.stringify(polygoneinverse)
-        // var rawResponse = await fetch('/envoi-secteur', {
-        //   method:'POST',
-        //   headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        //   body:`id=1&liste=${listePoints}`
-          // Ajouter id du talent à la requête POST
-        //})
-        //var response = await rawResponse.json();
-       // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
-       // setMarkers(responsecorrigee)
+        var rawResponse = await fetch('/talents/envoi-secteur', {
+          method:'POST',
+          headers: {'Content-Type':'application/x-www-form-urlencoded'},
+          body:`token=${token}&liste=${listePoints}`
+        })
+        var response = await rawResponse.json();
+        var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
+        setMarkers(responsecorrigee)
       }
 
       var redIcon = L.icon({

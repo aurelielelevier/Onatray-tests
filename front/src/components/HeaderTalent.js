@@ -30,9 +30,9 @@ function HeaderScreen() {
                       /> </Link>
 
               <Menu.Item  key="1"><Link to={'/'}>Accueil</Link></Menu.Item>
-              <Menu.Item  key="1"><Link to={'/'}>Voir les restaurants</Link></Menu.Item>
+              <Menu.Item  key="1"><Link to={'/restaurants'}>Voir les restaurants</Link></Menu.Item>
               <Menu.Item  key="1"><Link to={'/'}>Mes favoris</Link></Menu.Item>
-              <Menu.Item  key="1"><Link to={'/'}>Mes messages</Link></Menu.Item>
+              <Menu.Item  key="1"><Link to={'/messagerie'}>Mes messages</Link></Menu.Item>
           
               <div style={{float:'right'}}>
                 <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/>Mon profil</Button>

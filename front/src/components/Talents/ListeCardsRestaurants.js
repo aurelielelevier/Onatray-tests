@@ -3,6 +3,7 @@ import '../../App.less';
 import 'antd/dist/antd.less';
 import {List, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+// ajouter image resto, note, ajout whislist...
 
 const style= {
     textCard:{
@@ -17,36 +18,9 @@ const style= {
     }
 }
 
-const listData = [];
-    for (let i = 0; i < 10; i++) {
-    listData.push({
-        href: 'https://ant.design',
-        title: `Nom du restaurant ${i}`,
-       // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        description:
-            <div >
-                <p style={style.textCard}>56 boulevard Péreire 75017 Paris</p>
-                <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>0648595747</p>
-                <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> adresse@slkfsdkfjhfdsf.fr</p>
-                <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
-            </div>,
-        content:
-        <div>
-            <p style={style.textCard}>Note moyenne attribuée par nos talents :</p> 
-            <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
-           
-        </div>,
-    });
-    }
+const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
 
-
-function ListeCarsRestaurants(){
-   
-    useEffect(() => {
-
-    
-      }, [])
-
+function ListeCarsRestaurants(props){
       
     return(
     
@@ -59,15 +33,10 @@ function ListeCarsRestaurants(){
             },
             pageSize: 3,
             }}
-            dataSource={listData}
-            // footer={
-            // <div>
-            //     <b>ant design</b> footer part
-            // </div>
-            // }
+            dataSource={props.liste}
             renderItem={item => (
             <List.Item
-                key={item.title}
+                key={item.name}
                 actions={[
                     <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
                 ]}
@@ -80,19 +49,21 @@ function ListeCarsRestaurants(){
                 }
             >
                 <List.Item.Meta
-                //avatar={<Avatar src={item.avatar} />}
-                title={<a href={item.href}>{item.title}</a>}
-                description={item.description}
+                title={<a href='https://ant.design'>{item.name}</a>}
+                description={<div >
+                                <p style={style.textCard}>{item.adress}</p>
+                                <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{item.phone}</p>
+                                <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {item.email}</p>
+                                <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
+                                <p style={style.textCard}>Note moyenne attribuée par nos talents :</p> 
+                                <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                            </div>}
                 />
-                {item.content}
                 </List.Item>
             )}
         />
                 
     )
 }
-
-
-
 
 export default ListeCarsRestaurants;

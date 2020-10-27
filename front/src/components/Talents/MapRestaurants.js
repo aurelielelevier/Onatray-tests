@@ -5,7 +5,7 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 
 
-function MapRestaurants(){
+function MapRestaurants(props){
     
     // il faudra faire une requette en BDD au chargement pour savoir si déjà défini par le Talent et que le 
     // périmètre soir dessiné au chargement et puisse être modifié
