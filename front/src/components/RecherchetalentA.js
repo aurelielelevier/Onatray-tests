@@ -26,10 +26,10 @@ const [liketalent,setliketalent]=useState(false)
   
 /// Tableaux à remplacer par des base de données
 let talents = [
-    {name: "name1", lastName: "lastname", email: "email", phone: "phone",  avatar: "url", lookingForJob:'oui', working:"non", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0UTCKEezWBVn-ba2TJvsLQHaEL%26pid%3DApi&f=1'},
-    {name: "name2",  lastName: "lastname2",email: "email2",  phone: "phone2",avatar: "url2",  lookingForJob:'oui2',working:"non2", src:'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.nuitsdesaintjacques.com%2Fwp-content%2Fuploads%2F2018%2F11%2FPatrick-Bruel.jpg&f=1&nofb=1'},
-    {name: "name3",lastName: "lastname3", email: "email3",  phone: "phone3",avatar: "url3", lookingForJob:'oui3',working:"non3", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.OWmF8e8nYQrcU1s6zBByBgAAAA%26pid%3DApi&f=1'},
-    {name: "didier",lastName: "lastname4", email: "email4",  phone: "phone4",avatar: "url4", lookingForJob:'oui4',working:"non4",src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.pubdwO5qsupbBYPTmLvRzwAAAA%26pid%3DApi&f=1'}]
+    {firstName: "name1", adresse:'4 impasse des roses' ,lastName: "lastname", email: "email", phone: "phone",  avatar: "url", lookingForJob:'oui', working:"non", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0UTCKEezWBVn-ba2TJvsLQHaEL%26pid%3DApi&f=1'},
+    {firstName: "Patrick",  adresse:'4 impasse des roses' ,lastName: "Brubru",email: "email2",  phone: "phone2",avatar: "url2",  lookingForJob:'oui2',working:"non2", src:'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.nuitsdesaintjacques.com%2Fwp-content%2Fuploads%2F2018%2F11%2FPatrick-Bruel.jpg&f=1&nofb=1'},
+    {firstName: "name3", adresse:'4 impasse des roses' ,lastName: "lastname3", email: "email3",  phone: "phone3",avatar: "url3", lookingForJob:'oui3',working:"non3", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.OWmF8e8nYQrcU1s6zBByBgAAAA%26pid%3DApi&f=1'},
+    {firstName: "didier",adresse:'4 impasse des roses' , lastName: "lastname4", email: "email4",  phone: "phone4",avatar: "url4", lookingForJob:'oui4',working:"non4",src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.pubdwO5qsupbBYPTmLvRzwAAAA%26pid%3DApi&f=1'}]
 
 let formation=[{name:"name1", school :"school1", city: 'city1',diploma:'diploma1', year:1995}, 
     {name:"name1",school :"school2", city: 'city2',diploma:'diploma2',year:2002},
@@ -37,7 +37,7 @@ let formation=[{name:"name1", school :"school1", city: 'city1',diploma:'diploma1
     {name:"name6", school :"school&", city: 'city1',diploma:'diploma1',year:2004},
     {name:"name3",school:"school2",city:"city2",diploma:"diploma1",year:2012}]
 
-let experience= [{ name:"experience1",year:2018}]
+let experience= [{firm:"firm1",startingDate:2018, endingDate:2019, job:'serveur',city:'Toulouse'}]
 
 /// liste formation trier par date
 let sortedformation = [...formation];
@@ -50,8 +50,19 @@ let sortedformation = [...formation];
             }
             return 0;
         })
-
-
+        
+let sortedexperience = [...experience];
+sortedformation.sort((a, b) => {
+            if (a.year > b.year) {
+                return -1;
+            }
+            if (a.year < b.year) {
+                return 1;
+            }
+            return 0;
+        })
+console.log("sortedexperience", sortedexperience)
+/// ne garde que les deux dernières formations
 let formationshorten=[]
   for (var i= 0; i<2; i++){
         if(sortedformation[i]){
@@ -68,18 +79,6 @@ let formationshorten=[]
                 })
             }
         }
-
-/// liste expérience trier par date
-let sortedexperience = [...experience];
-sortedformation.sort((a, b) => {
-    if (a.year > b.year) {
-    return -1;
-    }
-    if (a.year < b.year) {
-    return 1;
-    }
-    return 0;
-})
 
 let experienceshorten=[]
 for (var i= 0; i<2; i++){
@@ -99,7 +98,7 @@ for (var i= 0; i<2; i++){
 
 var talentslist = talents.map((talents,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talentFirstName={talents.name} formationyear1={formationshorten[0].year} formationyear2={formationshorten[1].year} formationschool1={formationshorten[0].school} formationschool2={formationshorten[1].school} formationname1={formationshorten[0].name} formationname2={formationshorten[1].name} experienceyear1={experienceshorten[0].year} experienceyear2={experienceshorten[1].year} experiencename1={experienceshorten[0].name} experiencename2={experienceshorten[1].name}/>
+       <Cardtalent key={i} src={talents.src} talent={talents} sortedexperience={sortedexperience} sortedformation={sortedformation} formationyear1={formationshorten[0].year} formationyear2={formationshorten[1].year} formationschool1={formationshorten[0].school} formationschool2={formationshorten[1].school} formationname1={formationshorten[0].name} formationname2={formationshorten[1].name} experienceyear1={experienceshorten[0].year} experienceyear2={experienceshorten[1].year} experiencename1={experienceshorten[0].name} experiencename2={experienceshorten[1].name} />
     )
   })
 
