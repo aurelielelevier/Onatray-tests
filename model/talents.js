@@ -11,8 +11,10 @@ const whishListTalentSchema = mongoose.Schema({
 })
 
 
+
+
 const talentSchema = mongoose.Schema({
-        firsName: String,
+        firstName: String,
 		lastName:String,
         email: String,
         password: String,
@@ -23,7 +25,8 @@ const talentSchema = mongoose.Schema({
 		avatar: String,
 		countFave:Number,
 		lookingForJob:Boolean,
-		working:Boolean,
+        working:Boolean,
+        speakLangage : Array,
 		wishlistTalent:[whishListTalentSchema],
 })
 

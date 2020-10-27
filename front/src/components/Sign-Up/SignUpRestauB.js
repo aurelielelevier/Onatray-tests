@@ -59,7 +59,7 @@ function SignUpRestauB(props){
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=6lNO4ob7AidBwfkjqaceyYjg2YKMUFkG&clienteleOption=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
+            body : `token=${props.tokenToDisplay}&clientele=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
         })
         
       };

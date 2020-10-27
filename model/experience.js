@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const experienceSchema = mongoose.Schema({
         talent: { type: mongoose.Schema.Types.ObjectId, ref: 'talent' },
-        restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'restaurant' },
+        //restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'restaurant' },
 		markT1:Number,
 		markT2:Number,
 		markT3:Number,
@@ -13,9 +13,11 @@ const experienceSchema = mongoose.Schema({
 		markR3:Number,
 		markR4:Number,
 		markR5:Number,
-		startingDate:Date,
-		endingDate:Date,
+		startingDate:String,
+		endingDate:String,
 		job:String,
+		firm : String, 
+		city :String
 		    
 })
 

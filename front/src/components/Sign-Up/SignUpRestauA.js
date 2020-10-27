@@ -59,8 +59,7 @@ function SignUpRestauA(props){
             body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
         })
         var response = await rawResponse.json()
-        props.onSendToken(response)
-        
+        props.onSendToken(response.token)
     }
 
     const onFinish = (values) => {
@@ -320,8 +319,8 @@ function SignUpRestauA(props){
 
 function mapDispatchToProps(dispatch) {
     return {
-      onSendToken: function() { 
-          dispatch( {type: 'addToken'} ) 
+      onSendToken: function(token) { 
+          dispatch( {type: 'addToken', token} ) 
       }
     }
   }

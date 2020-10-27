@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import {connect} from 'react-redux'
+
 import { Row, Col, Steps, Form, Input, Button,Radio, Space, Checkbox, Select} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 
@@ -8,7 +10,7 @@ const { Option } = Select;
 
 
 
-function SignUpTalentB(){
+function SignUpTalentB(props){
     
    
     const [isHotellerie, setIsHotellerie] = useState([])
@@ -29,13 +31,23 @@ function SignUpTalentB(){
         return <Option value = {option.value}>{option.label}</Option>
     })
 
-    const onFinish = values => {
-        console.log(values)
+    const onFinish = async (values) => {
+        console.log(' its values',values.formation)
         console.log(enRecherche)
         console.log(enPoste)
         console.log(languageChoosen)
+
+        var formationToSend = await JSON.stringify(values.formation)
+        var experienceToSend = await JSON.stringify(values.experience)
+
+        await fetch('/talents/informations',{
+            method:'POST',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&experience=${experienceToSend}&formation=${formationToSend}`
+        })
       };
       
+   
 
     return(
         <div>
@@ -189,7 +201,7 @@ function SignUpTalentB(){
                                                         <Form.Item
                                                             style={{paddingLeft:30}}
                                                             {...field}
-                                                            name={[field.name, 'EndDate']}
+                                                            name={[field.name, 'endDate']}
                                                             fieldKey={[field.fieldKey, 'endDate']}
                                                         >
                                                         <Input placeholder="Date de fin" />
@@ -265,4 +277,12 @@ function SignUpTalentB(){
     )
 }
 
-export default SignUpTalentB;
+function mapStateToProps(state) {
+    return {tokenToDisplay: state.token}
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(SignUpTalentB);
+

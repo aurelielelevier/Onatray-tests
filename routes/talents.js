@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var talentModel = require('../model/talents')
+var formationModel = require('../model/formation')
+var experienceModel = require('../model/experience')
 const {request} = require('express');
 var uid2 = require('uid2');
 var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
+
 
 
 /* GET users listing. */
@@ -13,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/createAccount', async function(req,res,next){
-console.log('its body',req.body)
+//console.log('its body',req.body)
   var salt = uid2(32)
   var talentToCheck = await talentModel.findOne({email:req.body.talentEmail})
 
@@ -21,7 +24,7 @@ console.log('its body',req.body)
     var newTalent = await new talentModel({
       firstName : req.body.firstName,
       lastName : req.body.lastName,
-      email : req.body.talentEmail,
+      email : req.body.email,
       salt : salt,
       password : SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32), 
@@ -30,12 +33,54 @@ console.log('its body',req.body)
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){
-      res.json(token)
+      res.json({token : talentSaved.token})
     }else{
       res.json(false)
     }
   }
 })
+
+router.post('/informations', async function(req,res,next){
+
+    
+ 
+ 
+await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langage, working:req.body.poste, lookingForJob: req.body.recherche})
+
+    var talentToSearch = await talentModel.findOne({token : req.body.token})
+    var formation = JSON.parse(req.body.formation)
+    var experience = JSON.parse(req.body.experience)
+    console.log(formation) 
+    console.log(experience) 
+    
+
+  for (let i=0;i<formation.length;i++){
+    var newFormation = await new formationModel({
+    talent : talentToSearch.id,
+    school : formation[i].school,
+    diploma : formation[i].diploma,
+    endingDate : formation[i].year,
+    city : formation[i].city
+  })
+      await newFormation.save();
+  }
+
+  for(let i=0; i<experience.length;i++){
+    var newExperience = await new experienceModel({
+      talent  : talentToSearch.id,
+      firm : experience[i].firm,
+      city : experience[i].city,
+      startingDate : experience[i].startDate,
+      endingDate : experience[i].endDate
+    })
+    await newExperience.save();
+  }
+ })
+
+
+
+
+
 
 router.post('/envoi-secteur', function(req, res, next){
   console.log('requete reçue par le back')

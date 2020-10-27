@@ -20,8 +20,6 @@ const restaurantSchema = mongoose.Schema({
 		website : String,
 		phone: String,
 		adress:String,
-		city:String,
-		zipCode:String,
 		clientele:Array,
 		pricing:Number,
 		typeOfRestaurant:Array,
