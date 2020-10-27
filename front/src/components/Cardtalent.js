@@ -1,4 +1,4 @@
-import React, {useState,Text} from 'react'
+import React, {useState} from 'react'
 import 'antd/dist/antd.less';
 import '../App.less'
 import {Col,Card } from 'antd';
