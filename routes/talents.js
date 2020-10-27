@@ -80,7 +80,7 @@ await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langag
 
 
 
-router.post('/envoi-secteur', function(req, res, next){
+router.post('/envoi-secteur', async function(req, res, next){
   console.log('requete reçue par le back')
   var listePoints = await JSON.parse(req.body.liste)
   listePoints.push(listePoints[0]) 
