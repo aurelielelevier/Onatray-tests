@@ -7,8 +7,8 @@ import '../App.less'
 import 'antd/dist/antd.less';
 
 import {Link} from 'react-router-dom';
-const { SubMenu } = Menu;
 
+const { SubMenu } = Menu;
 const { Header } = Layout;
 
 function HeaderScreen() {
