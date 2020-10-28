@@ -14,7 +14,7 @@ const listeCuisines = ['française', 'italienne', 'japonaise', 'healthy' ]
 const listeTypes = ['touristique', 'de quartier', 'jeune', 'agée']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
 
-const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
+const token = '8R6Yri29Y95UTuBmT2qGHWA1MUdeRMxk'
 const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ],
     [ 2.1313476562500004, 51.26170001449684 ],
@@ -47,9 +47,11 @@ function ListeRestaurants(){
         console.log(liste, 'liste retour requete')
         setListeRestaurants(liste)
     }, [listeAmbiances, listeCuisines, listePrix, listeAmbiances, zone])
+
+    
     
     const Submitform = async (values) => {
-        var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee})
+        var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
         var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -64,7 +66,7 @@ function ListeRestaurants(){
         console.log(`checked = ${e.target.checked}`)
         
         if(e.target.cheked){
-            // setZone à changer pour prendre infos de la bdd concernant zone de recherche du talent
+            // setZone à changer pour prendre infos du store concernant zone de recherche du talent
             setZone([
                 [ 2.306442260742188, 48.8538656722782 ],
                 [ 2.346267700195313, 48.89315686419009 ],
