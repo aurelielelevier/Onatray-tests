@@ -50,7 +50,7 @@ router.get('/getinformation', async function(req,res,next){
 let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
 
 console.log(talentlist[0].experience)
-var talentpush=[]
+//var talentpush=[]
 
 // for (var i =0; i<talentlist.length;i++){
 // var id= talentlist[i]._id
@@ -63,8 +63,6 @@ var talentpush=[]
 // talentpush.push(talent)
 // }
 // console.log("talentpush-formation",talentpush.formation)
-
-
   res.json({talentlist:talentlist})
  })
 

@@ -3,7 +3,7 @@ import 'antd/dist/antd.less';
 import '../App.less'
 import Header from './Header'
 import { Button, Select, Form, Col, Row,Card } from 'antd';
-import Cardtalent from './Cartestalents/Cardtalent'
+import Cardtalent from './Cardtalent'
 
 const { Option } = Select
 const { Meta } = Card
@@ -21,24 +21,27 @@ const Submitform = values => {
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
+const [talents,settalents]=useState([])
 
 useEffect(() => {
 
 var getTalentdata = async ()=> {
     const dataTalent = await fetch(`/restaurants/getinformation`)
       const JSdataTalent = await dataTalent.json()
-      console.log("JSData",JSdataTalent)
+      settalents(JSdataTalent.talentlist)
     }
     getTalentdata()
+
 },[])
 
+console.log('talent recherche',talents)
   
 /// Tableaux à remplacer par des base de données
-let talents = [
-    {firstName: "name1", adresse:'4 impasse des roses' ,lastName: "lastname", email: "email", phone: "phone",  avatar: "url", lookingForJob:'oui', working:"non", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0UTCKEezWBVn-ba2TJvsLQHaEL%26pid%3DApi&f=1'},
-    {firstName: "Patrick",  adresse:'4 impasse des roses' ,lastName: "Brubru",email: "email2",  phone: "phone2",avatar: "url2",  lookingForJob:'oui2',working:"non2", src:'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.nuitsdesaintjacques.com%2Fwp-content%2Fuploads%2F2018%2F11%2FPatrick-Bruel.jpg&f=1&nofb=1'},
-    {firstName: "name3", adresse:'4 impasse des roses' ,lastName: "lastname3", email: "email3",  phone: "phone3",avatar: "url3", lookingForJob:'oui3',working:"non3", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.OWmF8e8nYQrcU1s6zBByBgAAAA%26pid%3DApi&f=1'},
-    {firstName: "didier",adresse:'4 impasse des roses' , lastName: "lastname4", email: "email4",  phone: "phone4",avatar: "url4", lookingForJob:'oui4',working:"non4",src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.pubdwO5qsupbBYPTmLvRzwAAAA%26pid%3DApi&f=1'}]
+// let talents = [
+//     {firstName: "name1", adresse:'4 impasse des roses' ,lastName: "lastname", email: "email", phone: "phone",  avatar: "url", lookingForJob:'oui', working:"non", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0UTCKEezWBVn-ba2TJvsLQHaEL%26pid%3DApi&f=1'},
+//     {firstName: "Patrick",  adresse:'4 impasse des roses' ,lastName: "Brubru",email: "email2",  phone: "phone2",avatar: "url2",  lookingForJob:'oui2',working:"non2", src:'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.nuitsdesaintjacques.com%2Fwp-content%2Fuploads%2F2018%2F11%2FPatrick-Bruel.jpg&f=1&nofb=1'},
+//     {firstName: "name3", adresse:'4 impasse des roses' ,lastName: "lastname3", email: "email3",  phone: "phone3",avatar: "url3", lookingForJob:'oui3',working:"non3", src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.OWmF8e8nYQrcU1s6zBByBgAAAA%26pid%3DApi&f=1'},
+//     {firstName: "didier",adresse:'4 impasse des roses' , lastName: "lastname4", email: "email4",  phone: "phone4",avatar: "url4", lookingForJob:'oui4',working:"non4",src:'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.pubdwO5qsupbBYPTmLvRzwAAAA%26pid%3DApi&f=1'}]
 
 let formation=[{name:"name1", school :"school1", city: 'city1',diploma:'diploma1', year:1995}, 
     {name:"name1",school :"school2", city: 'city2',diploma:'diploma2',year:2002},
@@ -120,7 +123,6 @@ return(
     
     <Col span={18} >
     <Form name="complex-form"  autoComplete="off" layout='inline'>
-    
         <Col flex={2}>
                 <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
                     <Select 
