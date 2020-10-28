@@ -11,7 +11,7 @@ const { Step } = Steps;
 function SignUpRestauA(props){
     const[adresse, setAdresse] = useState('')
     const[adressesProposees, setAdressesProposees] = useState('')
-    const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
+    const [lnglat, setlnglat] = useState([])
 
     useEffect(() => {
         let tableauAdresse = adresse.split(' ')
@@ -32,7 +32,7 @@ function SignUpRestauA(props){
           }
           setAdressesProposees(liste)
           if(response.features[0]){
-            setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
+            setlnglat([response.features[0].geometry.coordinates[0], response.features[0].geometry.coordinates[1]])
           }
         } 
         autocompletion()
@@ -56,7 +56,7 @@ function SignUpRestauA(props){
          var rawResponse =  await  fetch('restaurants/createAccount', {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}`
+            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}&lnglat=${lnglat}`
         })
         var response = await rawResponse.json()
         props.onSendToken(response.token)

@@ -10,20 +10,23 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import HeaderScreen from '../Header';
 import L from 'leaflet';
-const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
+
 // mettre à jour le token quand sera envoyé au store au moment du signin et signup
 
 const { Step } = Steps;
 const { Content } = Layout;
 
 function SignUpTalentC(props){
-  console.log(props.tokenToDisplay)
+    
     const [polygone, setPolygone] = useState([])
     const [polygoneinverse, setPolygoneinverse] = useState([])
     const[markers, setMarkers] = useState([])
     const[adresse, setAdresse] = useState('')
     const[adressesProposees, setAdressesProposees] = useState('')
     const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
+
+    const token = 'dPsxKD9tuQzwWoGCCcQlyLyNTxZeHpHz'
+    console.log(props.tokenToDisplay,'TESTSTSTSTSTSTSTST')
 
     useEffect(() => {
         let tableauAdresse = adresse.split(' ')
@@ -48,7 +51,11 @@ function SignUpTalentC(props){
             setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
           }
         } 
+        
+        
+        
         autocompletion()
+        
       }, [adresse])
 
       async function envoiPolygone(){
@@ -61,6 +68,15 @@ function SignUpTalentC(props){
         // var response = await rawResponse.json();
         // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
         // setMarkers(responsecorrigee)
+      }
+
+      async function envoiAdresse(){
+        var lnglat = [latlngDomicile[1], latlngDomicile[0]]
+        await fetch(`/talents/envoi-adresse`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body:`token=${token}&adresse=${adresse}&lnglat=${lnglat}`
+        })
       }
 
       var redIcon = L.icon({
@@ -114,7 +130,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => envoiPolygone()}> Valider le périmètre</Button></Link>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone(); envoiAdresse()}}> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>
