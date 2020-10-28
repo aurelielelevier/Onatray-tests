@@ -12,7 +12,6 @@ const whishListTalentSchema = mongoose.Schema({
 
 
 
-
 const talentSchema = mongoose.Schema({
     firstName: String,
     lastName:String,

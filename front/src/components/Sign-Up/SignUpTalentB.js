@@ -2,11 +2,13 @@ import React, {useState} from 'react'
 
 import {connect} from 'react-redux'
 
+import {Link} from 'react-router-dom'
+
 import { Row, Col, Steps, Form, Input, Button,Radio, Space, Checkbox, Select} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 
 const { Step } = Steps;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 
 
@@ -15,6 +17,7 @@ function SignUpTalentB(props){
    
     const [isHotellerie, setIsHotellerie] = useState([])
 
+    const [jobChoosen, setJobChoosen] = useState([])
     const [enPoste, setEnPoste] = useState(false)
     const [enRecherche, setEnrecherche]= useState(false)
 
@@ -36,6 +39,7 @@ function SignUpTalentB(props){
         console.log(enRecherche)
         console.log(enPoste)
         console.log(languageChoosen)
+        console.log(jobChoosen)
 
         var formationToSend = await JSON.stringify(values.formation)
         var experienceToSend = await JSON.stringify(values.experience)
@@ -43,7 +47,7 @@ function SignUpTalentB(props){
         await fetch('/talents/informations',{
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&experience=${experienceToSend}&formation=${formationToSend}`
+            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&experience=${experienceToSend}&formation=${formationToSend}&job=${jobChoosen}`
         })
       };
       
@@ -85,7 +89,7 @@ function SignUpTalentB(props){
                                 {fields.map(field => (
                                     <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                         <Row>
-                                            <Col span={4}>  
+                                            <Col span={6}>  
                                                
                                                 <Form.Item
                                                     {...field}
@@ -96,7 +100,7 @@ function SignUpTalentB(props){
                                                     <Input placeholder="École" />
                                                 </Form.Item>
                                             </Col> 
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item
                                                     style={{paddingLeft:15}}
                                                     {...field}
@@ -107,7 +111,7 @@ function SignUpTalentB(props){
                                                 <Input placeholder="Ville" />
                                                 </Form.Item>
                                             </Col> 
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item
                                                     style={{paddingLeft:15}}
                                                     {...field}
@@ -118,7 +122,7 @@ function SignUpTalentB(props){
                                                 <Input placeholder="Intitulé du diplôme"/>
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item
                                                     style={{paddingLeft:15}}
                                                     {...field}
@@ -129,23 +133,8 @@ function SignUpTalentB(props){
                                                 <Input placeholder="Année d'obtention" />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={8}>
-                                                <Form.Item 
-                                                style={{marginLeft:17}}
-                                                {...field}
-                                                name={[field.name, 'ishotellerie']}
-                                                fieldKey={[field.fieldKey, 'ishotellerie']}
-                                                >
-                                                    <span style={{paddingRight:10}}>Est-ce une foramtion hotelière ?</span>
-                                                    <Radio 
-                                                    
-                                                    onChange={(e) =>  setIsHotellerie([...isHotellerie,e.target.checked])}  
-                                                    value={0}
-                                                    ></Radio>  
-                                                </Form.Item>
-                                            </Col>
                                         </Row>
-                                        <MinusCircleOutlined onClick={() => remove(field.name)} />
+                                        <MinusCircleOutlined style={{paddingLeft:100}} onClick={() => remove(field.name)} />
                                     </Space>
                                 ))}
                                     <Form.Item>
@@ -165,7 +154,7 @@ function SignUpTalentB(props){
                                     {fields.map(field => (
                                         <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                             <Row >
-                                                <Col span={6}>  
+                                                <Col span={4}>  
                                                     <Form.Item
                                                             {...field}
                                                             name={[field.name, 'firm']}
@@ -175,7 +164,7 @@ function SignUpTalentB(props){
                                                             <Input placeholder="Entreprise" />
                                                         </Form.Item>
                                                     </Col> 
-                                                    <Col span={6}>
+                                                    <Col span={5}>
                                                         <Form.Item
                                                             style={{paddingLeft:30}}
                                                             {...field}
@@ -186,7 +175,18 @@ function SignUpTalentB(props){
                                                         <Input placeholder="Ville" />
                                                         </Form.Item>
                                                     </Col> 
-                                                    <Col span={6}>
+                                                    <Col span={5}>
+                                                        <Form.Item
+                                                            style={{paddingLeft:30}}
+                                                            {...field}
+                                                            name={[field.name, 'job']}
+                                                            fieldKey={[field.fieldKey, 'job']}
+                                                            rules={[{ required: true, message: 'champ vide' }]}
+                                                        >
+                                                        <Input placeholder="Poste" />
+                                                        </Form.Item>
+                                                    </Col> 
+                                                    <Col span={5}>
                                                         <Form.Item
                                                             style={{paddingLeft:30}}
                                                             {...field}
@@ -197,7 +197,7 @@ function SignUpTalentB(props){
                                                         <Input placeholder="Date de début"/>
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col span={6}>
+                                                    <Col span={5}>
                                                         <Form.Item
                                                             style={{paddingLeft:30}}
                                                             {...field}
@@ -231,6 +231,7 @@ function SignUpTalentB(props){
                                 name={'language'}
                                 className="basic-multi-select"
                                 classNamePrefix="select">
+                                    <Option value='Francais'>Français</Option>
                                     <Option value='Anglais'>Anglais</Option>
                                     <Option value='Espagnol'>Espagnol</Option>
                                     <Option value='Italien'>Italien</Option>
@@ -254,17 +255,39 @@ function SignUpTalentB(props){
                             <Col span={6}>
                                 <span>Actuellement <QuestionCircleOutlined/></span>
                             </Col>
-                            <Col span={12}>
+                            <Col span={7}>
                                 <Checkbox onChange={(e) => setEnPoste(!enPoste)}>En poste</Checkbox>
                                 <Checkbox onChange={(e) => setEnrecherche(!enRecherche)}>En recherche</Checkbox>
                             </Col>
+                            <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
+                                <span style={{paddingRight:10}}>Postes ?</span>
+                                <Select 
+                                onChange={(e)=>setJobChoosen(e)}
+                                style={{width:'150px'}}
+                                mode='multiple'>
+                                <OptGroup label="En salle">
+                                <Option value='chefDeRang'>Chef de rang</Option>
+                                <Option value='manager'>Manager</Option>
+                                <Option value='runner'>Runner</Option>
+                                <Option value='sommelier'>Sommelier</Option>
+                                </OptGroup>
+                                <OptGroup label="En cuisine">
+                                <Option value='chef'>Chef </Option>
+                                <Option value='chefDePartie'>Chef de partie</Option>
+                                <Option value='second'>Second</Option>
+                                <Option value='plongeur'>Plongeur</Option>
+                                </OptGroup>
+                                </Select>
+                            </Col>
                         </Row>
-                        <Row>
-                            <Col offset={20}>
+                        <Row style={{paddingTop:50}}>
+                            <Col offset={22}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit">
-                                        Submit
-                                    </Button>
+                                    <Link to='signUpTalentC'>
+                                        <Button type="primary" htmlType="submit">
+                                            Enregister ses informations
+                                        </Button>
+                                    </Link>
                                 </Form.Item>
                             </Col>
                         </Row>
