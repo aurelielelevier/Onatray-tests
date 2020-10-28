@@ -84,10 +84,14 @@ await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langag
 router.post('/envoi-secteur', async function(req, res, next){
   var listePoints = await JSON.parse(req.body.liste);
   listePoints.push(listePoints[0]);
-  var users = await UserModel.updateOne({ token: req.body.token }, {perimetre: listePoints})
+  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints})
 })
 
-  
+router.post('/envoi-adresse', async function(req, res, next){
+  var user= await talentModel.findOne({token: req.body.token})
+  console.log(req.body.adresse)
+  await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:req.body.lnglat})
+})
 
 router.get(`/cherche-liste-restaurant`, async function(req, res, next){
   console.log('requête reçue')
@@ -129,5 +133,7 @@ router.get('/detail-restaurant/:id', async function(req, res, next){
   var restaurant = await restaurantModel.findOne({_id:req.params.id})
   res.json(restaurant)
 })
+
+
 
 module.exports = router;
