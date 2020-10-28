@@ -119,7 +119,7 @@ function SignUpRestauB(props){
             <Col span={18}>
             <Row>
                 <Col span={6}>
-                    <Form.Item label="clientele">
+                    <Form.Item >
                     <Select 
                     onChange={(e)=>setClienteleOptionChoosen(e)}
                     style={{width:'80%'}}
@@ -154,7 +154,7 @@ function SignUpRestauB(props){
             <Col span={18}>
             <Row>
                 <Col span={6}>
-                    <Form.Item  label='restaurant'>
+                    <Form.Item  >
                     <Select
                     onChange={(e)=>setRestaurantOptionChoosen(e)}
                     style={{width:'80%'}}
@@ -191,7 +191,7 @@ function SignUpRestauB(props){
             <Col span={18}>
             <Row>
                 <Col span={6}>
-                    <Form.Item label='food'>
+                    <Form.Item >
                     <Select
                     onChange={(e)=>setFoodOptionChoosen(e)}
                     style={{width:'80%'}}

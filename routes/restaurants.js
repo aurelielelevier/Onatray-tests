@@ -26,7 +26,7 @@ router.post('/createAccount', async function(req,res,next){
       name : req.body.restaurantName,
       email : req.body.restaurantEmail,
       salt : salt,
-      password : SHA256(req.body.password + salt).toString(encBase64),
+      password : SHA256(req.body.restaurantPassword + salt).toString(encBase64),
       token: uid2(32), 
       siret : req.body.restaurantSiret,
       website : req.body.restaurantWebsite,

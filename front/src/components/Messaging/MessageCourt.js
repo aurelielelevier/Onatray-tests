@@ -9,6 +9,9 @@ function MessageCourt(props){
     
     const [color, setColor] = useState('#ffffff')
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> signin
 // import React, { useState, useEffect } from 'react';
 // import 'antd/dist/antd.less';
 // import '../../App.less';
@@ -18,6 +21,7 @@ function MessageCourt(props){
 // function MessageCourt(props){
 //     const [color, setColor] = useState('#ffffff')
 
+<<<<<<< HEAD
    return(
 
 =======
@@ -25,6 +29,10 @@ function MessageCourt(props){
  return(
 
 >>>>>>> d4bf7a03c7d6839cdd4cf3fa6912989d688566b0
+=======
+    return(
+
+>>>>>>> signin
     <Link to={'/messageRoom'}>
         
         <Comment
@@ -88,6 +96,9 @@ function MessageCourt(props){
 //         null, 
 //         mapDispatchToProps
 //       )(MessageCourt);
+<<<<<<< HEAD
 =======
     export default MessageCourt
 >>>>>>> d4bf7a03c7d6839cdd4cf3fa6912989d688566b0
+=======
+>>>>>>> signin

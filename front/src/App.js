@@ -23,10 +23,16 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
 
+import isConnect from './reducers/connect'
+import isTalent from './reducers/isTalent'
+import isRestau from './reducers/isRestau'
+
 import token from './reducers/token'
+
+
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token}));
+const store = createStore(combineReducers({token, isConnect}));
 
 function App() {
   return (

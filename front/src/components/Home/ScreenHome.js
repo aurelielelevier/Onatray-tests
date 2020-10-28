@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'antd/dist/antd.less';
 import '../../App.less';
 import HeaderScreen from '../Header';
 import HeaderRestaurant from '../HeaderRestaurant';
 import HeaderTalent from '../HeaderTalent'
 import {Button, Carousel, Modal} from 'antd';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {Link, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux'
 
 // ajouter condition pour affichage du bon composant si utilisateur non connecté/restaurant/talent
 
@@ -14,16 +14,19 @@ import {connect} from 'react-redux';
 function ScreenHome(props) {
   const [user, setUser] = useState('')
   const [visible, setVisible] = useState(false)
-  
-  if(!props.tokenToDisplay){
+
+  var  isSignIn = props.connectToDisplay.isSignIn
+  var  isTalent = props.connectToDisplay.isTalent
+  var  isRestau = props.connectToDisplay.isRestau
+
+ 
     var header = <HeaderScreen/>
-  } else if (user == 'restaurant'){
-    var header = <HeaderRestaurant/>
-  } else if (user == 'talent'){
-    var header = <HeaderTalent/>
-  }
+  
     
-  return (
+  
+
+    if(!isSignIn){
+      return (
         <div style={{textAlign:'center'}}>
             {header}
           
@@ -68,6 +71,16 @@ function ScreenHome(props) {
 
         </div>
     )
+    }else if( isSignIn && isTalent){
+      return(
+        <Redirect to="/restaurants"/>
+      )
+    }else if( isSignIn  && isRestau ){
+      return(
+        <Redirect to="/recherchetalentA"/>
+      )
+    }
+  
 }
 const stylesheets = {
   menu: {
@@ -112,10 +125,11 @@ const stylesheets = {
 }
 
 function mapStateToProps(state) {
-  return { tokenToDisplay: state.token }
+  return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
 }
   
 export default connect(
   mapStateToProps, 
   null
 )(ScreenHome);
+
