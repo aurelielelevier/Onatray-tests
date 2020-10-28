@@ -102,21 +102,21 @@ router.get(`/cherche-liste-restaurant`, async function(req, res, next){
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var restaurant = JSON.parse(req.body.restaurant)
-  console.log(restaurant)
+  console.log(restaurant, 'restaurant')
   var responseAenvoyer = await restaurantModel.find(
     {
-          // adresselgtlat: {
-          //    $geoIntersects: {
-          //       $geometry: {
-          //          type: "Polygon" ,
-          //          coordinates: [ zone ],
-          //          crs: {
-          //             type: "name",
-          //             properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
-          //          }
-          //       }
-          //    }
-          // },
+      adresselgtlat: {
+             $geoIntersects: {
+                $geometry: {
+                   type: "Polygon" ,
+                   coordinates: [ restaurant.zone ],
+                   crs: {
+                      type: "name",
+                      properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+                   }
+                }
+             }
+          },
           typeOfFood : { $in: restaurant.cuisine},
           cuisine : { $in: restaurant.cuisine} ,
           typeOfRestaurant : { $in: restaurant.type} ,
