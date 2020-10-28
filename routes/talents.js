@@ -9,6 +9,7 @@ var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 
 
+var restaurantModel = require('../model/restaurants')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -80,6 +81,11 @@ await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langag
 
 
 
+router.post('/envoi-secteur', async function(req, res, next){
+  var listePoints = await JSON.parse(req.body.liste);
+  listePoints.push(listePoints[0]);
+  var users = await UserModel.updateOne({ token: req.body.token }, {perimetre: listePoints})
+})
 
 router.post('/envoi-secteur', function(req, res, next){
   console.log('requete reçue par le back')
@@ -101,9 +107,48 @@ router.post('/envoi-secteur', function(req, res, next){
   //           }
   //        }
   //     }
-  //   }
-  // )
+    }
+   )
   res.json([[48.866667, 2.333333], [48.830745, 2.2135133588867095], [48.807913541763654, 2.4624223554687408]])
+router.get(`/cherche-liste-restaurant`, async function(req, res, next){
+  console.log('requête reçue')
+  var response = await restaurantModel.find()
+  console.log(response)
+  res.json(response)
+})
+
+router.post(`/recherche-liste-restaurants`, async function(req, res, next){
+  var restaurant = JSON.parse(req.body.restaurant)
+  console.log(restaurant)
+  var responseAenvoyer = await restaurantModel.find(
+    {
+          // adresselgtlat: {
+          //    $geoIntersects: {
+          //       $geometry: {
+          //          type: "Polygon" ,
+          //          coordinates: [ zone ],
+          //          crs: {
+          //             type: "name",
+          //             properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+          //          }
+          //       }
+          //    }
+          // },
+          typeOfFood : { $in: restaurant.cuisine},
+          cuisine : { $in: restaurant.cuisine} ,
+          typeOfRestaurant : { $in: restaurant.type} ,
+          clientele: { $in: restaurant.ambiance} ,
+          pricing :{ $in: [restaurant.prix]} 
+        }
+  )
+  
+  console.log(responseAenvoyer, 'réponse !!!!!')
+  res.json(responseAenvoyer)
+})
+
+router.get('/detail-restaurant/:id', async function(req, res, next){
+  var restaurant = await restaurantModel.findOne({_id:req.params.id})
+  res.json(restaurant)
 })
 
 module.exports = router;
