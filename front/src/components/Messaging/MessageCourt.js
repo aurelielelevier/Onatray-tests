@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.less';
 import '../../App.less';
@@ -9,7 +8,6 @@ import moment from 'moment';
 function MessageCourt(props){
     
     const [color, setColor] = useState('#ffffff')
-=======
 // import React, { useState, useEffect } from 'react';
 // import 'antd/dist/antd.less';
 // import '../../App.less';
@@ -18,11 +16,9 @@ function MessageCourt(props){
 
 // function MessageCourt(props){
 //     const [color, setColor] = useState('#ffffff')
->>>>>>> token
 
-//     return(
+   return(
 
-<<<<<<< HEAD
     <Link to={'/messageRoom'}>
         
         <Comment
@@ -53,7 +49,6 @@ function MessageCourt(props){
     )}
 
     export default MessageCourt;
-=======
 //     <Link to={'/messageRoom'}>
 //         <Comment
 //             onMouseEnter={()=> setColor("#a5b1c2")}
@@ -86,4 +81,3 @@ function MessageCourt(props){
 //         null, 
 //         mapDispatchToProps
 //       )(MessageCourt);
->>>>>>> token

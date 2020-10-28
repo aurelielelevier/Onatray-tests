@@ -25,6 +25,8 @@ const restaurantSchema = mongoose.Schema({
 		typeOfRestaurant:Array,
 		typeOfFood:Array,
 		wishlistRestaurant:[whishListRestaurantSchema],
+		experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' },
+		adresselgtlat:Array
     
 })
 

@@ -43,9 +43,7 @@ return(
 
                 <p style={{fontWeight: "bold"}}>Expérience</p>
                 <p>{props.experienceyear1} - {props.experiencename1}</p>
-                <p>{props.experienceyear2} - {props.experiencename2}</p>
-                
-                
+                <p>{props.experienceyear2} - {props.experiencename2}</p>  
             </Card>
         </Col>
     )

@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var restaurantModel = require('../model/restaurants')
+var talentModel = require('../model/talents')
+var formationModel = require('../model/formation')
+var experienceModel = require('../model/experience')
 
 const {request} = require('express');
 var uid2 = require('uid2');
@@ -41,6 +44,29 @@ router.post('/createAccount', async function(req,res,next){
 
 })
 
+router.get('/getinformation', async function(req,res,next){
+
+
+let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
+
+console.log(talentlist[0].experience)
+var talentpush=[]
+
+// for (var i =0; i<talentlist.length;i++){
+// var id= talentlist[i]._id
+// var formationlist= await formationModel.find({talent:id})
+// var experiencelist= await experienceModel.find({talent:id})
+// console.log(`formationlist${i}`,formationlist,`experiencelist${i}`,experiencelist )
+
+// var talent={talent:talentlist[i],formation:formationlist,experience:experiencelist}
+
+// talentpush.push(talent)
+// }
+// console.log("talentpush-formation",talentpush.formation)
+
+
+  res.json({talentlist:talentlist})
+ })
 
 
 router.put('/informations', async function(req,res,next){

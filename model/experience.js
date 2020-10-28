@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 
 const experienceSchema = mongoose.Schema({
-        talent: { type: mongoose.Schema.Types.ObjectId, ref: 'talent' },
-        //restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'restaurant' },
+        //
 		markT1:Number,
 		markT2:Number,
 		markT3:Number,

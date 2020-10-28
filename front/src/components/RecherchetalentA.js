@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import 'antd/dist/antd.less';
 import '../App.less'
 import Header from './Header'
@@ -22,6 +22,15 @@ const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 
+useEffect(() => {
+
+var getTalentdata = async ()=> {
+    const dataTalent = await fetch(`/restaurants/getinformation`)
+      const JSdataTalent = await dataTalent.json()
+      console.log("JSData",JSdataTalent)
+    }
+    getTalentdata()
+},[])
 
   
 /// Tableaux à remplacer par des base de données
@@ -61,7 +70,7 @@ sortedformation.sort((a, b) => {
             }
             return 0;
         })
-console.log("sortedexperience", sortedexperience)
+
 /// ne garde que les deux dernières formations
 let formationshorten=[]
   for (var i= 0; i<2; i++){

@@ -27,7 +27,11 @@ const talentSchema = mongoose.Schema({
 		lookingForJob:Boolean,
         working:Boolean,
         speakLangage : Array,
-		wishlistTalent:[whishListTalentSchema],
+        adresselgtlat:Array,
+        perimetre:Array,
+        wishlistTalent:[whishListTalentSchema],
+        experience: [{type: mongoose.Schema.Types.ObjectId, ref: 'experience' }],
+        formation: [{type: mongoose.Schema.Types.ObjectId, ref: 'formation'}],        
 })
 
 const talentModel = mongoose.model('talent', talentSchema)

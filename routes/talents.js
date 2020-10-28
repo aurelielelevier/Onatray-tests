@@ -29,7 +29,6 @@ router.post('/createAccount', async function(req,res,next){
       password : SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32), 
       phone : req.body.phone,
-
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){
@@ -42,42 +41,42 @@ router.post('/createAccount', async function(req,res,next){
 
 router.post('/informations', async function(req,res,next){
 
-    
- 
  
 await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langage, working:req.body.poste, lookingForJob: req.body.recherche})
 
     var talentToSearch = await talentModel.findOne({token : req.body.token})
     var formation = JSON.parse(req.body.formation)
+    console.log(req.body.experience)
     var experience = JSON.parse(req.body.experience)
+    
     console.log(formation) 
     console.log(experience) 
     
 
   for (let i=0;i<formation.length;i++){
     var newFormation = await new formationModel({
-    talent : talentToSearch.id,
+    // talent : talentToSearch.id,
     school : formation[i].school,
     diploma : formation[i].diploma,
     endingDate : formation[i].year,
     city : formation[i].city
   })
       await newFormation.save();
+     await talentModel.updateOne({token:req.body.token},{$addToSet:{formation:newFormation.id}})
   }
 
   for(let i=0; i<experience.length;i++){
     var newExperience = await new experienceModel({
-      talent  : talentToSearch.id,
+      // talent  : talentToSearch.id,
       firm : experience[i].firm,
       city : experience[i].city,
       startingDate : experience[i].startDate,
       endingDate : experience[i].endDate
     })
-    await newExperience.save();
+     await newExperience.save();
+     await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
   }
  })
-
-
 
 
 
