@@ -12,7 +12,6 @@ import {connect} from 'react-redux'
 
             
 function ScreenHome(props) {
-  const [user, setUser] = useState('')
   const [visible, setVisible] = useState(false)
 
   var  isSignIn = props.connectToDisplay.isSignIn
@@ -20,7 +19,7 @@ function ScreenHome(props) {
   var  isRestau = props.connectToDisplay.isRestau
 
  
-    var header = <HeaderScreen/>
+
   
     
   
@@ -28,30 +27,13 @@ function ScreenHome(props) {
     if(!isSignIn){
       return (
         <div style={{textAlign:'center'}}>
-            {header}
+            <HeaderScreen/>
           
           <div>
             <div style={{color:'#4b6584', fontWeight:'bold', fontSize:'30px'}}>On a Tray</div>
             <div style={{color:'#4b6584', fontSize:'25px'}}>Une communauté pour les restaurants et leurs personnels</div>
           </div>
-          <Modal
-            title="Inscription On a Tray"
-            centered
-            visible={visible}
-            onOk={() => setVisible(false)}
-            onCancel={() => setVisible(false)}
-            width={700}
-            style={{
-              justifyContent:'center',
-              textAlign:'center'
-            }
-            }
-          >
-            <p>Pour vous inscrire, précisez si vous êtes :</p>
-            <Button type="primary" style={{marginRight:'30px', marginTop:'30px'}}><Link to={'/signUpRestauA'}>Un restaurateur</Link></Button>
-            ou
-            <Button type="primary" style={{marginLeft:'30px'}} ><Link to={'/signUpTalentA'}>Un Talent</Link></Button>
-          </Modal>
+          
 
           <Carousel autoplay>
             <div>
@@ -67,21 +49,24 @@ function ScreenHome(props) {
           </Carousel>
           <p style={stylesheets.styleCarousel2}>Restaurants : Recrutez du personnel fiable et adapté à votre établissement</p>
           <p style={stylesheets.styleCarousel2}>Talents : Mettez en valeur vos diplômes et votre expérience pour trouver un emploi à votre juste valeur</p>
-        <Button type="primary" style={stylesheets.styleButton2} onClick={() => setVisible(true)} > Rejoignez-nous !</Button>
+
+          <Link to='/signUpTalentA'><Button style={stylesheets.styleButton2} type="primary">Talents</Button></Link>
+          <Link to='/signUpRestauA'><Button style={stylesheets.styleButton2}  type="primary">Restaurants</Button></Link>
 
         </div>
     )
-    }else if( isSignIn && isTalent){
+    }
+    else if( isSignIn && isTalent){
       return(
         <Redirect to="/restaurants"/>
+     )
+     }else if( isSignIn  && isRestau ){
+       return(
+         <Redirect to="/recherchetalentA"/>
       )
-    }else if( isSignIn  && isRestau ){
-      return(
-        <Redirect to="/recherchetalentA"/>
-      )
-    }
+     }
   
-}
+ }
 const stylesheets = {
   menu: {
     backgroundColor: '#fed330',
@@ -120,7 +105,10 @@ const stylesheets = {
   },
   styleButton2: {
     height: '60px',
-    marginBottom:'30px', 
+    width : '120px',
+    margin:'30px', 
+    
+
   }
 }
 

@@ -25,8 +25,8 @@ function SignUpTalentC(props){
     const[adressesProposees, setAdressesProposees] = useState('')
     const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
 
-    const token = 'dPsxKD9tuQzwWoGCCcQlyLyNTxZeHpHz'
-    console.log(props.tokenToDisplay,'TESTSTSTSTSTSTSTST')
+    const token = props.tokenToDisplay
+    
 
     useEffect(() => {
         let tableauAdresse = adresse.split(' ')

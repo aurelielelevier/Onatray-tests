@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import {Link} from 'react-router-dom'
 
-import { Row, Col, Steps, Form, Input, Button,Radio, Space, Checkbox, Select} from 'antd';
+import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 
 const { Step } = Steps;
@@ -36,18 +36,25 @@ function SignUpTalentB(props){
 
     const onFinish = async (values) => {
         console.log(' its values',values.formation)
-        console.log(enRecherche)
-        console.log(enPoste)
-        console.log(languageChoosen)
-        console.log(jobChoosen)
+        
 
         var formationToSend = await JSON.stringify(values.formation)
         var experienceToSend = await JSON.stringify(values.experience)
 
+        await fetch('/talents/formation',{
+            method:'POST',
+            headers : {'Content-Type':'application/x-www-form-urlencoded'},
+            body : `token=${props.tokenToDisplay}&formation=${formationToSend}&experience=${experienceToSend}`
+        })
+
+    }
+      
+      var sendFormValues = async ()=>{
+        
         await fetch('/talents/informations',{
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&experience=${experienceToSend}&formation=${formationToSend}&job=${jobChoosen}`
+            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&job=${jobChoosen}`
         })
       };
       
@@ -55,7 +62,7 @@ function SignUpTalentB(props){
 
     return(
         <div>
-            <Row style={{height:'80px'}}>
+             <Row style={{height:'80px'}}>
                 <Col style={{
                     backgroundColor: '#FED330',
                     }} span={24}>navbar
@@ -77,13 +84,13 @@ function SignUpTalentB(props){
                     </Steps>
                 </Col>
                 <Col span={4}></Col>
-            </Row>
-            <Row style={{paddingTop:60}}> 
+            </Row> 
+             <Row style={{paddingTop:60}}> 
                 
                 <Col offset={4} span={14}>
                     <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
-                        <span>Formation  <QuestionCircleOutlined/></span>
-                        <Form.List name="formation">
+                        <span>Formation  <QuestionCircleOutlined/></span> 
+                         <Form.List name="formation">
                             {(fields, { add, remove }) => (
                             <>
                                 {fields.map(field => (
@@ -104,8 +111,8 @@ function SignUpTalentB(props){
                                                 <Form.Item
                                                     style={{paddingLeft:15}}
                                                     {...field}
-                                                    name={[field.name, 'city']}
-                                                    fieldKey={[field.fieldKey, 'city']}
+                                                    name={[field.name, 'citys']}
+                                                    fieldKey={[field.fieldKey, 'citys']}
                                                     rules={[{ required: true, message: 'Missing last name' }]}
                                                 >
                                                 <Input placeholder="Ville" />
@@ -144,11 +151,11 @@ function SignUpTalentB(props){
                                     </Form.Item>
                         </>
                         )}
-                        </Form.List>
-                        <Row> 
+                        </Form.List> 
+                         <Row> 
                             <Col span={24}>
-                                <span>Experience  <QuestionCircleOutlined/></span>
-                                <Form.List name="experience">
+                                <span>Experience  <QuestionCircleOutlined/></span> 
+                                 <Form.List name="experience">
                                     {(fields, { add, remove }) => (
                                     <>
                                     {fields.map(field => (
@@ -218,8 +225,8 @@ function SignUpTalentB(props){
                                 </Form.Item>
                                 </>
                                 )}
-                                </Form.List>
-                            </Col>
+                                </Form.List> 
+                             </Col>
                         </Row>
                         <Row style={{paddingTop:30}}>
                             <Col span={12}>
@@ -230,7 +237,7 @@ function SignUpTalentB(props){
                                 mode='multiple'
                                 name={'language'}
                                 className="basic-multi-select"
-                                classNamePrefix="select">
+                                >
                                     <Option value='Francais'>Français</Option>
                                     <Option value='Anglais'>Anglais</Option>
                                     <Option value='Espagnol'>Espagnol</Option>
@@ -283,19 +290,19 @@ function SignUpTalentB(props){
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
                                 <Form.Item>
-                                    <Link to='signUpTalentC'>
-                                        <Button type="primary" htmlType="submit">
+                                   
+                                        <Button onClick={()=> sendFormValues()} type="primary">
                                             Enregister ses informations
                                         </Button>
-                                    </Link>
+                                   
                                 </Form.Item>
                             </Col>
                         </Row>
                     </Form>
                 </Col>    
-            </Row>
+            </Row> 
             
-                
+                <p>test</p>
         </div>
     )
 }
