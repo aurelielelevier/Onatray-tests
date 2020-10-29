@@ -2,19 +2,20 @@ import React, {useState, useEffect} from 'react'
 import '../../App.less';
 import 'antd/dist/antd.less';
 import ListeCardsRestaurants from './ListeCardsRestaurants'
-import MapRestaurant from './MapRestaurants'
-import { Layout, Card, Row, Button, Checkbox, Col, Select, Form } from 'antd';
+import { Layout, Card, Row, Button, Checkbox, Col, Select, Form, Modal, Rate} from 'antd';
+import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import L from 'leaflet';
 import HeaderTalent from '../HeaderTalent'
-import ModalDetailRestaurant from './ModalDetailRestaurant'
-
-
+import {connect} from 'react-redux';
+const { Meta } = Card;
 const { Option } = Select
 const listePrix = [0, 1, 2]
-const listeCuisines = ['française', 'italienne', 'japonaise', 'healthy' ]
-const listeTypes = ['touristique', 'de quartier', 'jeune', 'agée']
+const listeCuisines = ['francaise', 'italienne', 'japonaise', 'healthy' ]
+const listeTypes = ['touristique', 'quartier', 'jeune', 'agée']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
 
-const token = '8R6Yri29Y95UTuBmT2qGHWA1MUdeRMxk'
+const token = 'MK5dyaaAjvdSyMVYqwfPYnEs8r5m0BSx'
 const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ],
     [ 2.1313476562500004, 51.26170001449684 ],
@@ -26,31 +27,41 @@ const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ]
   ]
 
-function ListeRestaurants(){
+function ListeRestaurants(props){
     const [zone, setZone] = useState(zoneFrance)
     const[markers, setMarkers] = useState([])
-    const [Prix, setPrix] = useState(listePrix)
-    const [typeCuisine, setTypeCuisine] = useState(listeCuisines)
-    const [Ambiance, setAmbiance] = useState(listeAmbiances)
-    const [typeRestaurant, setTypeRestaurant] = useState(listeTypes)
-    const [ListeRestaurants, setListeRestaurants] = useState([])
-    const [ambianceCochee, setAmbiancecochee] = useState([])
+    // const [Prix, setPrix] = useState(listePrix)
+    // const [typeCuisine, setTypeCuisine] = useState(listeCuisines)
+    // const [Ambiance, setAmbiance] = useState(listeAmbiances)
+    // const [typeRestaurant, setTypeRestaurant] = useState(listeTypes)
+    const [listedesRestaurants, setListedesRestaurants] = useState([])
+    const [ambianceCochee, setAmbiancecochee] = useState(listeAmbiances)
     const [prixCoche, setPrixcoche] = useState(listePrix)
     const [typeCuisinecochee, setTypeCuisinecochee] = useState(listeCuisines)
     const [typeRestaurantcochee, setTypeRestaurantcochee] = useState(listeTypes)
     const[restoAAfficher, setRestoAAfficher] = useState({})
     const[visible, setVisible] = useState(false)
+    const [restaurant, setRestaurant] = useState(props.resto)
+    
 
     useEffect(async () => {
         var rechercheListe =  await fetch('/talents/cherche-liste-restaurant');
         var liste = await rechercheListe.json();
-        console.log(liste, 'liste retour requete')
-        setListeRestaurants(liste)
-    }, [listeAmbiances, listeCuisines, listePrix, listeAmbiances, zone])
+        console.log(liste, 'CONSOLE LOG TEST')
+        setListedesRestaurants(liste)
+        props.onSubmitformulaire(liste)
+    }, [])
+   
 
-    
-    
-    const Submitform = async (values) => {
+
+   
+    const onclick = (resto) => {
+        console.log('clicked', resto);
+        setRestoAAfficher(resto);
+        setVisible(true);
+    }
+
+    const Submitform = async () => {
         var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
         var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
             method:'POST',
@@ -58,14 +69,14 @@ function ListeRestaurants(){
             body: `token=${token}&restaurant=${criteres}`
         })
         var liste = await rechercheListe.json()
-        setListeRestaurants(liste)
+        props.onSubmitformulaire(liste)
         console.log(liste, 'console log liste après requête')
         };
-
+    
       function onChange(e) {
         console.log(`checked = ${e.target.checked}`)
         
-        if(e.target.cheked){
+        if(!e.target.cheked){
             // setZone à changer pour prendre infos du store concernant zone de recherche du talent
             setZone([
                 [ 2.306442260742188, 48.8538656722782 ],
@@ -80,32 +91,133 @@ function ListeRestaurants(){
         };
       }
 
-      var handleClickModal = (valeur) =>{
-          setVisible(valeur)
+  
+      var cuisine = ' '
+      if(restoAAfficher.typeOfFood){
+          for(var i=0; i<restoAAfficher.typeOfFood.length; i++){
+              if(i==restoAAfficher.typeOfFood.length-1){
+                  cuisine+= restoAAfficher.typeOfFood[i]
+              } else {
+                  cuisine+=restoAAfficher.typeOfFood[i] + ', '
+              }
+          }
       }
-      async function handleclick(id){
-        var rawResponse = await fetch(`/talents/detail-restaurant/${id}`);
-        var response = await rawResponse.json()
-        setRestoAAfficher(response)
-        setVisible(<ModalDetailRestaurant restaurant={restoAAfficher} handleClickParent={handleClickModal}/>)
-        console.log(visible)
+      var clientele = ' '
+      if(restoAAfficher.clientele){
+          for(var i=0; i<restoAAfficher.clientele.length; i++){
+              if(i==restoAAfficher.clientele.length-1){
+                  clientele+= restoAAfficher.clientele[i]
+              } else {
+                  clientele+=restoAAfficher.clientele[i] + ', '
+              }
+          }
+      }
+      var ambiance = ' '
+      if(restoAAfficher.typeOfRestaurant){
+          for(var i=0; i<props.restoAAfficher.typeOfRestaurant.length; i++){
+              if(i==restoAAfficher.typeOfRestaurant.length-1){
+                  ambiance+= restoAAfficher.typeOfRestaurant[i]
+              } else {
+                  ambiance+=restoAAfficher.typeOfRestaurant[i] + ', '
+              }
+          }
+      }
+      if(restoAAfficher.pricing == 0){
+          var prix = ' €'
+      } else if(restoAAfficher.pricing == 1){
+          var prix = ' €€'
+      } else if(restoAAfficher.pricing == 1){
+          var prix = ' €€€'
+      } else {
+          var prix = '--'
       }
 
-      
-
-      
     return(
     <div >
         
         <HeaderTalent/>
-        {visible}
+        {/* <ModalDetailRestaurant visible={visible} resto={restoAAfficher} /> */}
+        { <Modal
+            title={restoAAfficher.name}
+            centered
+            cancelText='Revenir à la liste'
+            visible={visible}
+            onOk={() => setVisible(false)}
+            onCancel={() => setVisible(false)}
+            width={800}
+            style={{
+              justifyContent:'center',
+              textAlign:'center',
+              display: 'inline-flex'
+            }
+            }
+          >
+                
+              <Card
+                hoverable
+                style={{ width: '80vw' }}
+                // cover={<img alt="example" src="https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg" />}
+            >
+                
+                <Meta   
+                        description={  
+                            <div style={{height:'300px', 
+                                        backgroundImage:`url("https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg")`, 
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundSize: "cover"}}>          
+                            </div>
+                        } 
+                        />
+            </Card>
+            <Card
+                hoverable
+                style={{ width: '100%' }}
+                // cover={<img alt="example" src="https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg" />}
+            >
+                
+                <Meta   
+                        //title= 
+                        description={  
+                            <div>
+                                <Row style={{marginTop:'20px'}}>
+                                    <Col span={12}>
+                                        <div>
+                                            <p>{restoAAfficher.adress}</p>
+                                            <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{restoAAfficher.phone}</p>
+                                            <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {restoAAfficher.email}</p>
+                                            <p style={style.textCard}><LinkOutlined  style={{marginRight:'10px'}}/> {restoAAfficher.website}</p>
+                                            <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
+                                            
+                                        </div>
+                                    </Col>
+                                    <Col span={12}>
+                                        
+                                        <p style={style.textCard}><strong>Cuisine : </strong>{cuisine}</p> 
+                                        <p style={style.textCard}><strong>Gamme de prix : </strong>{prix}</p> 
+                                        <p style={style.textCard}><strong>Clientèle : </strong>{clientele}</p> 
+                                        <p style={style.textCard}><strong>Ambiance : </strong>{ambiance}</p> 
+                                        <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Note moyenne attribuée par nos talents :</p> 
+                                        <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                                    </Col>
+                                </Row>
+                            </div>
+                        } 
+                        />
+            </Card>
+            
+            
+            <Row style={{justifyContent:'center', marginTop:'20px'}}>
+                <p style={style.textCard2}><HeartOutlined style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>
+            </Row>
+            
+          </Modal> }
 
         <Row style={style.row2}>
             <Col span={6}>
                 Type d'ambiance :
                 <Form.Item >
                     <Select 
-                        onChange={(e)=>setAmbiancecochee(e)}
+                        onChange={(e)=>{setAmbiancecochee(e)}}
                         style={{width:'80%'}}
                         mode='multiple'
                         name={'ambiance'}
@@ -174,14 +286,18 @@ function ListeRestaurants(){
 
         <Row style={style.row} >
             <Button onClick={()=> Submitform()} type="primary" style={{marginRight:'30px'}}> Rechercher</Button>
-            ou
-            <Button onClick={()=>{{ setTypeRestaurant(listeTypes); 
-                                    setAmbiance(listeAmbiances); 
-                                    setPrix(listePrix)
-                                    setTypeCuisine(listeTypes)}}
+            
+            {/* <Button onClick={()=>{{ 
+                                    setTypeRestaurantcochee(listeTypes); 
+                                    setAmbiancecochee(listeAmbiances); 
+                                    setPrixcoche(listePrix);
+                                    setTypeCuisinecochee(listeTypes);
+                                    setZone(zoneFrance);
+                                    Submitform()
+                                }}
                             } 
                             type="primary"
-                            style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button>
+                            style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button> */}
    
         </Row>
          
@@ -194,13 +310,27 @@ function ListeRestaurants(){
                 <Col span={12} >
                     <Card style={{ border:'none', width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                         <div>
-                            <MapRestaurant markers={markers}/>
+                        <Map center={[48.88, 2.33]} zoom={12} onClick={(e) => { console.log(e)}}>
+                            {/* remplacer par latlng user via props/store */}
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                />
+                                
+                                {/* {markers.map((user,i)=>{ 
+                                return (<Marker position={user}></Marker>)
+                                })} */}
+
+                            {/* <Marker position={}>
+                                <Popup> Mon domicile <br/></Popup>
+                            </Marker> */}
+        </Map>
                         </div>
                     </Card>
                 </Col>
 
                 <Col span={12} style={{margin:'30px 0px'}}>
-                    <ListeCardsRestaurants liste={ListeRestaurants} handleClickParent={handleclick} />
+                    <ListeCardsRestaurants onclick={onclick} />
                 </Col>
             </Row>
         </Layout>
@@ -224,7 +354,29 @@ const style= {
         textAlign:'center', 
         color:'white',
         width:'100%',
+    },
+    textCard:{
+        color:"#4B6584",
+        margin:'0px 20px'
+    },
+    textCard2:{
+        color:"#4B6584",
+        margin:'0px',
+        fontSize:'20px',
+        margin:'0px 20px'
     }
 }
 
-export default ListeRestaurants;
+
+function mapDispatchToProps(dispatch) {
+    return {
+      onSubmitformulaire: function(liste) { 
+          dispatch( {type: 'listerestoaafficher', liste} ) 
+      }
+    }
+  }
+  
+  export default connect(
+      null, 
+      mapDispatchToProps
+  )(ListeRestaurants);

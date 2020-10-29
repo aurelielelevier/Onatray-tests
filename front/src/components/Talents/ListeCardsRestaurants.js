@@ -3,6 +3,7 @@ import '../../App.less';
 import 'antd/dist/antd.less';
 import {List, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import {connect} from 'react-redux';
 // ajouter image resto, note, ajout whislist...
 
 const style= {
@@ -18,7 +19,8 @@ const style= {
     }
 }
 
-const token = 'Gi2AoHScmfEI2wIiAnDdsCK6plqfww1c'
+const token = 'aJPSrRuTZnEOZ8VNTrW05mfcmmTKHN2V'
+
 
 function ListeCarsRestaurants(props){
 
@@ -33,10 +35,10 @@ function ListeCarsRestaurants(props){
             },
             pageSize: 3,
             }}
-            dataSource={props.liste}
+            dataSource={props.listeToDisplay}
             renderItem={item => (
             <List.Item
-                onClick={()=>props.handleClickParent(item._id)}
+                onClick={()=>{props.onclick(item)}}
                 key={item.name}
                 actions={[
                    // <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
@@ -68,4 +70,19 @@ function ListeCarsRestaurants(props){
     )
 }
 
-export default ListeCarsRestaurants;
+function mapDispatchToProps(dispatch) {
+    return {
+      onClickResto: function(id) { 
+          dispatch( {type: 'restoaafficher', id} ) 
+      }
+    }
+  }
+  function mapStateToProps(state) {
+    return { listeToDisplay : state.listerestoaafficher}
+  }
+    
+  
+  export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+  )(ListeCarsRestaurants);

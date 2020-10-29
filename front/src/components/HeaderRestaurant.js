@@ -20,15 +20,15 @@ function HeaderScreen() {
          
           <Menu style={{padding:'20px'}} mode="horizontal" defaultSelectedKeys={['1']}>
             
-          <Link to={'/'}><Image
+          <Link to='/'><Image
                         width={'50px'}
                         src="./images/logo-onatray.png"
                       /> </Link>
 
-              <Menu.Item  key="1"><Link to={'/'}>Accueil</Link></Menu.Item>
-              <Menu.Item  key="1"><Link to={'/'}>Rechercher des talents</Link></Menu.Item>
-              <Menu.Item  key="1"><Link to={'/'}>Mes favoris</Link></Menu.Item>
-              <Menu.Item  key="1"><Link to={'/'}>Mes messages</Link></Menu.Item>
+              <Menu.Item  key="1"><Link to='/'>Accueil</Link></Menu.Item>
+              <Menu.Item  key="2"><Link to='/recherchetalentA'>Rechercher des talents</Link></Menu.Item>
+              <Menu.Item  key="3"><Link to='/'>Mes favoris</Link></Menu.Item>
+              <Menu.Item  key="4"><Link to='/messagerie'>Mes messages</Link></Menu.Item>
           
               <div style={{float:'right'}}>
                 <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/>Mon profil</Button>

@@ -101,15 +101,16 @@ router.get(`/cherche-liste-restaurant`, async function(req, res, next){
 })
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
-  var restaurant = JSON.parse(req.body.restaurant)
-  console.log(restaurant, 'restaurant')
+  var donnees = JSON.parse(req.body.restaurant)
+ // var zone = donnees.zone.map(restaurant=>[restaurant[1], restaurant[0]])
+  console.log(donnees, 'donnees reçues ')
   var responseAenvoyer = await restaurantModel.find(
     {
       adresselgtlat: {
              $geoIntersects: {
                 $geometry: {
                    type: "Polygon" ,
-                   coordinates: [ restaurant.zone ],
+                   coordinates: [ donnees.zone ],
                    crs: {
                       type: "name",
                       properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
@@ -117,14 +118,12 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
                 }
              }
           },
-          typeOfFood : { $in: restaurant.cuisine},
-          cuisine : { $in: restaurant.cuisine} ,
-          typeOfRestaurant : { $in: restaurant.type} ,
-          clientele: { $in: restaurant.ambiance} ,
-          pricing :{ $in: [restaurant.prix]} 
+          typeOfFood : { $in: donnees.cuisine},
+          typeOfRestaurant: { $in: donnees.ambiance},
+          clientele: { $in: donnees.type},
+          pricing :{ $in: donnees.prix} 
         }
   )
-  
   console.log(responseAenvoyer, 'réponse !!!!!')
   res.json(responseAenvoyer)
 })

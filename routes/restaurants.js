@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/createAccount', async function(req,res,next){
-  console.log(req.body)
+  console.log(JSON.parse(req.body.lnglat))
   
   var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
@@ -32,7 +32,7 @@ router.post('/createAccount', async function(req,res,next){
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
-      adresselgtlat: req.body.lnglat,
+      adresselgtlat: JSON.parse(req.body.lnglat),
 
     })
     var restauSaved = await newRestau.save();

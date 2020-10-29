@@ -33,6 +33,7 @@ function SignUpRestauA(props){
           setAdressesProposees(liste)
           if(response.features[0]){
             setlnglat([response.features[0].geometry.coordinates[0], response.features[0].geometry.coordinates[1]])
+            
           }
         } 
         autocompletion()
@@ -53,10 +54,11 @@ function SignUpRestauA(props){
     
 
     var sendFormValues = async () => {
+        console.log(JSON.stringify(lnglat))
          var rawResponse =  await  fetch('restaurants/createAccount', {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}&lnglat=${lnglat}`
+            body : `restaurantName=${restaurantName}&restaurantEmail=${restaurantEmail}&restaurantAdress=${adresse}&restaurantSiret=${restaurantSiret}&restaurantWebsite=${restaurantWebsite}&phoneRestaurant=${phoneRestaurant}&restaurantPassword=${restaurantPassword}&lnglat=${JSON.stringify(lnglat)}`
         })
         var response = await rawResponse.json()
         props.onSendToken(response.token)

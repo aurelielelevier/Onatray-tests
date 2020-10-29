@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import 'antd/dist/antd.less';
 import '../../App.less';
 import {Button, Modal, Card, Rate, Row, Col, Image} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const { Meta } = Card;
 const style= {
@@ -19,54 +20,59 @@ const style= {
     }
 }
 function ModalDetailRestaurant(props){
+    
+    const [restaurant, setRestaurant] = useState(props.resto)
+    const [visible, setVisible] = useState(props.visible)
+
     var cuisine = ' '
-    if(props.restaurant.typeOfFood){
-        for(var i=0; i<props.restaurant.typeOfFood.length; i++){
-            if(i==props.restaurant.typeOfFood.length-1){
-                cuisine+= props.restaurant.typeOfFood[i]
+    if(restaurant.typeOfFood){
+        for(var i=0; i<restaurant.typeOfFood.length; i++){
+            if(i==restaurant.typeOfFood.length-1){
+                cuisine+= restaurant.typeOfFood[i]
             } else {
-                cuisine+=props.restaurant.typeOfFood[i] + ', '
+                cuisine+=restaurant.typeOfFood[i] + ', '
             }
         }
     }
     var clientele = ' '
-    if(props.restaurant.clientele){
-        for(var i=0; i<props.restaurant.clientele.length; i++){
-            if(i==props.restaurant.clientele.length-1){
-                clientele+= props.restaurant.clientele[i]
+    if(restaurant.clientele){
+        for(var i=0; i<restaurant.clientele.length; i++){
+            if(i==restaurant.clientele.length-1){
+                clientele+= restaurant.clientele[i]
             } else {
-                clientele+=props.restaurant.clientele[i] + ', '
+                clientele+=restaurant.clientele[i] + ', '
             }
         }
     }
     var ambiance = ' '
-    if(props.restaurant.typeOfRestaurant){
+    if(restaurant.typeOfRestaurant){
         for(var i=0; i<props.restaurant.typeOfRestaurant.length; i++){
-            if(i==props.restaurant.typeOfRestaurant.length-1){
-                ambiance+= props.restaurant.typeOfRestaurant[i]
+            if(i==restaurant.typeOfRestaurant.length-1){
+                ambiance+= restaurant.typeOfRestaurant[i]
             } else {
-                ambiance+=props.restaurant.typeOfRestaurant[i] + ', '
+                ambiance+=restaurant.typeOfRestaurant[i] + ', '
             }
         }
     }
-    if(props.restaurant.pricing == 0){
+    if(restaurant.pricing == 0){
         var prix = ' €'
-    } else if(props.restaurant.pricing == 1){
+    } else if(restaurant.pricing == 1){
         var prix = ' €€'
-    } else if(props.restaurant.pricing == 1){
+    } else if(restaurant.pricing == 1){
         var prix = ' €€€'
     } else {
         var prix = '--'
     }
     
-    return(
+    
+    return( 
         <Modal
-            title={props.restaurant.name}
+            title={restaurant.name}
             centered
             cancelText='Revenir à la liste'
-            visible={true}
-            onOk={() => props.handleClickParent(false)}
-            onCancel={() => props.handleClickParent(false)}
+            visible={false}
+            onOk={() => setVisible(false)}
+            onCancel={() => setVisible(false)}
             width={800}
             style={{
               justifyContent:'center',
@@ -105,10 +111,10 @@ function ModalDetailRestaurant(props){
                                 <Row style={{marginTop:'20px'}}>
                                     <Col span={12}>
                                         <div>
-                                            <p>{props.restaurant.adress}</p>
-                                            <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{props.restaurant.phone}</p>
-                                            <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {props.restaurant.email}</p>
-                                            <p style={style.textCard}><LinkOutlined  style={{marginRight:'10px'}}/> {props.restaurant.website}</p>
+                                            <p>{restaurant.adress}</p>
+                                            <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{restaurant.phone}</p>
+                                            <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {restaurant.email}</p>
+                                            <p style={style.textCard}><LinkOutlined  style={{marginRight:'10px'}}/> {restaurant.website}</p>
                                             <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
                                             
                                         </div>
@@ -134,7 +140,16 @@ function ModalDetailRestaurant(props){
             </Row>
             
           </Modal>
+        
     )
 }
 
-export default ModalDetailRestaurant
+
+function mapStateToProps(state) {
+    return { listeToDisplay : state.listerestoaafficher, restoaafficher: state.restoaafficher}
+  }
+  
+export default connect(
+    mapStateToProps, 
+    null
+)(ModalDetailRestaurant);

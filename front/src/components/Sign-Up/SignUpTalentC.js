@@ -25,7 +25,7 @@ function SignUpTalentC(props){
     const[adressesProposees, setAdressesProposees] = useState('')
     const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
 
-    const token = 't45gRMYeoBtWVJyC4ZjfwtRq9q1vOZME'
+    const token = 'MK5dyaaAjvdSyMVYqwfPYnEs8r5m0BSx'
     console.log(props.tokenToDisplay,'TESTSTSTSTSTSTSTST')
 
     useEffect(() => {
