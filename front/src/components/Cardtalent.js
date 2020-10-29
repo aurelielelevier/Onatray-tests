@@ -36,7 +36,14 @@ settalentNameUC(talent.lastName.toUpperCase())
 getTalentdata()
 },[])
 
-  console.log('talent',talent)
+var addToWishList = async talent => {
+    const saveReq = await fetch('restaurants/addToWishList', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `name=${article.title}&content=${article.content}&desc=${article.description}&lang=${props.selectedLang}&img=${article.urlToImage}&token=${props.token}`
+    })
+  }
+
 
 if(experiences!=undefined){
 var listexperience= [...experiences]
