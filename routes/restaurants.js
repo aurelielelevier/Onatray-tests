@@ -46,27 +46,16 @@ router.post('/createAccount', async function(req,res,next){
 })
 
 router.get('/getinformation', async function(req,res,next){
-
-
-let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
-
-console.log(talentlist[0].experience)
-var talentpush=[]
-
-// for (var i =0; i<talentlist.length;i++){
-// var id= talentlist[i]._id
-// var formationlist= await formationModel.find({talent:id})
-// var experiencelist= await experienceModel.find({talent:id})
-// console.log(`formationlist${i}`,formationlist,`experiencelist${i}`,experiencelist )
-
-// var talent={talent:talentlist[i],formation:formationlist,experience:experiencelist}
-
-// talentpush.push(talent)
-// }
-// console.log("talentpush-formation",talentpush.formation)
-
-
+  let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
   res.json({talentlist:talentlist})
+ })
+
+ router.post('/addToWishList', async function (req,res,next){
+  
+  await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistTalent:req.body.talent}})
+
+   console.log(req.body.talent)
+
  })
 
 

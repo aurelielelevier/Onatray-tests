@@ -7,10 +7,10 @@ import HeaderTalent from '../HeaderTalent';
 import {Button, Avatar, AutoComplete, Row, Col, Comment, Tooltip} from 'antd';
 import moment from 'moment';
 import Message from './MessageCourt'
-import MessageCourt from './MessageCourt';
+
 
 function MessagerieListe() {
-  const [user, setUser] = useState('restaurant')
+  const [user, setUser] = useState('')
   const [recherche, setRecherche] = useState('')
   const [listeMessages, setListeMessages] = useState([]) // faire requête pour afficher tous les messages
   const [listeinterlocuteurs, setlisteinterlocuteurs] = useState([])
@@ -42,19 +42,6 @@ function MessagerieListe() {
     setlisteinterlocuteurs(liste)
     }, [recherche])
 
-    let messages = listeMessages.map((message,i)=>{
-        if (message.contenu.length > 50){
-            var contenu=message.contenu.slice(0, 60) + '...'
-        } else {
-            var contenu=message.contenu
-        }
-        return ( 
-            <div style={{backgroundColor:'#fed330', padding:'15px 30px'}}>
-                <MessageCourt key={i} contenu={contenu} avatar={message.avatar} date={message.date} nom={message.nom}/>
-            </div>
-        )
-    })
-
   return (
         <div style={{textAlign:'center'}}>
             {header}
@@ -74,12 +61,27 @@ function MessagerieListe() {
             
             <Row gutter={{ xs: 8, sm: 16, md: 18, lg: 24 }} style={{justifyContent:'center', marginTop:'50px'}}>
                 <Col className="gutter-row" span={18}>
-                     {messages}
+                    
+                    {listeMessages.map((message,i)=>{
+                        if (message.contenu.length > 50){
+                            var contenu=message.contenu.slice(0, 60) + '...'
+                        } else {
+                            var contenu=message.contenu
+                        }
+                       
+                        return ( 
+                            <div style={{backgroundColor:'#fed330', padding:'15px 30px'}}>
+                                {Message }
+                            </div>
+                        )
+                    })}
                 </Col>
-            </Row>
-        
+    </Row>
+            
+
         </div>
     )
 }
+
 
 export default MessagerieListe;
