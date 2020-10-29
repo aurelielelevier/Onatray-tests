@@ -31,7 +31,7 @@ var getTalentdata = async ()=> {
  await settalent(props.talent);
  setexperiences(talent.experience);
  setformations(talent.formation)
-if(talent.lastName){settalentNameUC(talent.lastName.toUpperCase())}
+settalentNameUC(talent.lastName.toUpperCase())
     }
 getTalentdata()
 },[])
@@ -144,8 +144,6 @@ return(
                         <Rate disabled defaultValue={2} />
                     </Col>
                     </Row>
-
-                
                         <Col style={{display:"flex", flexDirection:'row', alignItems:"start", justifyContent:"center"}}>
                         <h4 style={{marginLeft:'15px'}}>Téléphone: {talent.phone} </h4>
                       
