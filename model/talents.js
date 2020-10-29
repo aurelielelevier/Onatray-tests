@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const whishListTalentSchema = mongoose.Schema({
-    name : String,
-    streetName : String,
-    city : String,
-    zipCode : String,
-    pricing : String,
-    typeOfRestaurant : String,
-    TypeOfFood : String
+    name: String,
+    email : String,
+    website : String,
+    phone: String,
+    adress:String,
+    clientele:Array,
+    pricing:Number,
+    typeOfRestaurant:Array,
+    typeOfFood:Array,
 })
-
-
 
 const talentSchema = mongoose.Schema({
     firstName: String,

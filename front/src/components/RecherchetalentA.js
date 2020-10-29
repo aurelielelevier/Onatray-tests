@@ -34,19 +34,10 @@ var getTalentdata = async ()=> {
 
 },[])
 
-var addToWishlist = async (talent)=>{
-await fetch('/addToWishlist', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `firstName=${talent.firstName}&lastName=${talent.lastName}&email=${talent.email}&phone=${talent.phone}&avatar=${talent.avatar}&lookingForJob=${talent.lookingForJob}&working=${talent.working}&speakLangage=${talent.speakLangage}&adress=${talent.adress}&countFave=${talent.countFave}`
-    })
-}
-}
-
 
 var talentslist = talents.map((talents,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talent={talents} sortedexperience={sortedexperience} sortedformation={sortedformation} formationyear1={formationshorten[0].year} formationyear2={formationshorten[1].year} formationschool1={formationshorten[0].school} formationschool2={formationshorten[1].school} formationname1={formationshorten[0].name} formationname2={formationshorten[1].name} experienceyear1={experienceshorten[0].year} experienceyear2={experienceshorten[1].year} experiencename1={experienceshorten[0].name} experiencename2={experienceshorten[1].name} />
+       <Cardtalent key={i} src={talents.src} talent={talents} />
     )
   })
 

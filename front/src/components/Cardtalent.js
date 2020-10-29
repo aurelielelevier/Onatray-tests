@@ -19,31 +19,28 @@ const [talentNameUC,settalentNameUC]=useState('')
 
 /// Moyenne pour chaque critère:
 
-
     function onliketalent(){
         setliketalent(true)
     }
     function ondisliketalent(){
         setliketalent(false)
     }
+
 useEffect(() => {
 var getTalentdata = async ()=> {
-await settalent(props.talent);
-await setexperiences(talent.experience);
-await setformations(talent.formation)
-settalentNameUC(talent.lastName.toUpperCase())
-
+ await settalent(props.talent);
+ setexperiences(talent.experience);
+ setformations(talent.formation)
+if(talent.lastName){settalentNameUC(talent.lastName.toUpperCase())}
     }
 getTalentdata()
 },[])
 
-console.log("component talent",talent)
-console.log("component experience",experiences)
-console.log("component formation",formations)
-  
+  console.log('talent',talent)
 
-
-var listexperience= experiences.map((experience,i) => {
+if(experiences!=undefined){
+var listexperience= [...experiences]
+listexperience=experiences.map((experience,i) => {
     return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
 })
 
@@ -51,7 +48,9 @@ var listexperienceshorten= experiences.map((experience,i) =>{
     if(i<2){
     return(<p>{experience.job} - {experience.firm} - {experience.startingDate} - {experience.endingDate}</p>)}
 })
-
+}
+console.log('listexperienceshorten',listexperienceshorten)
+if(formations !=undefined){
 var listformation= formations.map((formation,i) => {
     return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)
 })
@@ -60,7 +59,7 @@ var listformationshorten= formations.map((formation,i) =>{
     if(i<2){
     return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)}
 })
-
+}
 
 
 return(
@@ -83,7 +82,7 @@ return(
                 <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
                 ]} >
                 <Meta/>
-                <h2>{talent.talentName}</h2>
+                <h2>{talent.firstName}-{talentNameUC}</h2>
                 <p style={{fontWeight: "bold"}}>Formations</p>
                 
                 {listformationshorten}
@@ -94,7 +93,6 @@ return(
                 
             </Card>
         <Modal
-            title={talent.firstName}
             centered
             visible={visible}
             onOk={() => setVisible(false)}
@@ -114,7 +112,7 @@ return(
                     <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
                         <h1 style={{marginLeft:'15px', marginBottom:'2px'}}>Nom: {talentNameUC}</h1>
                         <h1 style={{marginLeft:'15px',marginBottom:'2px'}}>Prenom:  {talent.firstName}</h1>
-                        <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adresse}</h2>
+                        <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adress}</h2>
                     </Row>
                         <h2 style={{marginLeft:'15px'}}>Formation: </h2>
                         

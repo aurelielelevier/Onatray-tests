@@ -41,17 +41,16 @@ router.post('/createAccount', async function(req,res,next){
 })
 
 router.post('/informations', async function(req,res,next){
-
  
 await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:req.body.job})
 
     var talentToSearch = await talentModel.findOne({token : req.body.token})
+    console.log(req.body.token)
     var formation = JSON.parse(req.body.formation)
-    console.log(req.body.experience)
     var experience = JSON.parse(req.body.experience)
     
-    //console.log(formation) 
-    //console.log(experience) 
+    console.log('formation',formation) 
+    console.log('experience',experience) 
     
 
   for (let i=0;i<formation.length;i++){
