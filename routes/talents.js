@@ -108,18 +108,18 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   console.log(donnees, 'donnees reçues ')
   var responseAenvoyer = await restaurantModel.find(
     {
-      adresselgtlat: {
-             $geoIntersects: {
-                $geometry: {
-                   type: "Polygon" ,
-                   coordinates: [ donnees.zone ],
-                   crs: {
-                      type: "name",
-                      properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
-                   }
-                }
-             }
-          },
+      // adresselgtlat: {
+      //        $geoWithin: {
+      //           $geometry: {
+      //              type: "Polygon" ,
+      //              coordinates: [ donnees.zone ],
+      //              crs: {
+      //                 type: "name",
+      //                 properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+      //              }
+      //           }
+      //        }
+      //     },
           typeOfFood : { $in: donnees.cuisine},
           typeOfRestaurant: { $in: donnees.ambiance},
           clientele: { $in: donnees.type},
@@ -135,6 +135,19 @@ router.get('/detail-restaurant/:id', async function(req, res, next){
   res.json(restaurant)
 })
 
+router.post('/ajout-whishlist', async function( req, res, next){
+  
+//   console.log(req.body)
+//   var talent = await talentModel.findOne({token: req.body.token})
+//   var nouvelleListe = talent.whishlistTalent.push(req.body.restaurant)
+//   await talentModel.updateOne({token: req.body.token}, {whishlistTalent: nouvelleListe})
+
+
+//  // var r = await talentModel.updateOne({token: req.body.token}, {$addToSet: {whishlistTalent: req.body.restaurant}})
+//   //var test = await talentModel.findOne({token: req.body.token}).populate('restaurant').exec()
+//   console.log(test)
+//   res.json(req.body)
+})
 
 
 module.exports = router;

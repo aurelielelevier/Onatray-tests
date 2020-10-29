@@ -29,11 +29,6 @@ const zoneFrance= [
 
 function ListeRestaurants(props){
     const [zone, setZone] = useState(zoneFrance)
-    const[markers, setMarkers] = useState([])
-    // const [Prix, setPrix] = useState(listePrix)
-    // const [typeCuisine, setTypeCuisine] = useState(listeCuisines)
-    // const [Ambiance, setAmbiance] = useState(listeAmbiances)
-    // const [typeRestaurant, setTypeRestaurant] = useState(listeTypes)
     const [listedesRestaurants, setListedesRestaurants] = useState([])
     const [ambianceCochee, setAmbiancecochee] = useState(listeAmbiances)
     const [prixCoche, setPrixcoche] = useState(listePrix)
@@ -43,7 +38,6 @@ function ListeRestaurants(props){
     const[visible, setVisible] = useState(false)
     const [restaurant, setRestaurant] = useState(props.resto)
     
-
     useEffect(async () => {
         var rechercheListe =  await fetch('/talents/cherche-liste-restaurant');
         var liste = await rechercheListe.json();
@@ -51,27 +45,43 @@ function ListeRestaurants(props){
         setListedesRestaurants(liste)
         props.onSubmitformulaire(liste)
     }, [])
-   
+    
+    useEffect(() => {
+        async function cherche(){
+            var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
+            var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
+                method:'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `token=${token}&restaurant=${criteres}`
+            })
+            var liste = await rechercheListe.json()
+            props.onSubmitformulaire(liste)
+            console.log(liste, 'console log liste après requête')
+            setListedesRestaurants(liste)
+        }
+        cherche()
+       
+    }, [ambianceCochee,typeCuisinecochee,typeRestaurantcochee, prixCoche, zone])
 
-
-   
     const onclick = (resto) => {
         console.log('clicked', resto);
         setRestoAAfficher(resto);
         setVisible(true);
     }
 
-    const Submitform = async () => {
-        var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
-        var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
+    const whislist = async (restaurant)=>{
+        var ajoutwhislist = await fetch(`/talents/ajout-whishlist`, {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `token=${token}&restaurant=${criteres}`
+            body: `token=${token}&restaurant=${restaurant._id}`
         })
-        var liste = await rechercheListe.json()
-        props.onSubmitformulaire(liste)
-        console.log(liste, 'console log liste après requête')
-        };
+        var restaurant = await ajoutwhislist.json()
+        //setRestoAAfficher(restaurant)
+    }
+
+    // const Submitform = async () => {
+       
+    //     };
     
       function onChange(e) {
         console.log(`checked = ${e.target.checked}`)
@@ -114,7 +124,7 @@ function ListeRestaurants(props){
       }
       var ambiance = ' '
       if(restoAAfficher.typeOfRestaurant){
-          for(var i=0; i<props.restoAAfficher.typeOfRestaurant.length; i++){
+          for(var i=0; i<restoAAfficher.typeOfRestaurant.length; i++){
               if(i==restoAAfficher.typeOfRestaurant.length-1){
                   ambiance+= restoAAfficher.typeOfRestaurant[i]
               } else {
@@ -207,7 +217,7 @@ function ListeRestaurants(props){
             
             
             <Row style={{justifyContent:'center', marginTop:'20px'}}>
-                <p style={style.textCard2}><HeartOutlined style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>
+                <p style={style.textCard2}><HeartOutlined onClick={()=> whislist(restoAAfficher._id)} style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>
             </Row>
             
           </Modal> }
@@ -284,8 +294,8 @@ function ListeRestaurants(props){
             </Col>
         </Row> 
 
-        <Row style={style.row} >
-            <Button onClick={()=> Submitform()} type="primary" style={{marginRight:'30px'}}> Rechercher</Button>
+        {/* <Row style={style.row} >
+            <Button onClick={()=> Submitform()} type="primary" style={{marginRight:'30px'}}> Rechercher</Button> */}
             
             {/* <Button onClick={()=>{{ 
                                     setTypeRestaurantcochee(listeTypes); 
@@ -299,7 +309,7 @@ function ListeRestaurants(props){
                             type="primary"
                             style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button> */}
    
-        </Row>
+        {/* </Row> */}
          
         <Row style={style.row}>
             <Checkbox style={{color:'white'}} onChange={onChange}>Afficher seulement les restaurants dans ma zone de recherche</Checkbox>
@@ -313,17 +323,22 @@ function ListeRestaurants(props){
                         <Map center={[48.88, 2.33]} zoom={12} onClick={(e) => { console.log(e)}}>
                             {/* remplacer par latlng user via props/store */}
                             <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                url="http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} "
                                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 />
                                 
-                                {/* {markers.map((user,i)=>{ 
-                                return (<Marker position={user}></Marker>)
-                                })} */}
+                                 {listedesRestaurants.map((restaurant,i)=>{ 
+                                return (<Marker position={[restaurant.adresselgtlat[1], restaurant.adresselgtlat[0]]}>
+                                    <Popup ><div onClick={()=> onclick(restaurant)}>
+                                            <strong>{restaurant.name}</strong> <br/>
+                                                {restaurant.adress}<br/>
+                                                {restaurant.phone} / {restaurant.email} <br/>
+                                                {restaurant.email}<br/>
+                                            </div> 
+                                    </Popup>
+                                </Marker>)
+                                })}
 
-                            {/* <Marker position={}>
-                                <Popup> Mon domicile <br/></Popup>
-                            </Marker> */}
         </Map>
                         </div>
                     </Card>
