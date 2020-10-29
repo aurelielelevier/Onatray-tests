@@ -171,7 +171,7 @@ function SignUpRestauA(props){
                             ]}
                         >
                         <AutoComplete 
-                        style={{ width: 400 }}
+                        style={{ width: 283 }}
                         options={adressesProposees}
                         placeholder="Entrez votre adresse"
                         filterOption={(inputValue, option) =>

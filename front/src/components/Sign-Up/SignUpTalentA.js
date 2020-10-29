@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
-import Header from '../HeaderTalent'
+import Header from '../Header'
 
 import { Row, Col, Steps,Form, Input, Button, Checkbox} from 'antd';
 
 import {Link} from 'react-router-dom'
+
 import {connect} from 'react-redux';
 
 const { Step } = Steps;
@@ -52,7 +53,7 @@ function SignUpTalentA(props){
 
     return(
         <div>
-            <Header/>
+             {/* <Header/>   */}
             <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
                 <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
                 </Col>
@@ -73,7 +74,7 @@ function SignUpTalentA(props){
             <Form
                 validateMessages={validateMessages}
                 style={{paddingTop:'60px'}}
-                name="basic"
+                name="SignInA"
                 initialValues={{
                 remember: true,
                 }}
@@ -83,6 +84,7 @@ function SignUpTalentA(props){
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
                         <Form.Item
+                            key='Prenom'
                             label="Prenom"
                             name="TalentFirstName"
                             rules={[
@@ -98,6 +100,7 @@ function SignUpTalentA(props){
                     </Col>
                     <Col offset={2} span={6}>
                         <Form.Item
+                            key='Email'
                             colon={false}
                             label="Email"
                             name="talentEmail"
@@ -117,6 +120,7 @@ function SignUpTalentA(props){
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
                         <Form.Item
+                            key='lastName'
                             label="Nom de famille"
                             name="talentLastName"
                             rules={[
@@ -133,6 +137,7 @@ function SignUpTalentA(props){
                     </Col>
                     <Col offset={2} span={6}>
                         <Form.Item
+                        key='confirmEmail'
                         label="Confirmez votre email"
                         dependencies={['talentEmail']}
                         name="verifyTalentEmail"
@@ -160,6 +165,7 @@ function SignUpTalentA(props){
                 <Row style={{width:'100%'}}>
                     <Col offset={4} span={6}>
                         <Form.Item
+                                key='phoneNumber'
                                 colon={false}
                                 label="N° de telephone"
                                 name="talentPhone"
@@ -171,6 +177,7 @@ function SignUpTalentA(props){
                     </Col>
                     <Col offset={2} span={6}>
                         <Form.Item
+                            key='password'
                             colon={false}
                             label="Mot de passe"
                             name="talentPassword"
@@ -189,19 +196,9 @@ function SignUpTalentA(props){
                     </Col>
                 </Row>  
                 <Row style={{width:'100%'}}>
-                    <Col offset={4} span={6}>
-                        {/* <Form.Item
-                            label="Website"
-                            name="restaurantWebsite"
-                            
-                        >
-                        <Input onChange={(e) => setRestaurantWebsite(e.target.value)} 
-                        value={restaurantWebsite}
-                        />
-                        </Form.Item> */}
-                    </Col>
-                    <Col offset={2} span={6}>
+                    <Col offset={12} span={6}>
                         <Form.Item
+                            key='confirmPassword'
                             colon={false}
                             label="Confirmez votre mot de passe"
                             name="verifyTalentPassword"
@@ -232,16 +229,17 @@ function SignUpTalentA(props){
                                 <Checkbox>Se souvenir de moi</Checkbox>
                         </Form.Item>
                         <Form.Item >
-                            <Link to='signUpTalentB/'>
+                             <Link to='/getTalentInfo'> 
                             <Button  type="primary"  onClick={()=> sendFormValues()}>
                                 Submit
                             </Button>
-                            </Link>
+                             </Link> 
                         </Form.Item>
                     </Col>
                 </Row>
 
             </Form>
+        <p>test</p>
         </div>
     )
 }
