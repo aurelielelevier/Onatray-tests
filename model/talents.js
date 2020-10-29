@@ -29,7 +29,7 @@ const talentSchema = mongoose.Schema({
     perimetre:Array,
     countFave:Number,
     lookingJob : Array,
-    wishlistTalent:[whishListTalentSchema],
+    wishlistTalent:[{type: mongoose.Schema.Types.ObjectId, ref: 'restaurant'}],
     experience: [{type: mongoose.Schema.Types.ObjectId, ref: 'experience' }],
     formation: [{type: mongoose.Schema.Types.ObjectId, ref: 'formation'}],
 })

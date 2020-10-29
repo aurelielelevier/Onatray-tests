@@ -6,6 +6,9 @@ import {Col,Card,Modal, Image, Row,Rate, List } from 'antd';
 import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,StarOutlined,StarFilled
   } from "@ant-design/icons"
 
+
+var token="LMSt1ovif6F0slDZkX4Wm0F2WXBPfd8A"
+
 function Cardtalent(props){
 
 const { Meta } = Card
@@ -16,12 +19,18 @@ const [formations,setformations]=useState([])
 const [talent,settalent]=useState({})
 const [talentNameUC,settalentNameUC]=useState('')
 
-
+console.log('talent',talent._id)
 /// Moyenne pour chaque critère:
 
-    function onliketalent(){
-        setliketalent(true)
-    }
+async function onliketalent (){
+    setliketalent(true);
+        const saveReq = await fetch('restaurants/addToWishList', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `talent=${talent._id}&token=${token}` 
+        })
+        }
+    
     function ondisliketalent(){
         setliketalent(false)
     }
@@ -31,18 +40,14 @@ var getTalentdata = async ()=> {
  await settalent(props.talent);
  setexperiences(talent.experience);
  setformations(talent.formation)
+ if (talent.lastName != undefined){
 settalentNameUC(talent.lastName.toUpperCase())
+}
     }
 getTalentdata()
 },[])
 
-var addToWishList = async talent => {
-    const saveReq = await fetch('restaurants/addToWishList', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `name=${article.title}&content=${article.content}&desc=${article.description}&lang=${props.selectedLang}&img=${article.urlToImage}&token=${props.token}`
-    })
-  }
+
 
 
 if(experiences!=undefined){
@@ -56,7 +61,6 @@ var listexperienceshorten= experiences.map((experience,i) =>{
     return(<p>{experience.job} - {experience.firm} - {experience.startingDate} - {experience.endingDate}</p>)}
 })
 }
-console.log('listexperienceshorten',listexperienceshorten)
 if(formations !=undefined){
 var listformation= formations.map((formation,i) => {
     return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)
@@ -164,5 +168,7 @@ return(
 
     )
   }
+
+
 
   export default Cardtalent;

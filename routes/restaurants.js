@@ -51,7 +51,11 @@ router.get('/getinformation', async function(req,res,next){
  })
 
  router.post('/addToWishList', async function (req,res,next){
-   
+  
+  await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistTalent:req.body.talent}})
+
+   console.log(req.body.talent)
+
  })
 
 
