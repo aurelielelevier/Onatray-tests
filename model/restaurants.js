@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
-const whishListRestaurantSchema = mongoose.Schema({
-    name : String,
-    streetName : String,
-    city : String,
-    zipCode : String,
-    pricing : String,
-    typeOfRestaurant : String,
-    TypeOfFood : String
-})
+// const whishListRestaurantSchema = mongoose.Schema({
+//     name : String,
+//     streetName : String,
+//     city : String,
+//     zipCode : String,
+//     pricing : String,
+//     typeOfRestaurant : String,
+//     TypeOfFood : String
+// })
 
 const restaurantSchema = mongoose.Schema({
 		name: String,
@@ -24,7 +24,7 @@ const restaurantSchema = mongoose.Schema({
 		pricing:Number,
 		typeOfRestaurant:Array,
 		typeOfFood:Array,
-		wishlistRestaurant:[whishListRestaurantSchema],
+		wishlistRestaurant:{ type: mongoose.Schema.Types.ObjectId, ref: 'talents' },
 		experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' },
 		adresselgtlat:Array
     
