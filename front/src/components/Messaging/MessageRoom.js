@@ -1,18 +1,35 @@
 import React, {useState} from 'react'
+import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
+
+import Header from '../Header'
+import HeaderTalent from '../HeaderTalent'
+import HeaderRestaurant from '../HeaderRestaurant'
 
 import {Row, Col, Button, Input, Card, message } from 'antd'
 import { HeartOutlined, SendOutlined,ExpandAltOutlined} from "@ant-design/icons";
 
-import {Link} from 'react-router-dom'
 
 const {TextArea} = Input;
 const { Meta } = Card;
 
 
-function MessageRoom(){
+function MessageRoom(props){
+
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
     
     const [messageList, setMessageList] = useState([])
     const [newMessage, setNewMessage] = useState('')
+
+    if(!isSignIn){
+        var header = <Header/>
+      } else if (isSignIn && isRestau){
+        var header = <HeaderRestaurant/>
+      } else if (isSignIn && isTalent){
+        var header = <HeaderTalent/>
+      }
 
     var sendMessage = (newMessage) => {
         console.log(newMessage)
@@ -34,12 +51,7 @@ function MessageRoom(){
 
         <Row>
             <Col span={24}>
-                <Row style={{height:'80px'}}>
-                    <Col style={{
-                        backgroundColor: '#FED330',
-                        }} span={24}>navbar
-                    </Col>
-                </Row>
+                {header}
                 <Row style={{paddingTop:20, paddingBottom:20}}>
                     <Col offset={2} span={2}>
                     <Link>
@@ -99,5 +111,11 @@ function MessageRoom(){
         
     )
 }
-
-export default MessageRoom;
+function mapStateToProps(state) {
+    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(MessageRoom);

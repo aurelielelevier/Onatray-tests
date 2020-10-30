@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 
 import {Link} from 'react-router-dom'
 
+import Header from '../Header'
+
 import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 
@@ -62,16 +64,11 @@ function SignUpTalentB(props){
 
     return(
         <div>
-             <Row style={{height:'80px'}}>
-                <Col style={{
-                    backgroundColor: '#FED330',
-                    }} span={24}>navbar
-                </Col>
-            </Row>
+            <Header/>
             <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
                 <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
                 </Col>
-                <Col span={12}> Déjà un compte ? Connectez vous</Col>
+                <Link to='/signIn'> <Col span={12}> Déjà un compte ? Connectez vous</Col></Link> 
             </Row>
             <Row>
                 <Col span={3}></Col>
@@ -290,11 +287,11 @@ function SignUpTalentB(props){
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
                                 <Form.Item>
-                                   
+                                        <Link to='/signUpTalentC'>
                                         <Button onClick={()=> sendFormValues()} type="primary">
                                             <Link to='/signUpTalentC'>Enregister ses informations</Link> 
                                         </Button>
-                                   
+                                        </Link>
                                 </Form.Item>
                             </Col>
                         </Row>

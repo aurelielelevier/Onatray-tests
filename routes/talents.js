@@ -79,9 +79,6 @@ for(let i=0; i<experience.length;i++){
 })
 
   
- 
-
-
 
 router.post('/envoi-secteur', async function(req, res, next){
   var listePoints = await JSON.parse(req.body.liste);

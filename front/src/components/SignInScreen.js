@@ -102,7 +102,7 @@ if(!isSignIn){
             </Col>
         </Row>
     )
-}else if(isSignIn && isRestau){
+}else if(isSignIn && isTalent){
     <Redirect to='/restaurants'/>
 }else if(isSignIn && isRestau){
     <Redirect to='/recherchetalentA'/>
