@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import '../../App.less';
+import '../../index.less'
 import 'antd/dist/antd.less';
 import ListeCardsRestaurants from './ListeCardsRestaurants'
 import { Layout, Card, Row, Button, Checkbox, Col, Select, Form, Modal, Rate} from 'antd';

@@ -18,6 +18,7 @@ module.exports = {
                           '@btn-primary-color': '#4b6584',
                           '@text-color': 'black',
                           '@link-color': '#4b6584',
+                          '@font-family' : 'Dosis'
                           
                         },
             javascriptEnabled: true,
