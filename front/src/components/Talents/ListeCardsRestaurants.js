@@ -4,26 +4,27 @@ import 'antd/dist/antd.less';
 import {List, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import {connect} from 'react-redux';
-// ajouter image resto, note, ajout whislist...
+
+// ajouter image resto, note
 
 const style= {
     textCard:{
         color:"#4B6584",
-        margin:'0px 20px'
+        margin:'0px'
     },
     textCard2:{
         color:"#4B6584",
         margin:'0px',
         fontSize:'20px',
-        margin:'0px 20px'
+        margin:'0px'
     }
 }
 
-const token = 'aJPSrRuTZnEOZ8VNTrW05mfcmmTKHN2V'
+const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
 
 
-function ListeCarsRestaurants(props){
-    
+function ListeCardsRestaurants(props){
+
     return(
     
         <List
@@ -35,11 +36,11 @@ function ListeCarsRestaurants(props){
             },
             pageSize: 3,
             }}
-            dataSource={props.listeToDisplay}
+            dataSource={props.liste}
             renderItem={item => (
                 
             <List.Item
-                onClick={()=>{props.onclick(item)}}
+                
                 key={item.name}
                 actions={[
                    // <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
@@ -53,8 +54,12 @@ function ListeCarsRestaurants(props){
                 }
             >
                 <List.Item.Meta
-                title={<div style={{color:'#4B6584'}}><HeartFilled style={{marginRight:'20px', color:item.coeur}}/>{item.name}</div>}
-                description={<div >
+                title={<div>
+                    <div style={{ fontWeight:'bold', fontSize:'20px', color:'#4B6584'}}>{item.name}</div>
+                    <div><HeartFilled onClick={()=>{props.whishlist(item._id)}} style={{marginRight:'20px', color:item.coeur}}/></div>
+                    </div>}
+                description={<div onClick={()=>{props.onclick(item)}}>
+                                
                                 <p style={style.textCard}>{item.adress}</p>
                                 <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{item.phone}</p>
                                 <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {item.email}</p>
@@ -80,12 +85,12 @@ function mapDispatchToProps(dispatch) {
       }
     }
   }
+
   function mapStateToProps(state) {
     return { listeToDisplay : state.listerestoaafficher}
   }
     
-  
   export default connect(
     mapStateToProps, 
     mapDispatchToProps
-  )(ListeCarsRestaurants);
+  )(ListeCardsRestaurants);
