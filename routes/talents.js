@@ -96,17 +96,19 @@ router.post('/envoi-adresse', async function(req, res, next){
   await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
 })
 
-router.get(`/cherche-liste-restaurant`, async function(req, res, next){
-  console.log('requête reçue')
-  var response = await restaurantModel.find()
-  console.log(response)
-  res.json(response)
-})
+// router.get(`/cherche-liste-restaurant/:token`, async function(req, res, next){
+//   //console.log('requête reçue', req.params.token)
+//   var liste = await restaurantModel.find()
+//   var user = await talentModel.findOne({token:req.params.token})
+//   var whishlist = user.wishlistTalent
+//   console.log(user)
+//   console.log(liste)
+//   res.json({liste: liste, whishlist: whishlist} )
+// })
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
- // var zone = donnees.zone.map(restaurant=>[restaurant[1], restaurant[0]])
-  console.log(donnees, 'donnees reçues ')
+  console.log(donnees, 'données reçues du front')
   var responseAenvoyer = await restaurantModel.find(
     {
       // adresselgtlat: {
@@ -127,8 +129,10 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
           pricing :{ $in: donnees.prix} 
         }
   )
+  var user = await talentModel.findOne({token:req.body.token})
+  var whishlist = user.wishlistTalent
   console.log(responseAenvoyer, 'réponse !!!!!')
-  res.json(responseAenvoyer)
+  res.json({liste : responseAenvoyer, whishlist: whishlist})
 })
 
 router.get('/detail-restaurant/:id', async function(req, res, next){
@@ -136,13 +140,21 @@ router.get('/detail-restaurant/:id', async function(req, res, next){
   res.json(restaurant)
 })
 
-router.post('/ajout-whishlist', async function( req, res, next){
-  await talentModel.find({token: req.body.token})
-  await talentModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistTalent: req.body.restaurant} })
-  var response = await talentModel.findOne({token: req.body.token})
-  // var test = await talentModel.findOne({token: req.body.token}).populate('wishlistTalent').exec();
-  console.log(response.wishlistTalent)
-  res.json(response.wishlistTalent)
+router.post('/whishlist', async function( req, res, next){
+  var user = await talentModel.findOne({token: req.body.token})
+  var restaurant = await restaurantModel.findOne({_id: req.body.restaurant})
+  console.log(user)
+  if(user.wishlistTalent.includes(restaurant._id)){
+    await talentModel.updateOne({token: req.body.token}, { $pull: { wishlistTalent: { $in:  `${req.body.restaurant}` }} })
+    console.log('retrait whishlist')
+  } else {
+    await talentModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistTalent: req.body.restaurant}})
+    console.log('ajout whishlist')
+  }
+  
+  var response = await restaurantModel.find()
+  var userAjour = await talentModel.findOne({token: req.body.token})
+  res.json({liste :response, whishlist: userAjour.wishlistTalent})
 })
 
 
