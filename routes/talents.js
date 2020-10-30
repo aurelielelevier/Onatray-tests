@@ -42,20 +42,20 @@ router.post('/createAccount', async function(req,res,next){
 
 router.post('/informations', async function(req,res,next){
 
-  console.log(req.body)
-  await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:req.body.job})
+  //console.log(req.body)
+  var job = JSON.parse(req.body.job)
+  var langage = JSON.parse(req.body.langage)
+
+  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job})
   console.log(req.body.experience)
   
-})
-
-router.post('/formation', async function(req,res,next){
+  //console.log('formation',req.body.formation)
+  //console.log('experience',req.body.experience)
   
-  console.log('formation',req.body.formation)
-  console.log('experience',req.body.experience)
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
     
-for (let i=0;i<formation.length;i++){
+  for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
   school : formation[i].school,
   diploma : formation[i].diploma,
@@ -65,18 +65,21 @@ for (let i=0;i<formation.length;i++){
   await newFormation.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{formation:newFormation.id}})
   }
-
-for(let i=0; i<experience.length;i++){
+  
+  for(let i=0; i<experience.length;i++){
   var newExperience = await new experienceModel({
   firm : experience[i].firm,
   city : experience[i].city,
   startingDate : experience[i].startDate,
   endingDate : experience[i].endDate
-})
+  })
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
-}
+  }
 })
+
+  
+
 
   
 

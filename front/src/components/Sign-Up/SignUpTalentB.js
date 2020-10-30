@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {connect} from 'react-redux'
 
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 
 import Header from '../Header'
 
@@ -27,6 +27,10 @@ function SignUpTalentB(props){
     const [languageToAdd, setLanguageToAdd] = useState('')
     const [language, setLanguage] = useState([])
 
+
+    
+    const [redirect, setRedirect] = useState(false)
+
     var addLanguageItem = (optionToAdd) => {
         let newOption = {value:optionToAdd, label:optionToAdd}
         setLanguage([...language, newOption])
@@ -36,32 +40,32 @@ function SignUpTalentB(props){
         return <Option value = {option.value}>{option.label}</Option>
     })
 
-    const onFinish = async (values) => {
-        console.log(' its values',values.formation)
-        
-
-        var formationToSend = await JSON.stringify(values.formation)
-        var experienceToSend = await JSON.stringify(values.experience)
-
-        await fetch('/talents/formation',{
-            method:'POST',
-            headers : {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&formation=${formationToSend}&experience=${experienceToSend}`
-        })
-
-    }
-      
-      var sendFormValues = async ()=>{
-        
-        await fetch('/talents/informations',{
+    const onFinish =  values => {
+        console.log(' its values',values)
+        var langageToSend =  JSON.stringify(languageChoosen)
+        var jobToSend =  JSON.stringify(jobChoosen)
+        var formationToSend =  JSON.stringify(values.formation)
+        var experienceToSend =  JSON.stringify(values.experience)
+    
+         fetch('/talents/informations',{
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${languageChoosen}&job=${jobChoosen}`
+            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${langageToSend}&job=${jobToSend}&experience=${experienceToSend}&formation=${formationToSend}`
         })
-      };
-      
-   
 
+        setRedirect(true)
+    }
+      
+      
+  
+   
+      if(redirect){
+          return ( 
+              <Redirect to='/signUpTalentC'></Redirect>
+          )
+      }else {
+
+      
     return(
         <div>
             <Header/>
@@ -96,12 +100,15 @@ function SignUpTalentB(props){
                                             <Col span={6}>  
                                                
                                                 <Form.Item
+
                                                     {...field}
                                                     name={[field.name, 'school']}
                                                     fieldKey={[field.fieldKey, 'school']}
                                                     rules={[{ required: true, message: 'Missing first name' }]}
                                                     >
-                                                    <Input placeholder="École" />
+                                                    <Input 
+                                                    //onChange={(e)=>{setSchoolFormationToSend(e.target.value)}}
+                                                     placeholder="École" />
                                                 </Form.Item>
                                             </Col> 
                                             <Col span={6}>
@@ -287,11 +294,13 @@ function SignUpTalentB(props){
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
                                 <Form.Item>
-                                        <Link to='/signUpTalentC'>
-                                        <Button onClick={()=> sendFormValues()} type="primary">
-                                            <Link to='/signUpTalentC'>Enregister ses informations</Link> 
+                                     
+                                        <Button 
+                                        //onClick={()=> sendFormValues()}
+                                         htmlType='submit' type="primary">
+                                             Enregister ses infos
                                         </Button>
-                                        </Link>
+                                      
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -299,9 +308,9 @@ function SignUpTalentB(props){
                 </Col>    
             </Row> 
             
-                <p>test</p>
+                
         </div>
-    )
+    )}
 }
 
 function mapStateToProps(state) {

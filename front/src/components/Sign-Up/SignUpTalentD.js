@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 import Header from '../Header'
 
@@ -6,6 +6,9 @@ import {Row, Col, Card} from 'antd'
 import {EditOutlined} from "@ant-design/icons"
 
 function SignUpTalentD () {
+
+    
+
     return(
         <div>
             <Header/>
