@@ -21,31 +21,21 @@ const Submitform = values => {
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
-const [talents,settalents]=useState([])
-const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+const [talent,settalent]=useState([])
 
 useEffect(() => {
 
-var getTalentdata = async ()=> {
-    const dataTalent = await fetch(`/restaurants/getinformation`)
-      const JSdataTalent = await dataTalent.json()
-      settalents(JSdataTalent.talentlist)
-    }
-    getTalentdata()
-
-var getwishlist = async ()=>{
+var getwishlistRestaurant= async ()=> {
     const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`)
-    const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-    setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
-    console.log('wishlistRestaurantID2',JSdatawishlistRestaurant.restaurantwishlistid)}
-    getwishlist()
-    
+      const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
+      settalent(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)
+    }
+    getwishlistRestaurant()
 },[])
 
-
-var talentslist = talents.map((talents,i) => {
+var wishlistlist = talent.map((talent,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID}/>
+       <Cardtalent key={i} src={talent.src} talent={talent} />
     )
   })
 
@@ -101,7 +91,7 @@ return(
 </Row>
 <Row style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
 
-    {talentslist}
+    {wishlistlist}
     
 </Row>
 

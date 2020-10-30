@@ -7,47 +7,58 @@ import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,StarOutlined,St
   } from "@ant-design/icons"
 
 
-var token="LMSt1ovif6F0slDZkX4Wm0F2WXBPfd8A"
+var token="Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR"
 
 function Cardtalent(props){
 
 const { Meta } = Card
-const [liketalent,setliketalent]=useState(false)
 const [visible, setVisible] = useState(false)
 const [experiences,setexperiences]=useState([])
 const [formations,setformations]=useState([])
 const [talent,settalent]=useState({})
 const [talentNameUC,settalentNameUC]=useState('')
+const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+const [isinWishlist,setisinWishlist]=useState(false)
 
-console.log('talent',talent._id)
 /// Moyenne pour chaque critère:
 
 async function onliketalent (){
-    setliketalent(true);
         const saveReq = await fetch('restaurants/addToWishList', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `talent=${talent._id}&token=${token}` 
-        })
-        }
-    
-    function ondisliketalent(){
-        setliketalent(false)
-    }
+            body: `talent=${talent._id}&token=${token}&isinWishlist=${isinWishlist}` 
+        })}
+
+        // const datawishlistRestaurant = await fetch(`/restaurants/addToWishList`)
+        // const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
+        // console.log('help',JSdatawishlistRestaurant)}
+        // setwishlistRestaurant(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)}
+        
+
 
 useEffect(() => {
 var getTalentdata = async ()=> {
- await settalent(props.talent);
- setexperiences(talent.experience);
- setformations(talent.formation)
- if (talent.lastName != undefined){
-settalentNameUC(talent.lastName.toUpperCase())
-}
+    await settalent(props.talent)
+    await setwishlistRestaurantID(props.wishlistRestaurantID)}
+    getTalentdata()
+    setexperiences(talent.experience);
+    setformations(talent.formation)
+if (talent.lastName != undefined){
+    settalentNameUC(talent.lastName.toUpperCase())}
+
+
+console.log('wishlistcard',wishlistRestaurantID)
+if(wishlistRestaurantID.includes(talent._id)){
+    setisinWishlist(true)
     }
-getTalentdata()
+
 },[])
 
 
+// for(let i=0;i<wishlistRestaurant.length;i++){
+//     if(talent._id === wishlistRestaurant[i]._id){
+//     setisinWishlist(true)}
+// }
 
 
 if(experiences!=undefined){
@@ -89,7 +100,7 @@ return(
                 }
                 actions={[
                 <SendOutlined key="sendOutlined"/>,
-                liketalent === false ?<HeartOutlined onClick={() => onliketalent()} key="HeartOutlined" />  : <HeartFilled onClick={() => ondisliketalent()} key= "HeartFilled"/>,
+                isinWishlist ===false?<HeartOutlined onClick={() => onliketalent()} key="HeartOutlined" />:<HeartFilled onClick={() => onliketalent()} key= "HeartFilled"/>,
                 <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
                 ]} >
                 <Meta/>
