@@ -5,6 +5,8 @@ import { Row, Col, Steps,Form, Input, Button, Checkbox, AutoComplete} from 'antd
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 
+import Header from '../Header'
+
 
 const { Step } = Steps;
 
@@ -90,17 +92,12 @@ function SignUpRestauA(props){
     return(
         <div>
 
-            <Row style={{height:'80px'}}>
-                <Col style={{
-                    backgroundColor: '#FED330',
-                    }} span={24}>navbar
-                </Col>
-            </Row>
+            <Header/>
 
             <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
                 <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
                 </Col>
-                <Col span={12}> Déjà un compte ? Connectez vous</Col>
+              <Link to='/signIn'><Col span={12}> Déjà un compte ? Connectez vous</Col></Link>  
             </Row>
             <Row>
                 <Col span={4}></Col>
