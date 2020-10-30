@@ -292,7 +292,7 @@ function SignUpTalentB(props){
                                 <Form.Item>
                                    
                                         <Button onClick={()=> sendFormValues()} type="primary">
-                                            Enregister ses informations
+                                            <Link to='/signUpTalentC'>Enregister ses informations</Link> 
                                         </Button>
                                    
                                 </Form.Item>

@@ -15,7 +15,7 @@ const listeCuisines = ['francaise', 'italienne', 'japonaise', 'healthy' ]
 const listeTypes = ['touristique', 'quartier', 'jeune', 'agée']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
 
-const token = 'MK5dyaaAjvdSyMVYqwfPYnEs8r5m0BSx'
+const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
 const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ],
     [ 2.1313476562500004, 51.26170001449684 ],
@@ -36,18 +36,37 @@ function ListeRestaurants(props){
     const [typeRestaurantcochee, setTypeRestaurantcochee] = useState(listeTypes)
     const[restoAAfficher, setRestoAAfficher] = useState({})
     const[visible, setVisible] = useState(false)
-    const [restaurant, setRestaurant] = useState(props.resto)
+    const [whishlistTalent, setwhishlistTalent] = useState([])
+    //const [whislist, setwhislist] = useState([])
     
     useEffect(async () => {
         var rechercheListe =  await fetch('/talents/cherche-liste-restaurant');
         var liste = await rechercheListe.json();
-        console.log(liste, 'CONSOLE LOG TEST')
+        console.log(liste,'TEST')
+        // for(var i=0; i<liste.length; i++){
+        //     if(liste[i]. == 'black'){
+
+        //     }
+        // }
+        
         setListedesRestaurants(liste)
         props.onSubmitformulaire(liste)
     }, [])
     
     useEffect(() => {
         async function cherche(){
+            if(ambianceCochee==[]){
+                setAmbiancecochee(listeAmbiances)
+            }
+            if(prixCoche ==[]){
+                setPrixcoche(listePrix)
+            }
+            if(listeCuisines == []){
+                setTypeCuisinecochee(listeCuisines)
+            }
+            if(typeRestaurantcochee == []){
+                setTypeRestaurantcochee(listeTypes)
+            }
             var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
             var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
                 method:'POST',
@@ -55,8 +74,8 @@ function ListeRestaurants(props){
                 body: `token=${token}&restaurant=${criteres}`
             })
             var liste = await rechercheListe.json()
+            
             props.onSubmitformulaire(liste)
-            console.log(liste, 'console log liste après requête')
             setListedesRestaurants(liste)
         }
         cherche()
@@ -69,13 +88,14 @@ function ListeRestaurants(props){
         setVisible(true);
     }
 
-    const whislist = async (restaurant)=>{
+    const whislist = async (restaurant_id)=>{
         var ajoutwhislist = await fetch(`/talents/ajout-whishlist`, {
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `token=${token}&restaurant=${restaurant._id}`
+            body: `token=${token}&restaurant=${restaurant_id}`
         })
-        var restaurant = await ajoutwhislist.json()
+        var responseWhishlistTalent = await ajoutwhislist.json()
+        setwhishlistTalent(responseWhishlistTalent)
         //setRestoAAfficher(restaurant)
     }
 
@@ -142,11 +162,12 @@ function ListeRestaurants(props){
           var prix = '--'
       }
 
+
+      
     return(
     <div >
         
         <HeaderTalent/>
-        {/* <ModalDetailRestaurant visible={visible} resto={restoAAfficher} /> */}
         { <Modal
             title={restoAAfficher.name}
             centered
@@ -217,7 +238,8 @@ function ListeRestaurants(props){
             
             
             <Row style={{justifyContent:'center', marginTop:'20px'}}>
-                <p style={style.textCard2}><HeartOutlined onClick={()=> whislist(restoAAfficher._id)} style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>
+                <HeartOutlined onClick={()=> {whislist(restoAAfficher._id); console.log('TEST ID', restoAAfficher._id)}} style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>
+            <p style={style.textCard2}>J'ajoute ce restaurant en favori !</p>
             </Row>
             
           </Modal> }

@@ -56,10 +56,14 @@ function SignUpRestauB(props){
     })
 
       const sendFormValues = async () => {
+          var clientele= JSON.stringify(clienteleOptionChoosen)
+          var restaurantOption = JSON.stringify(restaurantOptionChoosen)
+          var foodOption = JSON.stringify(foodOptionChoosen)
+          var pricing2 = JSON.stringify(pricing)
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&clientele=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
+            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}`
         })
         
       };

@@ -23,7 +23,7 @@ const token = 'aJPSrRuTZnEOZ8VNTrW05mfcmmTKHN2V'
 
 
 function ListeCarsRestaurants(props){
-
+    
     return(
     
         <List
@@ -37,6 +37,7 @@ function ListeCarsRestaurants(props){
             }}
             dataSource={props.listeToDisplay}
             renderItem={item => (
+                
             <List.Item
                 onClick={()=>{props.onclick(item)}}
                 key={item.name}
@@ -52,7 +53,7 @@ function ListeCarsRestaurants(props){
                 }
             >
                 <List.Item.Meta
-                title={item.name}
+                title={<div style={{color:'#4B6584'}}><HeartFilled style={{marginRight:'20px', color:item.coeur}}/>{item.name}</div>}
                 description={<div >
                                 <p style={style.textCard}>{item.adress}</p>
                                 <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{item.phone}</p>
@@ -61,10 +62,12 @@ function ListeCarsRestaurants(props){
                                 <p style={style.textCard}>Note moyenne attribuée par nos talents :</p> 
                                 <p style={style.textCard}><Rate disabled defaultValue={2} /></p>
                                 <p style={style.textCard}>2 (10 votes)</p>
+                                
                             </div>}
                 />
                 </List.Item>
-            )}
+            )
+        }
         />
                 
     )
