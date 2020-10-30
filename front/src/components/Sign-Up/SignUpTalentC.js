@@ -25,10 +25,7 @@ function SignUpTalentC(props){
     const[adressesProposees, setAdressesProposees] = useState('')
     const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
 
-  //  const token = props.tokenToDisplay
-    
-    const token = 't45gRMYeoBtWVJyC4ZjfwtRq9q1vOZME'
-    console.log(props.tokenToDisplay,'TESTSTSTSTSTSTSTST')
+    const token = props.tokenToDisplay
 
     useEffect(() => {
         let tableauAdresse = adresse.split(' ')
@@ -53,9 +50,6 @@ function SignUpTalentC(props){
             setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
           }
         } 
-        
-        
-        
         autocompletion()
         
       }, [adresse])
@@ -73,7 +67,7 @@ function SignUpTalentC(props){
       }
 
       async function envoiAdresse(){
-        var lnglat = [latlngDomicile[1], latlngDomicile[0]]
+        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
         await fetch(`/talents/envoi-adresse`, {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},

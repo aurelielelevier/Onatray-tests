@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import '../../App.less';
+import '../../index.less'
 import 'antd/dist/antd.less';
 import ListeCardsRestaurants from './ListeCardsRestaurants'
 import { Layout, Card, Row, Button, Checkbox, Col, Select, Form, Modal, Rate} from 'antd';
-import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 import HeaderTalent from '../HeaderTalent'
@@ -15,7 +16,8 @@ const listeCuisines = ['francaise', 'italienne', 'japonaise', 'healthy' ]
 const listeTypes = ['touristique', 'quartier', 'jeune', 'agée']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
 
-const token = 'MK5dyaaAjvdSyMVYqwfPYnEs8r5m0BSx'
+const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
+
 const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ],
     [ 2.1313476562500004, 51.26170001449684 ],
@@ -36,119 +38,128 @@ function ListeRestaurants(props){
     const [typeRestaurantcochee, setTypeRestaurantcochee] = useState(listeTypes)
     const[restoAAfficher, setRestoAAfficher] = useState({})
     const[visible, setVisible] = useState(false)
-    const [restaurant, setRestaurant] = useState(props.resto)
     
-    useEffect(async () => {
-        var rechercheListe =  await fetch('/talents/cherche-liste-restaurant');
-        var liste = await rechercheListe.json();
-        console.log(liste, 'CONSOLE LOG TEST')
-        setListedesRestaurants(liste)
-        props.onSubmitformulaire(liste)
-    }, [])
-    
-    useEffect(() => {
+    function colorationCoeur(liste, whishlist){
+        for(var i=0; i<liste.length; i++){
+            if(whishlist.includes(liste[i]._id)){
+                liste[i].coeur = '#4B6584'
+            } else {
+                liste[i].coeur = '#a5b1c2'
+            }
+        }
+    }
+
+    async function whishlist (id){
+        var rawResponse = await fetch(`/talents/whishlist`, {
+             method:'POST',
+             headers: {'Content-Type':'application/x-www-form-urlencoded'},
+             body: `token=${token}&restaurant=${id}`
+         })
+         
+         var response = await rawResponse.json()
+         console.log(response)
+         colorationCoeur(response.liste, response.whishlist)
+         setListedesRestaurants(response.liste)   
+     }
+
+     useEffect(() => {
         async function cherche(){
+            if(ambianceCochee==[]){
+                setAmbiancecochee(listeAmbiances)
+            }
+            if(prixCoche ==[]){
+                setPrixcoche(listePrix)
+            }
+            if(listeCuisines == []){
+                setTypeCuisinecochee(listeCuisines)
+            }
+            if(typeRestaurantcochee == []){
+                setTypeRestaurantcochee(listeTypes)
+            }
             var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
             var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
                 method:'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `token=${token}&restaurant=${criteres}`
             })
-            var liste = await rechercheListe.json()
-            props.onSubmitformulaire(liste)
-            console.log(liste, 'console log liste après requête')
-            setListedesRestaurants(liste)
+            var response = await rechercheListe.json()
+            colorationCoeur(response.liste, response.whishlist)
+            console.log(response.liste)
+            props.onSubmitformulaire(response.liste)
+            setListedesRestaurants(response.liste)
         }
         cherche()
-       
     }, [ambianceCochee,typeCuisinecochee,typeRestaurantcochee, prixCoche, zone])
-
+    
     const onclick = (resto) => {
-        console.log('clicked', resto);
         setRestoAAfficher(resto);
         setVisible(true);
     }
 
-    const whislist = async (restaurant)=>{
-        var ajoutwhislist = await fetch(`/talents/ajout-whishlist`, {
-            method:'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `token=${token}&restaurant=${restaurant._id}`
-        })
-        var restaurant = await ajoutwhislist.json()
-        //setRestoAAfficher(restaurant)
-    }
-
-    // const Submitform = async () => {
-       
-    //     };
+    function onChange(e) {
+    console.log(`checked = ${e.target.checked}`)
     
-      function onChange(e) {
-        console.log(`checked = ${e.target.checked}`)
-        
-        if(!e.target.cheked){
-            // setZone à changer pour prendre infos du store concernant zone de recherche du talent
-            setZone([
-                [ 2.306442260742188, 48.8538656722782 ],
-                [ 2.346267700195313, 48.89315686419009 ],
-                [ 2.4183654785156254, 48.86832119264031 ],
-                [ 2.401199340820313, 48.82675031807337 ],
-                [ 2.324295043945313, 48.82494210585485 ],
-                [ 2.306442260742188, 48.8538656722782 ]
-              ])
+    if(!e.target.cheked){
+        // setZone à changer pour prendre infos du store concernant zone de recherche du talent
+        setZone([
+            [ 2.306442260742188, 48.8538656722782 ],
+            [ 2.346267700195313, 48.89315686419009 ],
+            [ 2.4183654785156254, 48.86832119264031 ],
+            [ 2.401199340820313, 48.82675031807337 ],
+            [ 2.324295043945313, 48.82494210585485 ],
+            [ 2.306442260742188, 48.8538656722782 ]
+            ])
         } else {
             setZone(zoneFrance)
         };
-      }
+    }
 
-  
-      var cuisine = ' '
-      if(restoAAfficher.typeOfFood){
-          for(var i=0; i<restoAAfficher.typeOfFood.length; i++){
-              if(i==restoAAfficher.typeOfFood.length-1){
-                  cuisine+= restoAAfficher.typeOfFood[i]
-              } else {
-                  cuisine+=restoAAfficher.typeOfFood[i] + ', '
-              }
-          }
-      }
-      var clientele = ' '
-      if(restoAAfficher.clientele){
-          for(var i=0; i<restoAAfficher.clientele.length; i++){
-              if(i==restoAAfficher.clientele.length-1){
-                  clientele+= restoAAfficher.clientele[i]
-              } else {
-                  clientele+=restoAAfficher.clientele[i] + ', '
-              }
-          }
-      }
-      var ambiance = ' '
-      if(restoAAfficher.typeOfRestaurant){
-          for(var i=0; i<restoAAfficher.typeOfRestaurant.length; i++){
-              if(i==restoAAfficher.typeOfRestaurant.length-1){
-                  ambiance+= restoAAfficher.typeOfRestaurant[i]
-              } else {
-                  ambiance+=restoAAfficher.typeOfRestaurant[i] + ', '
-              }
-          }
-      }
-      if(restoAAfficher.pricing == 0){
-          var prix = ' €'
-      } else if(restoAAfficher.pricing == 1){
-          var prix = ' €€'
-      } else if(restoAAfficher.pricing == 1){
-          var prix = ' €€€'
-      } else {
-          var prix = '--'
-      }
-
+    var cuisine = ' '
+    if(restoAAfficher.typeOfFood){
+        for(var i=0; i<restoAAfficher.typeOfFood.length; i++){
+            if(i==restoAAfficher.typeOfFood.length-1){
+                cuisine+= restoAAfficher.typeOfFood[i]
+            } else {
+                cuisine+=restoAAfficher.typeOfFood[i] + ', '
+            }
+        }
+    }
+    var clientele = ' '
+    if(restoAAfficher.clientele){
+        for(var i=0; i<restoAAfficher.clientele.length; i++){
+            if(i==restoAAfficher.clientele.length-1){
+                clientele+= restoAAfficher.clientele[i]
+            } else {
+                clientele+=restoAAfficher.clientele[i] + ', '
+            }
+        }
+    }
+    var ambiance = ' '
+    if(restoAAfficher.typeOfRestaurant){
+        for(var i=0; i<restoAAfficher.typeOfRestaurant.length; i++){
+            if(i==restoAAfficher.typeOfRestaurant.length-1){
+                ambiance+= restoAAfficher.typeOfRestaurant[i]
+            } else {
+                ambiance+=restoAAfficher.typeOfRestaurant[i] + ', '
+            }
+        }
+    }
+    if(restoAAfficher.pricing == 0){
+        var prix = ' €'
+    } else if(restoAAfficher.pricing == 1){
+        var prix = ' €€'
+    } else if(restoAAfficher.pricing == 1){
+        var prix = ' €€€'
+    } else {
+        var prix = '--'
+    }
+      
     return(
     <div >
         
         <HeaderTalent/>
-        {/* <ModalDetailRestaurant visible={visible} resto={restoAAfficher} /> */}
         { <Modal
-            title={restoAAfficher.name}
+            title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered
             cancelText='Revenir à la liste'
             visible={visible}
@@ -182,7 +193,6 @@ function ListeRestaurants(props){
             <Card
                 hoverable
                 style={{ width: '100%' }}
-                // cover={<img alt="example" src="https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg" />}
             >
                 
                 <Meta   
@@ -214,11 +224,6 @@ function ListeRestaurants(props){
                         } 
                         />
             </Card>
-            
-            
-            <Row style={{justifyContent:'center', marginTop:'20px'}}>
-                <p style={style.textCard2}><HeartOutlined onClick={()=> whislist(restoAAfficher._id)} style={{color:'red', fontSize:'30px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>
-            </Row>
             
           </Modal> }
 
@@ -294,22 +299,19 @@ function ListeRestaurants(props){
             </Col>
         </Row> 
 
-        {/* <Row style={style.row} >
-            <Button onClick={()=> Submitform()} type="primary" style={{marginRight:'30px'}}> Rechercher</Button> */}
+        <Row style={style.row} >
             
-            {/* <Button onClick={()=>{{ 
+            <Button onClick={()=>{{ 
                                     setTypeRestaurantcochee(listeTypes); 
                                     setAmbiancecochee(listeAmbiances); 
                                     setPrixcoche(listePrix);
-                                    setTypeCuisinecochee(listeTypes);
+                                    setTypeCuisinecochee(listeCuisines);
                                     setZone(zoneFrance);
-                                    Submitform()
                                 }}
                             } 
                             type="primary"
-                            style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button> */}
-   
-        {/* </Row> */}
+                            style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button>
+        </Row>
          
         <Row style={style.row}>
             <Checkbox style={{color:'white'}} onChange={onChange}>Afficher seulement les restaurants dans ma zone de recherche</Checkbox>
@@ -339,13 +341,13 @@ function ListeRestaurants(props){
                                 </Marker>)
                                 })}
 
-        </Map>
+                        </Map>
                         </div>
                     </Card>
                 </Col>
 
                 <Col span={12} style={{margin:'30px 0px'}}>
-                    <ListeCardsRestaurants onclick={onclick} />
+                    <ListeCardsRestaurants liste={listedesRestaurants} onclick={onclick} whishlist={whishlist}/>
                 </Col>
             </Row>
         </Layout>

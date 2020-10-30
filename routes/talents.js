@@ -42,20 +42,20 @@ router.post('/createAccount', async function(req,res,next){
 
 router.post('/informations', async function(req,res,next){
 
-  console.log(req.body)
-  await talentModel.updateOne({token:req.body.token},{speakLangage:req.body.langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:req.body.job})
+  //console.log(req.body)
+  var job = JSON.parse(req.body.job)
+  var langage = JSON.parse(req.body.langage)
+
+  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job})
   console.log(req.body.experience)
   
-})
-
-router.post('/formation', async function(req,res,next){
+  //console.log('formation',req.body.formation)
+  //console.log('experience',req.body.experience)
   
-  console.log('formation',req.body.formation)
-  console.log('experience',req.body.experience)
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
     
-for (let i=0;i<formation.length;i++){
+  for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
   school : formation[i].school,
   diploma : formation[i].diploma,
@@ -65,23 +65,23 @@ for (let i=0;i<formation.length;i++){
   await newFormation.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{formation:newFormation.id}})
   }
-
-for(let i=0; i<experience.length;i++){
+  
+  for(let i=0; i<experience.length;i++){
   var newExperience = await new experienceModel({
   firm : experience[i].firm,
   city : experience[i].city,
   startingDate : experience[i].startDate,
   endingDate : experience[i].endDate
-})
+  })
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
-}
+  }
 })
 
   
- 
 
 
+  
 
 router.post('/envoi-secteur', async function(req, res, next){
   var listePoints = await JSON.parse(req.body.liste);
@@ -90,22 +90,25 @@ router.post('/envoi-secteur', async function(req, res, next){
 })
 
 router.post('/envoi-adresse', async function(req, res, next){
+  var lnglat = JSON.parse(req.body.lnglat)
   var user= await talentModel.findOne({token: req.body.token})
   console.log(req.body.adresse)
-  await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:req.body.lnglat})
+  await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
 })
 
-router.get(`/cherche-liste-restaurant`, async function(req, res, next){
-  console.log('requête reçue')
-  var response = await restaurantModel.find()
-  console.log(response)
-  res.json(response)
-})
+// router.get(`/cherche-liste-restaurant/:token`, async function(req, res, next){
+//   //console.log('requête reçue', req.params.token)
+//   var liste = await restaurantModel.find()
+//   var user = await talentModel.findOne({token:req.params.token})
+//   var whishlist = user.wishlistTalent
+//   console.log(user)
+//   console.log(liste)
+//   res.json({liste: liste, whishlist: whishlist} )
+// })
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
- // var zone = donnees.zone.map(restaurant=>[restaurant[1], restaurant[0]])
-  console.log(donnees, 'donnees reçues ')
+  console.log(donnees, 'données reçues du front')
   var responseAenvoyer = await restaurantModel.find(
     {
       // adresselgtlat: {
@@ -126,8 +129,10 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
           pricing :{ $in: donnees.prix} 
         }
   )
+  var user = await talentModel.findOne({token:req.body.token})
+  var whishlist = user.wishlistTalent
   console.log(responseAenvoyer, 'réponse !!!!!')
-  res.json(responseAenvoyer)
+  res.json({liste : responseAenvoyer, whishlist: whishlist})
 })
 
 router.get('/detail-restaurant/:id', async function(req, res, next){
@@ -135,18 +140,21 @@ router.get('/detail-restaurant/:id', async function(req, res, next){
   res.json(restaurant)
 })
 
-router.post('/ajout-whishlist', async function( req, res, next){
+router.post('/whishlist', async function( req, res, next){
+  var user = await talentModel.findOne({token: req.body.token})
+  var restaurant = await restaurantModel.findOne({_id: req.body.restaurant})
+  console.log(user)
+  if(user.wishlistTalent.includes(restaurant._id)){
+    await talentModel.updateOne({token: req.body.token}, { $pull: { wishlistTalent: { $in:  `${req.body.restaurant}` }} })
+    console.log('retrait whishlist')
+  } else {
+    await talentModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistTalent: req.body.restaurant}})
+    console.log('ajout whishlist')
+  }
   
-//   console.log(req.body)
-//   var talent = await talentModel.findOne({token: req.body.token})
-//   var nouvelleListe = talent.whishlistTalent.push(req.body.restaurant)
-//   await talentModel.updateOne({token: req.body.token}, {whishlistTalent: nouvelleListe})
-
-
-//  // var r = await talentModel.updateOne({token: req.body.token}, {$addToSet: {whishlistTalent: req.body.restaurant}})
-//   //var test = await talentModel.findOne({token: req.body.token}).populate('restaurant').exec()
-//   console.log(test)
-//   res.json(req.body)
+  var response = await restaurantModel.find()
+  var userAjour = await talentModel.findOne({token: req.body.token})
+  res.json({liste :response, whishlist: userAjour.wishlistTalent})
 })
 
 

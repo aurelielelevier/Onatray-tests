@@ -1,7 +1,13 @@
 import React, {useEffect, useState} from 'react'
+import {connect} from 'react-redux'
+
 import 'antd/dist/antd.less';
 import '../App.less'
+
 import Header from './Header'
+import HeaderRestaurant from './HeaderRestaurant'
+import HeaderTalent from './HeaderTalent'
+
 import { Button, Select, Form, Col, Row,Card } from 'antd';
 import Cardtalent from './Cardtalent'
 
@@ -10,19 +16,38 @@ const { Meta } = Card
 
 function RecherchetalentA(props) {
 
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
 
-const Submitform = values => {
+    if(!isSignIn){
+        var header = <Header/>
+      } else if (isSignIn && isRestau){
+        var header = <HeaderRestaurant/>
+      } else if (isSignIn && isTalent){
+        var header = <HeaderTalent/>
+      }
+
+
+    const Submitform = values => {
         console.log('Received values of form:', values);
         console.log(posterecherché)
         console.log(typedecontrat)
-        };
+    };
 
 
+<<<<<<< HEAD
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+=======
+    const [posterecherché,setposterecherché]= useState('')
+    const [typedecontrat,settypedecontrat]= useState('')
+    const [liketalent,setliketalent]=useState(false)
+    const [talents,settalents]=useState([])
+>>>>>>> a89fe3e39b28dcf30fc6d89464963514449109e5
 
 useEffect(() => {
 
@@ -52,7 +77,7 @@ var talentslist = talents.map((talents,i) => {
 return(
                      
 <div>
-<Header/>
+{header}
 
 <Row style={{backgroundColor:"#4B6584", height:"150px", display:"flex", justifyContent:"center", alignItems:'center', marginBottom:"15px"}}>
     
@@ -109,4 +134,12 @@ return(
 
     )
 }
-export default RecherchetalentA;
+
+function mapStateToProps(state) {
+    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(RecherchetalentA);

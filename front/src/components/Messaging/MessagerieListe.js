@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import 'antd/dist/antd.less';
-import '../../App.less';
+import {connect} from 'react-redux'
+
 import HeaderRestaurant from '../HeaderRestaurant';
 import HeaderScreen from '../Header';
 import HeaderTalent from '../HeaderTalent';
+
+import 'antd/dist/antd.less';
+import '../../App.less';
 import {Button, Avatar, AutoComplete, Row, Col, Comment, Tooltip} from 'antd';
+
 import moment from 'moment';
 import Message from './MessageCourt'
 
 
-function MessagerieListe() {
-  const [user, setUser] = useState('')
-  const [recherche, setRecherche] = useState('')
-  const [listeMessages, setListeMessages] = useState([]) // faire requête pour afficher tous les messages
-  const [listeinterlocuteurs, setlisteinterlocuteurs] = useState([])
+function MessagerieListe(props) {
+    
+    const [user, setUser] = useState('')
+    const [recherche, setRecherche] = useState('')
+    const [listeMessages, setListeMessages] = useState([]) // faire requête pour afficher tous les messages
+    const [listeinterlocuteurs, setlisteinterlocuteurs] = useState([])
+
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
  // const[color, setColor] = useState('#ffffff')
   
-  if(!user){
+  if(!isSignIn){
     var header = <HeaderScreen/>
-  } else if (user == 'restaurant'){
+  } else if (isSignIn && isRestau){
     var header = <HeaderRestaurant/>
-  } else if (user == 'talent'){
+  } else if (isSignIn && isTalent){
     var header = <HeaderTalent/>
   }
 
@@ -82,6 +91,12 @@ function MessagerieListe() {
         </div>
     )
 }
+function mapStateToProps(state) {
+    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(MessagerieListe);
 
-
-export default MessagerieListe;

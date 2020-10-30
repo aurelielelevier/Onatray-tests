@@ -78,7 +78,7 @@ var wishlist=restaurantModel.findOne({token:req.body.token})
 
 router.put('/informations', async function(req,res,next){
   console.log('its body', req.body)
-  await restaurantModel.updateOne({token:req.body.token},{clientele: req.body.clientele, typeOfRestaurant : req.body.restaurantOption, typeOfFood:req.body.foodOption, pricing : req.body.pricing})
+  await restaurantModel.updateOne({token:req.body.token},{clientele: JSON.parse(req.body.clientele), typeOfRestaurant : JSON.parse(req.body.restaurantOption), typeOfFood: JSON.parse(req.body.foodOption), pricing : JSON.parse(req.body.pricing)})
 })
 
 module.exports = router;

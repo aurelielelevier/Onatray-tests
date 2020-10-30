@@ -5,6 +5,8 @@ import { Row, Col, Steps , Button, Input, Select, Divider, Radio, Form} from 'an
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 
+import Header from '../Header'
+
 const { Step } = Steps;
 const { Option } = Select;
 
@@ -56,27 +58,26 @@ function SignUpRestauB(props){
     })
 
       const sendFormValues = async () => {
+          var clientele= JSON.stringify(clienteleOptionChoosen)
+          var restaurantOption = JSON.stringify(restaurantOptionChoosen)
+          var foodOption = JSON.stringify(foodOptionChoosen)
+          var pricing2 = JSON.stringify(pricing)
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&clientele=${clienteleOptionChoosen}&restaurantOption=${restaurantOptionChoosen}&foodOption=${foodOptionChoosen}&pricing=${pricing}`
+            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}`
         })
         
       };
 
     return(
     <div>
-        <Row style={{height:'80px'}}>
-            <Col style={{
-                backgroundColor: '#FED330',
-                }} span={24}>navbar
-            </Col>
-        </Row>
+        <Header/>
 
         <Row style={{paddingLeft:20, paddingTop:10, display:'flex', flexDirection:'column', }}>
             <Col span={12} style={{color:'#4B6584', fontSize:24}}>Créer un compte gratuitement dès maintenant
             </Col>
-            <Col span={12}> Déjà un compte ? Connectez vous</Col>
+            <Link to='/signIn'>  <Col span={12}> Déjà un compte ? Connectez vous</Col></Link>  
         </Row>
         <Row>
             <Col span={4}></Col>
