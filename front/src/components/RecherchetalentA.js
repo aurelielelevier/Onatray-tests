@@ -36,18 +36,12 @@ function RecherchetalentA(props) {
     };
 
 
-<<<<<<< HEAD
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
-=======
-    const [posterecherché,setposterecherché]= useState('')
-    const [typedecontrat,settypedecontrat]= useState('')
-    const [liketalent,setliketalent]=useState(false)
-    const [talents,settalents]=useState([])
->>>>>>> a89fe3e39b28dcf30fc6d89464963514449109e5
+
 
 useEffect(() => {
 
