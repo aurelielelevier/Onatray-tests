@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {connect} from 'react-redux'
-
 import 'antd/dist/antd.less';
 import '../App.less'
-
 import Header from './Header'
-import HeaderRestaurant from './HeaderRestaurant'
-import HeaderTalent from './HeaderTalent'
-
 import { Button, Select, Form, Col, Row,Card } from 'antd';
 import Cardtalent from './Cardtalent'
 
@@ -16,68 +10,39 @@ const { Meta } = Card
 
 function RecherchetalentA(props) {
 
-    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
-    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
-    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
 
-    if(!isSignIn){
-        var header = <Header/>
-      } else if (isSignIn && isRestau){
-        var header = <HeaderRestaurant/>
-      } else if (isSignIn && isTalent){
-        var header = <HeaderTalent/>
-      }
-
-
-    const Submitform = values => {
+const Submitform = values => {
         console.log('Received values of form:', values);
         console.log(posterecherché)
         console.log(typedecontrat)
-    };
+        };
 
 
-<<<<<<< HEAD
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
-const [talents,settalents]=useState([])
-const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
-=======
-    const [posterecherché,setposterecherché]= useState('')
-    const [typedecontrat,settypedecontrat]= useState('')
-    const [liketalent,setliketalent]=useState(false)
-    const [talents,settalents]=useState([])
->>>>>>> a89fe3e39b28dcf30fc6d89464963514449109e5
+const [talent,settalent]=useState([])
 
 useEffect(() => {
 
-var getTalentdata = async ()=> {
-    const dataTalent = await fetch(`/restaurants/getinformation`)
-      const JSdataTalent = await dataTalent.json()
-      settalents(JSdataTalent.talentlist)
-    }
-    getTalentdata()
-
-var getwishlist = async ()=>{
+var getwishlistRestaurant= async ()=> {
     const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`)
-    const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-    setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
-    console.log('wishlistRestaurantID2',JSdatawishlistRestaurant.restaurantwishlistid)}
-    getwishlist()
-    
+      const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
+      settalent(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)
+    }
+    getwishlistRestaurant()
 },[])
 
-
-var talentslist = talents.map((talents,i) => {
+var wishlistlist = talent.map((talent,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID}/>
+       <Cardtalent key={i} src={talent.src} talent={talent} />
     )
   })
 
 return(
                      
 <div>
-{header}
+<Header/>
 
 <Row style={{backgroundColor:"#4B6584", height:"150px", display:"flex", justifyContent:"center", alignItems:'center', marginBottom:"15px"}}>
     
@@ -126,7 +91,7 @@ return(
 </Row>
 <Row style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
 
-    {talentslist}
+    {wishlistlist}
     
 </Row>
 
@@ -134,12 +99,4 @@ return(
 
     )
 }
-
-function mapStateToProps(state) {
-    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
-  }
-    
-  export default connect(
-    mapStateToProps, 
-    null
-  )(RecherchetalentA);
+export default RecherchetalentA;

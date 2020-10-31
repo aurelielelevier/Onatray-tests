@@ -33,7 +33,6 @@ router.post('/createAccount', async function(req,res,next){
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
       adresselgtlat: JSON.parse(req.body.lnglat),
-
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
@@ -47,15 +46,33 @@ router.post('/createAccount', async function(req,res,next){
 
 router.get('/getinformation', async function(req,res,next){
   let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
+  console.log("hole")
   res.json({talentlist:talentlist})
  })
 
+ 
+  router.get('/getwishlist', async function(req,res,next){
+   let restaurantwishlistexpand = await restaurantModel.findOne({token:'Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR'}).populate('wishlistRestaurant').exec()
+   console.log('restaurantwishlist',restaurantwishlistexpand)
+   let restaurantwishlistid = await restaurantModel.findOne({token:'Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR'})
+   console.log('restaurantwishlistID',restaurantwishlistid.wishlistRestaurant)   
+   res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
+  
+  })
+
  router.post('/addToWishList', async function (req,res,next){
   
-  await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistTalent:req.body.talent}})
+console.log('route',req.body.isinWishlist,'req.body.talent',req.body.talent, 'token',req.body.token)
 
-   console.log(req.body.talent)
+if(req.body.isinWishlist === 'false'){
+await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistRestaurant:req.body.talent}})
+}else{
+  console.log('route true')
+  await restaurantModel.updateOne({token:req.body.token},{ $pull:{wishlistRestaurant:{ $in:`${req.body.talent}`}} })}
 
+var wishlist=restaurantModel.findOne({token:req.body.token})
+
+ res.json({wishlist:wishlist.wishlistRestaurant})
  })
 
 
