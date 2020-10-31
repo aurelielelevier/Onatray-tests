@@ -157,7 +157,7 @@ function ListeRestaurants(props){
     return(
     <div >
         
-        <HeaderTalent/>
+        <HeaderTalent keyheader='2'/>
         { <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered
@@ -326,7 +326,7 @@ function ListeRestaurants(props){
                             {/* remplacer par latlng user via props/store */}
                             <TileLayer
                                 url="http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} "
-                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                attribution='&copy; <a href="http://osm.org/copyright">"OpenStreet"Map</a> contributors'
                                 />
                                 
                                  {listedesRestaurants.map((restaurant,i)=>{ 
