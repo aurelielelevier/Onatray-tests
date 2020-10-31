@@ -27,7 +27,7 @@ function ScreenHome(props) {
     if(!isSignIn){
       return (
         <div style={{textAlign:'center'}}>
-            <HeaderScreen/>
+            <HeaderScreen keyheader='1'/>
           
           <div>
             <div style={{color:'#4b6584', fontWeight:'bold', fontSize:'30px'}}>On a Tray</div>
