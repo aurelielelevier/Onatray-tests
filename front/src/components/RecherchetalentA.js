@@ -57,7 +57,7 @@ var getwishlist = async ()=>{
     getwishlist()
 },[])
 
-console.log('wishlistRestaurantID',wishlistRestaurantID)
+var token="Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR"
 
 var talentslist = talents.map((talents,i) => {
     return (
