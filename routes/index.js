@@ -19,7 +19,8 @@ router.post('/sign_in', async function(req,res,next){
   if(talentToSearch){
     var hash = SHA256(req.body.password + talentToSearch.salt).toString(encBase64)
     if (talentToSearch.password == hash){
-      res.json({result:true, type:'talent', token : talentToSearch.token})
+      console.log(talentToSearch.adresselgtlat, 'ADRESSE LGTLAT')
+      res.json({result:true, type:'talent', token : talentToSearch.token, adresse: talentToSearch.adresselgtlat, zone: talentToSearch.perimetre})
     }else{
       res.json({result : 'Error'})
     }
@@ -29,7 +30,7 @@ router.post('/sign_in', async function(req,res,next){
     if(restauToSearch){
       var hashh = SHA256(req.body.password + restauToSearch.salt).toString(encBase64)
       if (restauToSearch.password == hashh){
-        res.json({result : true, type:'restaurant', token : restauToSearch.token })
+        res.json({result : true, type:'restaurant', token : restauToSearch.token, adresse: restauToSearch.adresselgtlat})
       }else{
         res.json({result : 'Error'})
       }

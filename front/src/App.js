@@ -30,13 +30,15 @@ import isTalent from './reducers/isTalent';
 import isRestau from './reducers/isRestau';
 import restoaafficher from './reducers/restoaafficher';
 import listerestoaafficher from './reducers/listerestosaafficher';
+import adresse from './reducers/adresse';
+import zone from './reducers/zone';
 
 import token from './reducers/token'
 
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher}));
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, isRestau, isTalent}));
 
 export default function App() {
   return (

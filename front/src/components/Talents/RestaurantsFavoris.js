@@ -3,9 +3,9 @@ import '../../App.less';
 import '../../index.less'
 import 'antd/dist/antd.less';
 import ListeCardsRestaurants from './ListeCardsRestaurants'
-import { Layout, Card, Row, Button, Checkbox, Col, Select, Form, Modal, Rate} from 'antd';
+import { Layout, Card, Row, Col, Modal, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
-import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import HeaderTalent from '../HeaderTalent'
 import {connect} from 'react-redux';
@@ -14,8 +14,7 @@ const { Meta } = Card;
 
 function RestaurantsFavoris(props){
 
-    const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
-    //props.tokenToDisplay
+    const token = props.tokenToDisplay
 
     const [listedesRestaurants, setListedesRestaurants] = useState([])
     const[restoAAfficher, setRestoAAfficher] = useState({})
@@ -36,7 +35,7 @@ function RestaurantsFavoris(props){
         var rechercheListe = await fetch(`/talents/affiche-whishlist/${token}`)
         var response = await rechercheListe.json()
         colorationCoeur(response, response)
-        console.log(response)
+        console.log(props.adresseToDisplay)
         props.onSubmitformulaire(response)
         setListedesRestaurants(response)
         
@@ -105,8 +104,8 @@ function RestaurantsFavoris(props){
     return(
     <div >
         
-        <HeaderTalent keyheader='2'/>
-        { <Modal
+        <HeaderTalent keyheader='3'/>
+        <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered
             cancelText='Revenir à la liste'
@@ -173,7 +172,7 @@ function RestaurantsFavoris(props){
                         />
             </Card>
             
-          </Modal> }
+        </Modal> 
 
        
         <Layout style={{ backgroundColor:'white', padding: '0 24px', minHeight: 280}}>
@@ -181,15 +180,14 @@ function RestaurantsFavoris(props){
                 <Col span={12} >
                     <Card style={{ border:'none', width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                         <div>
-                        <Map center={[48.88, 2.33]} zoom={12} onClick={(e) => { console.log(e)}}>
-                            {/* remplacer par latlng user via props/store */}
+                        <Map center={[props.adresseToDisplay.coordinates[1], props.adresseToDisplay.coordinates[0]]} zoom={12}>
                             <TileLayer
                                 url="http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} "
                                 attribution='&copy; <a href="http://osm.org/copyright">"OpenStreet"Map</a> contributors'
                                 />
                                 
                                  {listedesRestaurants.map((restaurant,i)=>{ 
-                                return (<Marker position={[restaurant.adresselgtlat[1], restaurant.adresselgtlat[0]]}>
+                                return (<Marker position={[restaurant.adresselgtlat.coordinates[1], restaurant.adresselgtlat.coordinates[0]]}>
                                     <Popup ><div onClick={()=> onclick(restaurant)}>
                                             <strong>{restaurant.name}</strong> <br/>
                                                 {restaurant.adress}<br/>
@@ -253,7 +251,7 @@ function mapDispatchToProps(dispatch) {
   }
   
   function mapStateToProps(state) {
-    return {tokenToDisplay: state.token}
+    return {tokenToDisplay: state.token, adresseToDisplay: state.adresse}
   }
   export default connect(
       mapStateToProps, 

@@ -34,7 +34,7 @@ function SignUpRestauA(props){
           }
           setAdressesProposees(liste)
           if(response.features[0]){
-            setlnglat([response.features[0].geometry.coordinates[0], response.features[0].geometry.coordinates[1]])
+            setlnglat(response.features[0].geometry)
             
           }
         } 
@@ -65,6 +65,7 @@ function SignUpRestauA(props){
         })
         var response = await rawResponse.json()
         props.onSendToken(response.token)
+        props.onSubmitAdress(response.adresse)
     }
 
     const onFinish = (values) => {
@@ -321,6 +322,9 @@ function mapDispatchToProps(dispatch) {
     return {
       onSendToken: function(token) { 
           dispatch( {type: 'addToken', token} ) 
+      },
+      onSubmitAdress: function(pointAdresse){
+        dispatch({type:'addAdresse', pointAdresse})
       }
     }
   }

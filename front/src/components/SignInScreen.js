@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 
@@ -39,11 +38,17 @@ function SignInScrenn(props){
            props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false})
             setIsSignIn(true)
             setIsTalent(true)
+            props.onSendToken(response.token)
+            props.onSubmitAdress(response.adresse)
+            console.log(response.adresse, response.zone, 'RESPONSE TEST')
+            props.onSendZone(response.zone)
          
          }else if (response.result == true && response.type=='restaurant'){
            props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
             setIsRestau(true)
             setIsSignIn(true)
+            props.onSendToken(response.token)
+            props.onSubmitAdress(response.adresse)
          } }
    
         
@@ -111,12 +116,20 @@ if(!isSignIn){
 }
 function mapDispatchToProps(dispatch) {
     return {
-      onSendSignIn: function(isConnect) { 
-          dispatch({type: 'AddConnect', isConnect}) 
-      }
-  
+        onSendSignIn: function(isConnect) { 
+            dispatch({type: 'AddConnect', isConnect}) 
+        },
+        onSubmitAdress: function(pointAdresse){
+            dispatch({type:'AddAdress', adresse:pointAdresse})
+        },
+        onSendToken: function(token) { 
+            dispatch( {type: 'addToken', token:token} ) 
+        },
+        onSendZone: function(zone) { 
+            dispatch( {type: 'addZone', zone:zone} ) 
+        }
+        }
     }
-  }
   
   export default connect(
       null, 
