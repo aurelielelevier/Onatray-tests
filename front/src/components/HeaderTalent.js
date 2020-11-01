@@ -46,7 +46,7 @@ function HeaderTalent(props) {
 
               <Menu.Item  key="1"><Link to='/'>Accueil</Link></Menu.Item>
               <Menu.Item  key="2"><Link to='/restaurants'>Voir les restaurants</Link></Menu.Item>
-              <Menu.Item  key="3"><Link to='/ajout-whishlist'>Mes favoris</Link></Menu.Item>
+              <Menu.Item  key="3"><Link to='/restaurants-favoris'>Mes favoris</Link></Menu.Item>
               <Menu.Item  key="4"><Link to='/messagerie'>Mes messages</Link></Menu.Item>
           
               <div style={{float:'right'}}>

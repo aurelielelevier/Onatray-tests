@@ -109,20 +109,13 @@ router.post('/envoi-adresse', async function(req, res, next){
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
   console.log(donnees, 'données reçues du front')
+  
   var responseAenvoyer = await restaurantModel.find(
-    {
-      // adresselgtlat: {
-      //        $geoWithin: {
-      //           $geometry: {
-      //              type: "Polygon" ,
-      //              coordinates: [ donnees.zone ],
-      //              crs: {
-      //                 type: "name",
-      //                 properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
-      //              }
-      //           }
-      //        }
-      //     },
+     {
+    //   adresselgtlat: {
+    //          $geoWithin: {
+    //            $polygon : [donnees.zone ]}
+    //       },
           typeOfFood : { $in: donnees.cuisine},
           typeOfRestaurant: { $in: donnees.ambiance},
           clientele: { $in: donnees.type},
@@ -155,6 +148,14 @@ router.post('/whishlist', async function( req, res, next){
   var response = await restaurantModel.find()
   var userAjour = await talentModel.findOne({token: req.body.token})
   res.json({liste :response, whishlist: userAjour.wishlistTalent})
+})
+
+router.get('/affiche-whishlist/:token', async function( req, res, next){
+  console.log(req.params)
+  var user = await talentModel.findOne({token: req.params.token}).populate('wishlistTalent').exec()
+  console.log(user.wishlistTalent)
+  res.json(user.wishlistTalent)
+ 
 })
 
 

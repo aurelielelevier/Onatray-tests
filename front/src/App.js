@@ -22,7 +22,8 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
-import wishlistRestaurant from './components/wishlistRestaurants'
+import wishlistRestaurant from './components/wishlistRestaurants';
+import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import isConnect from './reducers/connect';
 import isTalent from './reducers/isTalent';
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/signUpTalentC" component={SignUpTalentC}/>
             <Route path="/signUpTalentD" component={SignUpTalentD}/>
             <Route path="/restaurants" component={ListeRestaurants}/>
+            <Route path="/restaurants-favoris" component={RestaurantsFavoris}/>
             <Route path="/messagerie" component={MessagerieListe}/>
             <Route path="/recherchetalentA" component={RecherchetalentA}/>
             <Route path="/wishlistRestaurant" component={wishlistRestaurant}/>
