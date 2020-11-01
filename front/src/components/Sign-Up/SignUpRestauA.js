@@ -66,6 +66,7 @@ function SignUpRestauA(props){
         var response = await rawResponse.json()
         props.onSendToken(response.token)
         props.onSubmitAdress(response.adresse)
+        props.onSignup(response.profil)
     }
 
     const onFinish = (values) => {
@@ -324,8 +325,11 @@ function mapDispatchToProps(dispatch) {
           dispatch( {type: 'addToken', token} ) 
       },
       onSubmitAdress: function(pointAdresse){
-        dispatch({type:'addAdresse', pointAdresse})
-      }
+        dispatch({type:'addAdresse', adresse: pointAdresse})
+      },
+      onSignup: function(profil){
+        dispatch({type:'addProfil', profil:profil})
+      },
     }
   }
   

@@ -25,6 +25,8 @@ import RecherchetalentA from './components/RecherchetalentA';
 import wishlistRestaurant from './components/wishlistRestaurants';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
+import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
+
 import isConnect from './reducers/connect';
 import isTalent from './reducers/isTalent';
 import isRestau from './reducers/isRestau';
@@ -32,13 +34,14 @@ import restoaafficher from './reducers/restoaafficher';
 import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
+import profil from './reducers/profil';
 
-import token from './reducers/token'
+import token from './reducers/token';
 
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, isRestau, isTalent}));
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, isRestau, isTalent, profil}));
 
 export default function App() {
   return (
@@ -63,6 +66,7 @@ export default function App() {
             <Route path='/test' component={Test}/>
             <Route path='/messageRoom' component={MessageRoom}/>
             <Route path='/signIn' component={SignInScreen}/>
+            <Route path='/restaurant-mon-profil' component={MonProfilRestaurant}/>
           </Switch>
         </Router>
        </Provider>

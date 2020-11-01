@@ -42,6 +42,7 @@ function SignInScrenn(props){
             props.onSubmitAdress(response.adresse)
             console.log(response.adresse, response.zone, 'RESPONSE TEST')
             props.onSendZone(response.zone)
+            props.onLogin(response.profil)
          
          }else if (response.result == true && response.type=='restaurant'){
            props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
@@ -49,6 +50,7 @@ function SignInScrenn(props){
             setIsSignIn(true)
             props.onSendToken(response.token)
             props.onSubmitAdress(response.adresse)
+            props.onLogin(response.profil)
          } }
    
         
@@ -127,6 +129,9 @@ function mapDispatchToProps(dispatch) {
         },
         onSendZone: function(zone) { 
             dispatch( {type: 'addZone', zone:zone} ) 
+        },
+        onLogin: function(profil){
+            dispatch({type:'addProfil', profil:profil})
         }
         }
     }

@@ -20,8 +20,6 @@ const style= {
     }
 }
 
-const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
-
 
 function ListeCardsRestaurants(props){
 

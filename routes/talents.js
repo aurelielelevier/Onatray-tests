@@ -33,7 +33,7 @@ router.post('/createAccount', async function(req,res,next){
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){
-      res.json({token : talentSaved.token})
+      res.json({token : talentSaved.token, profil: talentSaved})
     }else{
       res.json(false)
     }
