@@ -29,6 +29,8 @@ function SignUpTalentA(props){
     })
         var response = await rawResponse.json()
         props.onSendToken(response.token)
+        
+        props.onSendInfo({firstName: talentFirstName, lastName : talentLastName, phone : talentPhone, email: talentEmail})
 }
 
     const onFinish = (values) => {
@@ -246,6 +248,9 @@ function mapDispatchToProps(dispatch) {
     return {
       onSendToken: function(token) { 
           dispatch( {type: 'addToken', token} ) 
+      }, 
+      onSendInfo : function(talentInfo){
+          dispatch({type:'addInfo', talentInfo })
       }
     }
   }

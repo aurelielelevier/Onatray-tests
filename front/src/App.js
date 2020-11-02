@@ -23,18 +23,21 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
 
+import token from './reducers/token'
 import isConnect from './reducers/connect';
-import isTalent from './reducers/isTalent';
-import isRestau from './reducers/isRestau';
 import restoaafficher from './reducers/restoaafficher';
 import listerestoaafficher from './reducers/listerestosaafficher';
-
-import token from './reducers/token'
+import talentInfo from './reducers/talentInfo'
+import talentCompletInfo from './reducers/talentCompletInfo'
+import talentLocalisationInfo from './reducers/talentLocalisationInfo'
+import restauInfo from './reducers/restauInfo'
+import restauCompletInfo from './reducers/restauCompletInfo'
 
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher}));
+
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
 
 export default function App() {
   return (

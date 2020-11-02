@@ -65,6 +65,7 @@ function SignUpRestauA(props){
         })
         var response = await rawResponse.json()
         props.onSendToken(response.token)
+        props.onSendInfo({restaurantName:restaurantName, restaurantEmail : restaurantEmail, restaurantAdress : adresse, restaurantSiret: restaurantSiret, restaurantWebsite: restaurantWebsite, restaurantPhone : phoneRestaurant})
     }
 
     const onFinish = (values) => {
@@ -321,6 +322,8 @@ function mapDispatchToProps(dispatch) {
     return {
       onSendToken: function(token) { 
           dispatch( {type: 'addToken', token} ) 
+      }, onSendInfo : function(restauInfo){
+        dispatch({type:'AddRestauinfo', restauInfo})
       }
     }
   }

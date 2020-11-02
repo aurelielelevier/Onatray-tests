@@ -20,9 +20,9 @@ function SignUpTalentC(props){
     
     const [polygone, setPolygone] = useState([])
     const [polygoneinverse, setPolygoneinverse] = useState([])
-    const[markers, setMarkers] = useState([])
-    const[adresse, setAdresse] = useState('')
-    const[adressesProposees, setAdressesProposees] = useState('')
+    const [markers, setMarkers] = useState([])
+    const [adresse, setAdresse] = useState('')
+    const [adressesProposees, setAdressesProposees] = useState('')
     const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
 
     const token = props.tokenToDisplay
@@ -40,7 +40,6 @@ function SignUpTalentC(props){
         async function autocompletion(){
           var rawResponse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${requete}`)
           var response = await rawResponse.json()
-          console.log(response, 'response')
           var liste = []
           for(var i=0; i<response.features.length; i++){
             liste.push({value : response.features[i].properties.label})
@@ -56,24 +55,19 @@ function SignUpTalentC(props){
 
       async function envoiPolygone(){
         var listePoints = JSON.stringify(polygoneinverse)
-        var rawResponse = await fetch('/talents/envoi-secteur', {
+        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
+
+         await fetch('/talents/envoi-secteur', {
           method:'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
-          body:`token=${token}&liste=${listePoints}`
+          body:`token=${token}&liste=${listePoints}&adresse=${adresse}&lnglat=${lnglat}`
+
         })
-        // var response = await rawResponse.json();
-        // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
-        // setMarkers(responsecorrigee)
+       
+        props.onSendInfo({adresse: adresse, lnglat : lnglat, listePoints : listePoints})
       }
 
-      async function envoiAdresse(){
-        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
-        await fetch(`/talents/envoi-adresse`, {
-        method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body:`token=${token}&adresse=${adresse}&lnglat=${lnglat}`
-        })
-      }
+     
 
       var redIcon = L.icon({
         iconUrl: '../../../images/point-carte-rouge.png',
@@ -126,7 +120,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone(); envoiAdresse()}}> Valider le périmètre</Button></Link>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone()}}> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>
@@ -160,7 +154,15 @@ function mapStateToProps(state) {
   return { tokenToDisplay: state.token }
 }
   
+function mapDispatchToProps(dispatch) {
+  return {
+    onSendInfo : function(talentLocalisationInfo){
+        dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
+    }
+  }
+}
+
 export default connect(
   mapStateToProps, 
-  null
+  mapDispatchToProps
 )(SignUpTalentC);
