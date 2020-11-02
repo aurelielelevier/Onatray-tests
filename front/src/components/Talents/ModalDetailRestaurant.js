@@ -91,7 +91,7 @@ function ModalDetailRestaurant(props){
                 <Meta   
                         description={  
                             <div style={{height:'300px', 
-                                        backgroundImage:`url("https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg")`, 
+                                        backgroundImage:`url(${restaurant.siret})`, 
                                         backgroundRepeat: 'no-repeat',
                                         backgroundSize: "cover"}}>          
                             </div>

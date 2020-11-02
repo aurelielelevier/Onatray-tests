@@ -66,18 +66,21 @@ router.post('/sign_in', async function(req,res,next){
 //   }
 // })
 
-router.post('/upload', async function(req, res, next) {
-  console.log('REQ FILES PHOTO',req.files.photo)
-
-  var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
-  console.log('UNIQID', uniqidPhoto)
-  var resultCopy = await req.files.photo.mv(uniqidPhoto);
-  console.log('TEST arpsès result copy')
-
-  var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
-  // if(!resultCopy && resultCloudinary) {
-    console.log('TEST après cloudinary', resultCloudinary)
-   
+router.post('/upload/:token', async function(req, res, next) {
+ 
+  var user = await talentModel.findOne({token:req.params.token})
+  if (await restaurantModel.findOne({token:req.params.token})){
+    var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
+    var resultCopy = await req.files.photo.mv(uniqidPhoto);
+    var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
+    await restaurantModel.updateOne({token:req.params.token}, {siret: resultCloudinary.url})
+    } else {
+      var uniqidPhoto = `./tmp/${uniqid()}${req.files.file.name}`
+      var resultCopy = await req.files.file.mv(uniqidPhoto);
+      var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
+      await talentModel.updateOne({token:req.params.token}, {avatar:resultCloudinary.url})
+      
+    }
     fs.unlinkSync(uniqidPhoto)
   
     res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} );

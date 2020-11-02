@@ -6,8 +6,9 @@ import {Link, Redirect} from 'react-router-dom'
 
 import Header from '../Header'
 
-import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select} from 'antd';
+import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select, Upload} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
 
 const { Step } = Steps;
 const { Option, OptGroup } = Select;
@@ -100,7 +101,35 @@ function SignUpTalentB(props){
         </Col>
         }
       
-
+       
+            const [fileList, setFileList] = useState([
+              {
+                uid: '-1',
+                name: 'image.png',
+                status: 'done',
+                url: 'https://res.cloudinary.com/dpyqb49ha/image/upload/v1604324805/mucu7fy5dbhrxmhtf1dc.jpg',
+              },
+            ]);
+          
+            const onChange = ({ fileList: newFileList }) => {
+              setFileList(newFileList);
+            };
+          
+            const onPreview = async file => {
+              let src = file.url;
+              if (!src) {
+                src = await new Promise(resolve => {
+                  const reader = new FileReader();
+                  reader.readAsDataURL(file.originFileObj);
+                  reader.onload = () => resolve(reader.result);
+                });
+              }
+              const image = new Image();
+              image.src = src;
+              const imgWindow = window.open(src);
+              imgWindow.document.write(image.outerHTML);
+            }
+        
 
       if(redirect){
           return ( 
@@ -109,6 +138,7 @@ function SignUpTalentB(props){
       }else {
 
       
+        
     return(
         <div>
             <Header/>
@@ -316,6 +346,19 @@ function SignUpTalentB(props){
                             {inputToDisplay}
                             {inputContractToDisplay}
                         </Row>
+                        <Row style={{paddingTop:30, textAlign:'center'}}>
+                        <ImgCrop rotate>
+                            <Upload
+                                action={"/upload/"+props.tokenToDisplay}
+                                listType="picture-card"
+                                fileList={fileList}
+                                onChange={onChange}
+                                onPreview={onPreview}
+                            >
+                                {fileList.length < 1 && '+ Upload'}
+                            </Upload>
+                            </ImgCrop>
+                        </Row>
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
                                 <Form.Item>
@@ -340,18 +383,17 @@ function SignUpTalentB(props){
 
 function mapStateToProps(state) {
     return {tokenToDisplay: state.token}
-  }
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      onSendInfo : function(talentCompletInfo){
-          dispatch({type:'addCompletInfo', talentCompletInfo })
-      }
+function mapDispatchToProps(dispatch) {
+return {
+    onSendInfo : function(talentCompletInfo){
+        dispatch({type:'addCompletInfo', talentCompletInfo })
     }
-  }
+}
+}
     
-  export default connect(
-    mapStateToProps, 
-    mapDispatchToProps
-  )(SignUpTalentB);
-
+export default connect(
+mapStateToProps, 
+mapDispatchToProps
+)(SignUpTalentB);

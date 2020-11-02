@@ -178,6 +178,7 @@ function ListeRestaurants(props){
     <div >
         
         <HeaderTalent keyheader='2'/>
+        <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Les restaurants inscrits</Row>
         { <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered

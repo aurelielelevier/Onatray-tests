@@ -29,7 +29,7 @@ function SignUpRestauB(props){
     const [foodOptionToAdd, setFoodOptionToAdd]= useState('');
     const [foodOption, setFoodOption] = useState([])
 
-    var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
+    
                 
     var  addClienteleItem=(optionToAdd)=>{
         let newOption = {value:optionToAdd, label:optionToAdd}
@@ -67,14 +67,14 @@ function SignUpRestauB(props){
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}&avatar=${avatar}`
+            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}`
         })
         props.onSendInfo({clientele : clienteleOptionChoosen, restaurant : restaurantOptionChoosen, food : foodOptionChoosen, pricing : pricing})
       };
 
       const photo = {
         name: 'photo',
-        action: '/upload',
+        action: `/upload/${props.tokenToDisplay}`,
         headers: {
           authorization: 'authorization-text',
         },

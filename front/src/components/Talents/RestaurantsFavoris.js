@@ -105,6 +105,7 @@ function RestaurantsFavoris(props){
     <div >
         
         <HeaderTalent keyheader='3'/>
+        <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Mes restaurants favoris</Row>
         <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered

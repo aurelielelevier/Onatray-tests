@@ -20,7 +20,7 @@ router.post('/createAccount', async function(req,res,next){
 //console.log('its body',req.body)
   var salt = uid2(32)
   var talentToCheck = await talentModel.findOne({email:req.body.talentEmail})
-
+  var avatar = 'https://res.cloudinary.com/dpyqb49ha/image/upload/v1604324805/mucu7fy5dbhrxmhtf1dc.jpg'
   if(talentToCheck === null){
     var newTalent = await new talentModel({
       firstName : req.body.firstName,
@@ -30,6 +30,7 @@ router.post('/createAccount', async function(req,res,next){
       password : SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32), 
       phone : req.body.phone,
+      avatar:avatar,
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){
@@ -67,12 +68,12 @@ router.post('/informations', async function(req,res,next){
   }
   
   for(let i=0; i<experience.length;i++){
-  var newExperience = await new experienceModel({
-  firm : experience[i].firm,
-  city : experience[i].city,
-  startingDate : experience[i].startDate,
-  endingDate : experience[i].endDate
-  })
+    var newExperience = await new experienceModel({
+    firm : experience[i].firm,
+    city : experience[i].city,
+    startingDate : experience[i].startDate,
+    endingDate : experience[i].endDate
+    })
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
   }
@@ -80,7 +81,7 @@ router.post('/informations', async function(req,res,next){
 
 
 router.post('/envoi-secteur', async function(req, res, next){
-
+ 
   var listePoints = await JSON.parse(req.body.liste);
   console.log(listePoints)
   listePoints.push(listePoints[0]);

@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/createAccount', async function(req,res,next){
   console.log(JSON.parse(req.body.lnglat))
-  
+  var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
   var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
   if(restauToCheck === null){
@@ -35,11 +35,13 @@ router.post('/createAccount', async function(req,res,next){
       salt : salt,
       password : SHA256(req.body.restaurantPassword + salt).toString(encBase64),
       token: uid2(32), 
-      siret : req.body.restaurantSiret,
+      siret : avatar,
+      //req.body.restaurantSiret,
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
       adresselgtlat: JSON.parse(req.body.lnglat),
+
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
