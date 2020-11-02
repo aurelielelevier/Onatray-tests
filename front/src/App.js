@@ -26,6 +26,7 @@ import WishlistRestaurants from './components/wishlistRestaurants';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
+import MonProfilTalentt from './components/Talents/MonProfilTalent';
 
 import token from './reducers/token'
 import isConnect from './reducers/connect';
@@ -42,10 +43,6 @@ import restauCompletInfo from './reducers/restauCompletInfo';
 
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
-<<<<<<< HEAD
-import WishlistRestaurants from './components/wishlistRestaurants';
-=======
->>>>>>> storewishlist
 const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
 
 export default function App() {
@@ -72,6 +69,7 @@ export default function App() {
             <Route path='/messageRoom' component={MessageRoom}/>
             <Route path='/signIn' component={SignInScreen}/>
             <Route path='/restaurant-mon-profil' component={MonProfilRestaurant}/>
+            <Route path='/talent-mon-profil' component={MonProfilTalentt}/>
           </Switch>
         </Router>
        </Provider>

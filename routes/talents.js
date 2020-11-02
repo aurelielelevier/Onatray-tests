@@ -163,4 +163,10 @@ router.get('/affiche-whishlist/:token', async function( req, res, next){
   res.json(user.wishlistTalent)
 })
 
+router.get('/profil/:token', async function( req, res, next){
+  console.log(req.params.token)
+  var user = await (await talentModel.findOne({token: req.params.token}).populate('experience').populate('formation').exec())
+  res.json(user)
+})
+
 module.exports = router;
