@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import 'antd/dist/antd.less';
 
 
@@ -30,9 +30,9 @@ async function onliketalent (){
     }
 
 
-if(props.wishlistRestaurantID.includes(props.talent._id) && isinWishlist===false){
-    setisinWishlist(true)
-    }
+if(props.wishlistRestaurantID.includes(talent._id) && isinWishlist===false){
+setisinWishlist(true)}
+
 
 
 if(experiences!==undefined){
@@ -69,7 +69,6 @@ return(
                 <img
                     alt="image"
                     src={props.src}
-                    
                 />
                 }
                 actions={[
