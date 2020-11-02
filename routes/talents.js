@@ -80,7 +80,7 @@ router.post('/informations', async function(req,res,next){
 
 
 router.post('/envoi-secteur', async function(req, res, next){
-  // var lnglat = JSON.parse(req.body.lnglat)
+
   var listePoints = await JSON.parse(req.body.liste);
   console.log(listePoints)
   listePoints.push(listePoints[0]);
