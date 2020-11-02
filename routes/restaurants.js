@@ -52,8 +52,8 @@ router.get('/getinformation', async function(req,res,next){
 
  
   router.get('/getwishlist', async function(req,res,next){
-   let restaurantwishlistexpand = await restaurantModel.findOne({token:'Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR'}).populate('wishlistRestaurant').exec()
-   let restaurantwishlistid = await restaurantModel.findOne({token:'Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR'})
+   let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+   let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
    res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
   
   })

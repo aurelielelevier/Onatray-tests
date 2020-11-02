@@ -1,13 +1,12 @@
-import React, {useState,Text,useEffect} from 'react'
+import React, {useState} from 'react'
 import 'antd/dist/antd.less';
 
 
-import {Col,Card,Modal, Image, Row,Rate, List } from 'antd';
-import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,StarOutlined,StarFilled
+import {Col,Card,Modal, Image, Row,Rate} from 'antd';
+import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,
   } from "@ant-design/icons"
 
 
-var token="Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR"
 
 function Cardtalent(props){
 
@@ -15,6 +14,7 @@ const { Meta } = Card
 const [visible, setVisible] = useState(false)
 var experiences = props.talent.experience
 var formations =props.talent.formation
+var token=props.token
 var talent =props.talent
 var talentNameUC=props.talent.lastName.toUpperCase()
 const [isinWishlist,setisinWishlist]=useState(false)
@@ -29,34 +29,13 @@ async function onliketalent (){
         setisinWishlist(!isinWishlist)
     }
 
-        // const datawishlistRestaurant = await fetch(`/restaurants/addToWishList`)
-        // const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-        // console.log('help',JSdatawishlistRestaurant)}
-        // setwishlistRestaurant(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)}
-        
 
-
-// useEffect(() => {
-  
-
-// if (talent.lastName != undefined){
-    
-//     console.log('wishlistRestaurantId',wishlistRestaurantID)
-    
-// },[])
-
-if(props.wishlistRestaurantID.includes(props.talent._id) && isinWishlist==false){
-    console.log('include in wishlist')
+if(props.wishlistRestaurantID.includes(props.talent._id) && isinWishlist===false){
     setisinWishlist(true)
     }
 
-// for(let i=0;i<wishlistRestaurant.length;i++){
-//     if(talent._id === wishlistRestaurant[i]._id){
-//     setisinWishlist(true)}
-// }
 
-
-if(experiences!=undefined){
+if(experiences!==undefined){
 var listexperience= [...experiences]
 listexperience=experiences.map((experience,i) => {
     return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
@@ -174,7 +153,6 @@ return(
 
     )
   }
-
 
 
   export default Cardtalent;
