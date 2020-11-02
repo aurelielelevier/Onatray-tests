@@ -41,7 +41,7 @@ import restauCompletInfo from './reducers/restauCompletInfo';
 
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
-import WishlistRestaurants from './components/WishlistRestaurants';
+import WishlistRestaurants from './components/wishlistRestaurants';
 const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
 
 export default function App() {
