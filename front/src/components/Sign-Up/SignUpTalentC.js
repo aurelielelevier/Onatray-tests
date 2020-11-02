@@ -23,7 +23,7 @@ function SignUpTalentC(props){
     const[markers, setMarkers] = useState([])
     const[adresse, setAdresse] = useState('')
     const[adressesProposees, setAdressesProposees] = useState('')
-    const [latlngDomicile, setLatlngDomicile] = useState([48.8534, 2.3488])
+    const [latlngDomicile, setLatlngDomicile] = useState({coordinates: [48.8534, 2.3488]})
 
     const token = props.tokenToDisplay
 
@@ -47,11 +47,10 @@ function SignUpTalentC(props){
           }
           setAdressesProposees(liste)
           if(response.features[0]){
-            setLatlngDomicile([response.features[0].geometry.coordinates[1], response.features[0].geometry.coordinates[0]])
+            setLatlngDomicile(response.features[0].geometry)
           }
         } 
         autocompletion()
-        
       }, [adresse])
 
       async function envoiPolygone(){
@@ -61,13 +60,11 @@ function SignUpTalentC(props){
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
           body:`token=${token}&liste=${listePoints}`
         })
-        // var response = await rawResponse.json();
-        // var responsecorrigee = response.map(point => [point.adresseLatLng[1], point.adresseLatLng[0]])
-        // setMarkers(responsecorrigee)
+        props.onSendZone(listePoints)
       }
 
       async function envoiAdresse(){
-        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
+        var lnglat = JSON.stringify(latlngDomicile)
         await fetch(`/talents/envoi-adresse`, {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -135,7 +132,7 @@ function SignUpTalentC(props){
 
                 <Card style={{ width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                 <div>
-                    <Map center={latlngDomicile} zoom={12} onClick={(e) => {setPolygone([...polygone, [e.latlng.lat, e.latlng.lng]]); setPolygoneinverse([...polygoneinverse, [e.latlng.lng, e.latlng.lat]]); console.log(adresse)}}>
+                    <Map center={[latlngDomicile.coordinates[1], latlngDomicile.coordinates[0]]} zoom={12} onClick={(e) => {setPolygone([...polygone, [e.latlng.lat, e.latlng.lng]]); setPolygoneinverse([...polygoneinverse, [e.latlng.lng, e.latlng.lat]]); console.log(adresse)}}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -145,7 +142,7 @@ function SignUpTalentC(props){
                             return (<Marker position={user}></Marker>)
                             })} */}
                         <Polygon positions={polygone} color="red" />
-                        <Marker position={latlngDomicile}>
+                        <Marker position={[latlngDomicile.coordinates[1], latlngDomicile.coordinates[0]]}>
                             <Popup> Mon domicile <br/></Popup>
                         </Marker>
                     </Map>
@@ -156,11 +153,19 @@ function SignUpTalentC(props){
         </div>
     )
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSendZone: function(zone) { 
+        dispatch( {type: 'addZone', zone} ) 
+    }
+  }
+}
 function mapStateToProps(state) {
   return { tokenToDisplay: state.token }
 }
   
 export default connect(
   mapStateToProps, 
-  null
+  mapDispatchToProps
 )(SignUpTalentC);

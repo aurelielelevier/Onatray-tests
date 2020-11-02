@@ -33,7 +33,7 @@ router.post('/createAccount', async function(req,res,next){
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){
-      res.json({token : talentSaved.token})
+      res.json({token : talentSaved.token, profil: talentSaved})
     }else{
       res.json(false)
     }
@@ -91,7 +91,6 @@ router.post('/envoi-secteur', async function(req, res, next){
 
 router.post('/envoi-adresse', async function(req, res, next){
   var lnglat = JSON.parse(req.body.lnglat)
-  var user= await talentModel.findOne({token: req.body.token})
   console.log(req.body.adresse)
   await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
 })
@@ -108,30 +107,32 @@ router.post('/envoi-adresse', async function(req, res, next){
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
-  console.log(donnees, 'données reçues du front')
   var responseAenvoyer = await restaurantModel.find(
-    {
-      // adresselgtlat: {
-      //        $geoWithin: {
-      //           $geometry: {
-      //              type: "Polygon" ,
-      //              coordinates: [ donnees.zone ],
-      //              crs: {
-      //                 type: "name",
-      //                 properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
-      //              }
-      //           }
-      //        }
-      //     },
-          typeOfFood : { $in: donnees.cuisine},
-          typeOfRestaurant: { $in: donnees.ambiance},
-          clientele: { $in: donnees.type},
-          pricing :{ $in: donnees.prix} 
+     { 
+      adresselgtlat: {
+        $geoIntersects: {
+           $geometry: {
+              type: "Polygon" ,
+              coordinates: [ donnees.zone ],
+              // crs: {
+              //    type: "name",
+              //    properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+              // }
+           }
         }
+      },
+      typeOfFood : { $in: donnees.cuisine},
+      typeOfRestaurant: { $in: donnees.ambiance},
+      clientele: { $in: donnees.type},
+      pricing :{ $in: donnees.prix} 
+    }
   )
   var user = await talentModel.findOne({token:req.body.token})
-  var whishlist = user.wishlistTalent
-  console.log(responseAenvoyer, 'réponse !!!!!')
+  if (user.wishlistTalent){
+    var whishlist = user.wishlistTalent
+  } else{
+   var whishlist = []
+  } 
   res.json({liste : responseAenvoyer, whishlist: whishlist})
 })
 
@@ -157,5 +158,10 @@ router.post('/whishlist', async function( req, res, next){
   res.json({liste :response, whishlist: userAjour.wishlistTalent})
 })
 
+router.get('/affiche-whishlist/:token', async function( req, res, next){
+  console.log(req.params)
+  var user = await talentModel.findOne({token: req.params.token}).populate('wishlistTalent').exec()
+  res.json(user.wishlistTalent)
+})
 
 module.exports = router;

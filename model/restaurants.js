@@ -16,7 +16,7 @@ const restaurantSchema = mongoose.Schema({
 		typeOfFood:Array,
 		wishlistRestaurant:[{ type: mongoose.Schema.Types.ObjectId, ref: 'talent' }],
 		experience: [{ type: mongoose.Schema.Types.ObjectId, ref: 'experience' }],
-		adresselgtlat:Array
+		adresselgtlat:Object
     
 })
 

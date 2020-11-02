@@ -7,10 +7,10 @@ import HeaderTalent from '../HeaderTalent';
 
 import 'antd/dist/antd.less';
 import '../../App.less';
-import {Button, Avatar, AutoComplete, Row, Col, Comment, Tooltip} from 'antd';
+import {Button, AutoComplete, Row, Col, Comment, Tooltip} from 'antd';
 
 import moment from 'moment';
-import Message from './MessageCourt'
+import MessageCourt from './MessageCourt'
 
 
 function MessagerieListe(props) {
@@ -24,18 +24,36 @@ function MessagerieListe(props) {
     const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
  // const[color, setColor] = useState('#ffffff')
-  
+    
   if(!isSignIn){
-    var header = <HeaderScreen/>
+    var header = <HeaderScreen /> // redirect  plutôt ???
   } else if (isSignIn && isRestau){
-    var header = <HeaderRestaurant/>
+    var header = <HeaderRestaurant keyheader='4'/>
   } else if (isSignIn && isTalent){
-    var header = <HeaderTalent/>
+    var header = <HeaderTalent keyheader='4'/>
   }
 
   useEffect(() => {
     setListeMessages([{date: '23/10/2020 12:00', 
                         nom:'Aurélie L', 
+                        contenu : `We supply a series of design principles, practical patterns and high 
+                        quality design resources (Sketch and Axure), to help people create their product 
+                        prototypes beautifully and efficiently.`, 
+                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
+                        {date: '23/10/2020 12:00', 
+                        nom:'La Capsule', 
+                        contenu : `We supply a series of design principles, practical patterns and high 
+                        quality design resources (Sketch and Axure), to help people create their product 
+                        prototypes beautifully and efficiently.`, 
+                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
+                        {date: '23/10/2020 12:00', 
+                        nom:'La Capsule', 
+                        contenu : `We supply a series of design principles, practical patterns and high 
+                        quality design resources (Sketch and Axure), to help people create their product 
+                        prototypes beautifully and efficiently.`, 
+                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
+                        {date: '23/10/2020 12:00', 
+                        nom:'La Capsule', 
                         contenu : `We supply a series of design principles, practical patterns and high 
                         quality design resources (Sketch and Axure), to help people create their product 
                         prototypes beautifully and efficiently.`, 
@@ -52,8 +70,9 @@ function MessagerieListe(props) {
     }, [recherche])
 
   return (
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign:'center', backgroundColor:'#4b6584'}}>
             {header}
+            <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px'}}>Mes discussions</Row>
             <Row style={{marginTop:'30px', textAlign:'center', justifyContent:'center'}}>
                 <AutoComplete
                             style={{ width: 400, marginRight:'30px' }}
@@ -68,24 +87,25 @@ function MessagerieListe(props) {
             <Button type="primary" >Chercher</Button>
             </Row>
             
-            <Row gutter={{ xs: 8, sm: 16, md: 18, lg: 24 }} style={{justifyContent:'center', marginTop:'50px'}}>
-                <Col className="gutter-row" span={18}>
-                    
-                    {listeMessages.map((message,i)=>{
-                        if (message.contenu.length > 50){
-                            var contenu=message.contenu.slice(0, 60) + '...'
-                        } else {
-                            var contenu=message.contenu
-                        }
-                       
-                        return ( 
-                            <div style={{backgroundColor:'#fed330', padding:'15px 30px'}}>
-                                {Message }
-                            </div>
-                        )
-                    })}
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }} style={{justifyContent:'center', marginTop:'50px', backgroundImage:`url("../images/ardoise.jpg")`, backgroundRepeat: 'no-repeat',
+                              backgroundSize: "cover",}}>
+                <Col className="gutter-row" span={16}>
+                <div style={{overflowY: 'scroll', height:'400px',  padding:'15px 30px', borderRadius:5}}>
+                      {listeMessages.map((message,i)=>{
+                          if (message.contenu.length > 50){
+                              var contenu=message.contenu.slice(0, 60) + '...'
+                          } else {
+                              var contenu=message.contenu
+                          }
+                        
+                          return ( 
+                             
+                            <MessageCourt key={i} contenu={contenu} avatar={message.avatar} date={message.date} nom={message.nom}/>
+                          )
+                      })}
+                    </div>
                 </Col>
-    </Row>
+            </Row>
             
 
         </div>

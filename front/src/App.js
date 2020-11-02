@@ -22,20 +22,26 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
-import wishlistRestaurant from './components/wishlistRestaurants'
+import wishlistRestaurant from './components/wishlistRestaurants';
+import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
+
+import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
 
 import isConnect from './reducers/connect';
 import isTalent from './reducers/isTalent';
 import isRestau from './reducers/isRestau';
 import restoaafficher from './reducers/restoaafficher';
 import listerestoaafficher from './reducers/listerestosaafficher';
+import adresse from './reducers/adresse';
+import zone from './reducers/zone';
+import profil from './reducers/profil';
 
-import token from './reducers/token'
+import token from './reducers/token';
 
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher}));
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, isRestau, isTalent, profil}));
 
 export default function App() {
   return (
@@ -53,12 +59,14 @@ export default function App() {
             <Route path="/signUpTalentC" component={SignUpTalentC}/>
             <Route path="/signUpTalentD" component={SignUpTalentD}/>
             <Route path="/restaurants" component={ListeRestaurants}/>
+            <Route path="/restaurants-favoris" component={RestaurantsFavoris}/>
             <Route path="/messagerie" component={MessagerieListe}/>
             <Route path="/recherchetalentA" component={RecherchetalentA}/>
             <Route path="/wishlistRestaurant" component={wishlistRestaurant}/>
             <Route path='/test' component={Test}/>
             <Route path='/messageRoom' component={MessageRoom}/>
             <Route path='/signIn' component={SignInScreen}/>
+            <Route path='/restaurant-mon-profil' component={MonProfilRestaurant}/>
           </Switch>
         </Router>
        </Provider>

@@ -13,7 +13,7 @@ const talentSchema = mongoose.Schema({
     working:Boolean,
     speakLangage : Array,
     adress : String,
-    adresselgtlat:Array,
+    adresselgtlat:Object,
     perimetre:Array,
     countFave:Number,
     lookingJob : Array,

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import '../../App.less';
 import 'antd/dist/antd.less';
-import {List, Rate} from 'antd';
+import {List, Rate, Tooltip} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import {connect} from 'react-redux';
 
@@ -19,8 +19,6 @@ const style= {
         margin:'0px'
     }
 }
-
-const token = 'XjNRAvwcFWfdLhtF8GCViUMoba4W3bTZ'
 
 
 function ListeCardsRestaurants(props){
@@ -55,11 +53,14 @@ function ListeCardsRestaurants(props){
             >
                 <List.Item.Meta
                 title={<div>
+                    <Tooltip title="Afficher les détails" color='#4B6584' key="J'aime">
                     <div style={{ fontWeight:'bold', fontSize:'20px', color:'#4B6584'}}>{item.name}</div>
-                    <div><HeartFilled onClick={()=>{props.whishlist(item._id)}} style={{marginRight:'20px', color:item.coeur}}/></div>
-                    </div>}
+                    </Tooltip>
+                    <div><p style={{color:'#a5b1c2'}}><HeartFilled onClick={()=>{props.whishlist(item._id)}} style={{marginRight:'5px', color:item.coeur}}/>J'aime</p></div>
+                    
+                    </div>
+                    }
                 description={<div onClick={()=>{props.onclick(item)}}>
-                                
                                 <p style={style.textCard}>{item.adress}</p>
                                 <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{item.phone}</p>
                                 <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {item.email}</p>
@@ -67,8 +68,8 @@ function ListeCardsRestaurants(props){
                                 <p style={style.textCard}>Note moyenne attribuée par nos talents :</p> 
                                 <p style={style.textCard}><Rate disabled defaultValue={2} /></p>
                                 <p style={style.textCard}>2 (10 votes)</p>
-                                
-                            </div>}
+                            </div>
+                            }
                 />
                 </List.Item>
             )

@@ -36,7 +36,7 @@ router.post('/createAccount', async function(req,res,next){
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
-      res.json({token:restauSaved.token})
+      res.json({token:restauSaved.token, adresse:restauSaved.adresselgtlat, profil: restauSaved})
     }else{
       res.json(false)
     }
@@ -78,7 +78,12 @@ var wishlist=restaurantModel.findOne({token:req.body.token})
 
 router.put('/informations', async function(req,res,next){
   console.log('its body', req.body)
-  await restaurantModel.updateOne({token:req.body.token},{clientele: JSON.parse(req.body.clientele), typeOfRestaurant : JSON.parse(req.body.restaurantOption), typeOfFood: JSON.parse(req.body.foodOption), pricing : JSON.parse(req.body.pricing)})
+  var clientele = JSON.parse(req.body.clientele)
+  var type = JSON.parse(req.body.restaurantOption)
+  var cuisine = JSON.parse(req.body.foodOption)
+  var prix = JSON.parse(req.body.pricing)
+  console.log(prix, 'prix', type, 'type', cuisine, 'cuisine')
+  await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix})
 })
 
 module.exports = router;

@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import 'antd/dist/antd.less';
 import '../../App.less';
 import HeaderScreen from '../Header';
-import HeaderRestaurant from '../HeaderRestaurant';
-import HeaderTalent from '../HeaderTalent'
-import {Button, Carousel, Modal} from 'antd';
+import {Button, Carousel} from 'antd';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux'
-
-// ajouter condition pour affichage du bon composant si utilisateur non connecté/restaurant/talent
-
             
 function ScreenHome(props) {
-  const [visible, setVisible] = useState(false)
 
   var  isSignIn = props.connectToDisplay.isSignIn
   var  isTalent = props.connectToDisplay.isTalent
   var  isRestau = props.connectToDisplay.isRestau
 
  
-
-  
-    
-  
-
     if(!isSignIn){
       return (
         <div style={{textAlign:'center'}}>
-            <HeaderScreen/>
+            <HeaderScreen keyheader='1'/>
           
           <div>
             <div style={{color:'#4b6584', fontWeight:'bold', fontSize:'30px'}}>On a Tray</div>
@@ -65,8 +54,8 @@ function ScreenHome(props) {
          <Redirect to="/recherchetalentA"/>
       )
      }
-  
  }
+
 const stylesheets = {
   menu: {
     backgroundColor: '#fed330',
@@ -86,7 +75,7 @@ const stylesheets = {
     lineHeight: "600px",
     textAlign: "center",
     alignItems:'end',
-    backgroundImage:`url("../images/image-carousel-2.png")`, backgroundRepeat: 'no-repeat',
+    backgroundImage:`url("../images/image-carousel-2.jpg")`, backgroundRepeat: 'no-repeat',
     backgroundSize: "cover",
   },
   styleCarousel:{
