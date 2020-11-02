@@ -7,6 +7,15 @@ var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 var uniqid = require('uniqid');
 const fs = require('fs');
+const rimraf = require('rimraf')
+
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dpyqb49ha', 
+  api_key: '513712396958631', 
+  api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -58,14 +67,20 @@ router.post('/sign_in', async function(req,res,next){
 // })
 
 router.post('/upload', async function(req, res, next) {
-  console.log(req.files.photo)
+  console.log('REQ FILES PHOTO',req.files.photo)
 
-  // var uniqidPhoto = uniqid()
-  // var resultCopy = await req.files.photo.mv(`./tmp/photo${uniqidPhoto}.jpg`);
-  // var resultCloudinary = await cloudinary.uploader.upload(`./tmp/photo${uniqidPhoto}.jpg`);
+  var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
+  console.log('UNIQID', uniqidPhoto)
+  var resultCopy = await req.files.photo.mv(uniqidPhoto);
+  console.log('TEST arpsès result copy')
+
+  var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
   // if(!resultCopy && resultCloudinary) {
-  //   res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} );
-  //   fs.unlinkSync(`./tmp/photo${uniqidPhoto}.jpg`)     
+    console.log('TEST après cloudinary', resultCloudinary)
+   
+    fs.unlinkSync(uniqidPhoto)
+  
+    res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} );
   // } else {
   //   res.json({result: false, message:resultCopy});
   // }

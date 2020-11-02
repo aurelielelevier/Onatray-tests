@@ -35,7 +35,6 @@ import adresse from './reducers/adresse';
 import zone from './reducers/zone';
 import profil from './reducers/profil';
 
-import token from './reducers/token';
 import talentInfo from './reducers/talentInfo'
 import talentCompletInfo from './reducers/talentCompletInfo'
 import talentLocalisationInfo from './reducers/talentLocalisationInfo'

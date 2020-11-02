@@ -73,34 +73,18 @@ function SignUpRestauB(props){
       };
 
       const photo = {
-        name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        name: 'photo',
+        action: '/upload',
         headers: {
           authorization: 'authorization-text',
         },
         async onChange(info) {
             
           if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
+            console.log('INFO UPLOADING',info);
           }
           if (info.file.status === 'done') {
             message.success(`${info.file.name} file uploaded successfully`);
-            console.log(info, 'INFO')
-            // où est l'uri ???
-            var data = new FormData();
-                data.append('photo', {
-                  uri: info.file.response.url,
-                  type: 'image/jpeg',
-                  name: 'photo.jpg',
-                });
-                console.log(data)
-      
-                var rawResponse = await fetch(`/upload`, {
-                  method: 'post',
-                  body: data
-                })
-                var response = await rawResponse.json();
-                avatar = response
             
           } else if (info.file.status === 'error') {
             message.error(`${info.file.name} file upload failed.`);

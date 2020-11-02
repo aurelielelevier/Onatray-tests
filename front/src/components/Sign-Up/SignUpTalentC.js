@@ -72,7 +72,7 @@ function SignUpTalentC(props){
         body:`token=${token}&adresse=${adresse}&lnglat=${lnglat}`
         })
        
-        props.onSendInfo({adresse: adresse, lnglat : lnglat, listePoints : listePoints})
+        props.onSendInfo({adresse: adresse, lnglat : lnglat})
       }
 
      
@@ -163,20 +163,16 @@ function mapDispatchToProps(dispatch) {
   return {
     onSendZone: function(zone) { 
         dispatch( {type: 'addZone', zone} ) 
-    }
+    },
+    onSendInfo : function(talentLocalisationInfo){
+      dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
+  }
   }
 }
 function mapStateToProps(state) {
   return { tokenToDisplay: state.token }
 }
-  
-function mapDispatchToProps(dispatch) {
-  return {
-    onSendInfo : function(talentLocalisationInfo){
-        dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
-    }
-  }
-}
+
 
 export default connect(
   mapStateToProps, 

@@ -41,10 +41,6 @@ const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
-<<<<<<< HEAD
-=======
-
->>>>>>> 5eefb680bdcd78984dc6b320103f777fcbaa9b36
 
 useEffect(() => {
 var getTalentdata = async ()=> {
