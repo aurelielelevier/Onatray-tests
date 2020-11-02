@@ -54,6 +54,8 @@ function SignUpTalentC(props){
 
       async function envoiPolygone(){
         var listePoints = JSON.stringify(polygoneinverse)
+
+
         var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
 
          await fetch('/talents/envoi-secteur', {
@@ -72,7 +74,7 @@ function SignUpTalentC(props){
         body:`token=${token}&adresse=${adresse}&lnglat=${lnglat}`
         })
        
-        props.onSendInfo({adresse: adresse, lnglat : lnglat, listePoints : listePoints})
+        props.onSubmitAdress(lnglat)
       }
 
      
@@ -128,7 +130,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone()}}> Valider le périmètre</Button></Link>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone()}} onClick={(e) => {envoiAdresse()}}> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>
@@ -159,13 +161,7 @@ function SignUpTalentC(props){
     )
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSendZone: function(zone) { 
-        dispatch( {type: 'addZone', zone} ) 
-    }
-  }
-}
+
 function mapStateToProps(state) {
   return { tokenToDisplay: state.token }
 }
@@ -174,7 +170,16 @@ function mapDispatchToProps(dispatch) {
   return {
     onSendInfo : function(talentLocalisationInfo){
         dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
-    }
+    },
+    onSendZone: function(zone) { 
+      dispatch( {type: 'addZone', zone} ) 
+  },
+  onSubmitAdress: function(pointAdresse){
+    dispatch({type:'AddAdress', adresse:pointAdresse})},
+  onSendToken: function(token) {
+    dispatch( {type: 'addToken', token:token} )},
+  onSendZone: function(zone) {
+    dispatch( {type: 'addZone', zone:zone} )}
   }
 }
 

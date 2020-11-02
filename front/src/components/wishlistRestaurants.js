@@ -4,11 +4,12 @@ import '../App.less'
 import Header from './Header'
 import { Button, Select, Form, Col, Row,Card } from 'antd';
 import Cardtalent from './Cardtalent'
+import {connect} from 'react-redux'
 
 const { Option } = Select
 const { Meta } = Card
 
-function RecherchetalentA(props) {
+function WishlistRestaurants(props) {
 
 
 const Submitform = values => {
@@ -18,10 +19,10 @@ const Submitform = values => {
         };
 
     
-
+const token=props.tokenToDisplay
+console.log('token:',token)
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
-const [liketalent,setliketalent]=useState(false)
 const [talent,settalent]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
 
@@ -35,8 +36,7 @@ var getwishlistRestaurant= async ()=> {
 
       const wishlistID = await fetch(`/restaurants/getwishlist`)
       const JSwishlistID = await wishlistID.json()
-      setwishlistRestaurantID(JSwishlistID.restaurantwishlistid)
-    console.log('wishlistid',JSwishlistID)}
+      setwishlistRestaurantID(JSwishlistID.restaurantwishlistid)}
 getwishlistRestaurant()
 
 },[])
@@ -46,7 +46,7 @@ getwishlistRestaurant()
 
 var wishlistlist = talent.map((talent,i) => {
     return (
-       <Cardtalent key={i} src={talent.src} talent={talent} wishlistRestaurantID={wishlistRestaurantID}/>
+       <Cardtalent key={i} src={talent.src} talent={talent} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
     )
   })
 
@@ -110,4 +110,11 @@ return(
 
     )
 }
-export default RecherchetalentA;
+function mapStateToProps(state) {
+    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+  }
+    
+  export default connect(
+    mapStateToProps, 
+    null
+  )(WishlistRestaurants);

@@ -22,7 +22,6 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
-import wishlistRestaurant from './components/wishlistRestaurants';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
@@ -34,17 +33,15 @@ import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
 import profil from './reducers/profil';
+import talentInfo from './reducers/talentInfo';
+import talentCompletInfo from './reducers/talentCompletInfo';
+import talentLocalisationInfo from './reducers/talentLocalisationInfo';
+import restauInfo from './reducers/restauInfo';
+import restauCompletInfo from './reducers/restauCompletInfo';
 
-import token from './reducers/token';
-import talentInfo from './reducers/talentInfo'
-import talentCompletInfo from './reducers/talentCompletInfo'
-import talentLocalisationInfo from './reducers/talentLocalisationInfo'
-import restauInfo from './reducers/restauInfo'
-import restauCompletInfo from './reducers/restauCompletInfo'
-
-
-import {Provider} from 'react-redux'
+import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
+import WishlistRestaurants from './components/WishlistRestaurants';
 const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
 
 export default function App() {
@@ -66,7 +63,7 @@ export default function App() {
             <Route path="/restaurants-favoris" component={RestaurantsFavoris}/>
             <Route path="/messagerie" component={MessagerieListe}/>
             <Route path="/recherchetalentA" component={RecherchetalentA}/>
-            <Route path="/wishlistRestaurant" component={wishlistRestaurant}/>
+            <Route path="/wishlistRestaurant" component={WishlistRestaurants}/>
             <Route path='/test' component={Test}/>
             <Route path='/messageRoom' component={MessageRoom}/>
             <Route path='/signIn' component={SignInScreen}/>

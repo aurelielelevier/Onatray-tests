@@ -35,16 +35,12 @@ function RecherchetalentA(props) {
         console.log(typedecontrat)
     };
 
-
+const token = props.tokenToDisplay
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
-<<<<<<< HEAD
-=======
-
->>>>>>> 5eefb680bdcd78984dc6b320103f777fcbaa9b36
 
 useEffect(() => {
 var getTalentdata = async ()=> {
@@ -61,11 +57,10 @@ var getwishlist = async ()=>{
     getwishlist()
 },[])
 
-var token="Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR"
 
 var talentslist = talents.map((talents,i) => {
     return (
-       <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID}/>
+       <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
     )
   })
 
