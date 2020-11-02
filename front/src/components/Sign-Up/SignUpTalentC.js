@@ -40,7 +40,6 @@ function SignUpTalentC(props){
         async function autocompletion(){
           var rawResponse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${requete}`)
           var response = await rawResponse.json()
-          console.log(response, 'response')
           var liste = []
           for(var i=0; i<response.features.length; i++){
             liste.push({value : response.features[i].properties.label})
@@ -55,7 +54,9 @@ function SignUpTalentC(props){
 
       async function envoiPolygone(){
         var listePoints = JSON.stringify(polygoneinverse)
-        var rawResponse = await fetch('/talents/envoi-secteur', {
+        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
+
+         await fetch('/talents/envoi-secteur', {
           method:'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
           body:`token=${token}&liste=${listePoints}`
@@ -70,7 +71,11 @@ function SignUpTalentC(props){
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
         body:`token=${token}&adresse=${adresse}&lnglat=${lnglat}`
         })
+       
+        props.onSendInfo({adresse: adresse, lnglat : lnglat, listePoints : listePoints})
       }
+
+     
 
       var redIcon = L.icon({
         iconUrl: '../../../images/point-carte-rouge.png',
@@ -123,7 +128,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone(); envoiAdresse()}}> Valider le périmètre</Button></Link>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone()}}> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>
@@ -165,6 +170,14 @@ function mapStateToProps(state) {
   return { tokenToDisplay: state.token }
 }
   
+function mapDispatchToProps(dispatch) {
+  return {
+    onSendInfo : function(talentLocalisationInfo){
+        dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
+    }
+  }
+}
+
 export default connect(
   mapStateToProps, 
   mapDispatchToProps
