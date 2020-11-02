@@ -14,7 +14,22 @@ import Cardtalent from './Cardtalent'
 const { Option } = Select
 const { Meta } = Card
 
+
 function RecherchetalentA(props) {
+
+    const zoneFrance= [
+        [ -5.3173828125, 48.458124202908934 ],
+        [ 2.1313476562500004, 51.26170001449684 ],
+        [ 8.811035156250002, 48.90783374365477 ],
+        [ 7.998046875000001, 43.70709714273101 ],
+        [ 3.2080078125000004, 42.228008913641865 ],
+        [ 1.4941406250000002, 42.293056273848215 ],
+        [ -2.0214843750000004, 43.06838615478111 ],
+        [ -5.3173828125, 48.458124202908934 ]
+      ]
+    
+    const listeposterecherché=["Serveur","Cuisiner","Comis","Runner"]
+    const listetypedecontrat=["CDI","CDD","Extra","Mi Temps","Interim"]
 
     const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
@@ -30,17 +45,20 @@ function RecherchetalentA(props) {
 
 
     const Submitform = values => {
-        console.log('Received values of form:', values);
-        console.log(posterecherché)
-        console.log(typedecontrat)
+        // console.log('Received values of form:', values);
+        // console.log("posterecherché",posterecherché)
+        // console.log("typedecontrat",typedecontrat)
     };
 
+
 const token = props.tokenToDisplay
-const [posterecherché,setposterecherché]= useState('')
-const [typedecontrat,settypedecontrat]= useState('')
-const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+const [talentaafficher,settalentaafficher]=useState([])
+const [zone, setZone] = useState(zoneFrance)
+const [posterecherché,setposterecherché]=useState('tous les postes')
+const [typedecontrat,settypedecontrat]=useState(listetypedecontrat)
+const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 
 useEffect(() => {
 var getTalentdata = async ()=> {
@@ -49,20 +67,45 @@ var getTalentdata = async ()=> {
       settalents(JSdataTalent.talentlist)
     }
     getTalentdata()
-
+    
 var getwishlist = async ()=>{
-    const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`)
-    const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-    setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)}
+        const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`, {
+            method:'POST',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body: `token=${token}`})
+        const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
+        setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
+    }
     getwishlist()
+
 },[])
 
+useEffect(()=>{
 
-var talentslist = talents.map((talents,i) => {
-    return (
-       <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
-    )
-  })
+async function cherche(){
+        if (posterecherché==[]){
+            setposterecherché(listeposterecherché)
+        }
+        if(typedecontrat==[]){
+            settypedecontrat(listetypedecontrat)
+        }
+var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
+    method:'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: `token=${token}&criteres=${criteres}`
+})
+    var response = await rechercheListe.json()
+    settalentaafficher(response.liste)
+ }
+cherche()
+    },[posterecherché,typedecontrat,rechercheeffectuée])
+
+
+var talentslist = talentaafficher.map((talents,i) => {
+        return (
+           <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
+        )})
 
 return(
                      
@@ -80,13 +123,20 @@ return(
                     onChange={(e)=>setposterecherché(e)}
                    
                     name={'Poste recherché'}
-             
                     className="basic-multi-select"
                     classNamePrefix="select">
+                        <Option value='Tous les postes'>Tous les postes</Option>
                         <Option value='Serveur'>Serveur</Option>
                         <Option value='Cuisiner'>Cuisinier</Option>
+                        <Option value='Manager'>Manager</Option>
                         <Option value='Comis'>Comis</Option>
-                
+                        <Option value='Chef de rang'>Chef de rang</Option>
+                        <Option value='Runner'>Runner</Option>
+                        <Option value='Sommelier'>Sommelier</Option>
+                        <Option value='chef'>Chef </Option>
+                        <Option value='chefDePartie'>Chef de partie</Option>
+                        <Option value='Second'>Second</Option>
+                        <Option value='plongeur'>Plongeur</Option>
                     </Select>
                 </Form.Item>
             </Col>

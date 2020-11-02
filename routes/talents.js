@@ -110,7 +110,7 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
         $geoIntersects: {
            $geometry: {
               type: "Polygon" ,
-              coordinates: [ donnees.zone ],
+              coordinates: [donnees.zone],
               // crs: {
               //    type: "name",
               //    properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
@@ -118,7 +118,7 @@ router.post(`/recherche-liste-restaurants`, async function(req, res, next){
            }
         }
       },
-      typeOfFood : { $in: donnees.cuisine},
+      typeOfFood : {$in: donnees.cuisine},
       typeOfRestaurant: { $in: donnees.ambiance},
       clientele: { $in: donnees.type},
       pricing :{ $in: donnees.prix} 

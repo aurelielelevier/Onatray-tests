@@ -46,26 +46,42 @@ router.post('/createAccount', async function(req,res,next){
 
 router.get('/getinformation', async function(req,res,next){
   let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
-  console.log("hole")
   res.json({talentlist:talentlist})
  })
 
+router.post('/recherche-liste-talents',async function(req,res,next){
+  var données= JSON.parse(req.body.criteres)
+console.log('lowercase',données.posterecherché.toLowerCase())
+
+
+var jobminuscule=données.posterecherché.toLowerCase()
+console.log(jobminuscule)
+if (jobminuscule== 'tous les postes'){
+  var responseAenvoyer=await talentModel.find()
+}else{
+  var responseAenvoyer = await talentModel.find({
+    lookingJob:{$in:jobminuscule }
+  })
+}
+  res.json({liste:responseAenvoyer})
+ })
+
  
-  router.get('/getwishlist', async function(req,res,next){
-   let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-   let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+  router.post('/getwishlist', async function(req,res,next){
+    let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+    let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
    res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
   
   })
 
  router.post('/addToWishList', async function (req,res,next){
   
-console.log(req.body.isinWishlist)
-if(req.body.isinWishlist == 'false'){
+   if(req.body.isinWishlist == 'false'){
+  console.log("add to wishlist")
 
 await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistRestaurant:req.body.talent}})
 }else{
-  console.log('route true')
+  console.log('delete from wishlist')
   await restaurantModel.updateOne({token:req.body.token},{ $pull:{wishlistRestaurant:{$in:`${req.body.talent}`}}}
   )
 }
