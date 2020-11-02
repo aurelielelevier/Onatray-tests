@@ -54,10 +54,8 @@ function SignUpTalentC(props){
 
       async function envoiPolygone(){
         var listePoints = JSON.stringify(polygoneinverse)
-
-
-        var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
-
+        // var lnglat = JSON.stringify([latlngDomicile[1], latlngDomicile[0]])
+        console.log(listePoints)
          await fetch('/talents/envoi-secteur', {
           method:'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -130,7 +128,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={(e) => {envoiPolygone()}} onClick={(e) => {envoiAdresse()}}> Valider le périmètre</Button></Link>
+             <Link to={'/signUpTalentD'}><Button type='primary' onClick={() => {envoiPolygone(); envoiAdresse()} }> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>
@@ -139,7 +137,7 @@ function SignUpTalentC(props){
 
                 <Card style={{ width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                 <div>
-                    <Map center={[latlngDomicile.coordinates[1], latlngDomicile.coordinates[0]]} zoom={12} onClick={(e) => {setPolygone([...polygone, [e.latlng.lat, e.latlng.lng]]); setPolygoneinverse([...polygoneinverse, [e.latlng.lng, e.latlng.lat]]); console.log(adresse)}}>
+                    <Map center={[latlngDomicile.coordinates[1], latlngDomicile.coordinates[0]]} zoom={12} onClick={(e) => {setPolygone([...polygone, [e.latlng.lat, e.latlng.lng]]); setPolygoneinverse([...polygoneinverse, [e.latlng.lng, e.latlng.lat]])}}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

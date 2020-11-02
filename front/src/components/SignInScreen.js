@@ -36,11 +36,12 @@ function SignInScrenn(props){
          }
          else if(response.result === true && response.type==='talent'){
             console.log(response)
-            props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false});
             props.onSubmitAdress(response.adresse);
             props.onSendZone(response.zone);
             props.onLogin(response.profil);
             props.onSendToken(response.token);
+            props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false});
+           
             console.log(response)
             setIsSignIn(true)
             setIsTalent(true)
@@ -119,6 +120,7 @@ if(!isSignIn){
 }
 function mapDispatchToProps (dispatch) {
     return {
+        
         onSendSignIn: function(isConnect) { 
             dispatch({type: 'AddConnect', isConnect}) 
         },

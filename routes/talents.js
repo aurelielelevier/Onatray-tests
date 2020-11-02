@@ -80,10 +80,11 @@ router.post('/informations', async function(req,res,next){
 
 
 router.post('/envoi-secteur', async function(req, res, next){
-  var lnglat = JSON.parse(req.body.lnglat)
+  // var lnglat = JSON.parse(req.body.lnglat)
   var listePoints = await JSON.parse(req.body.liste);
+  console.log(listePoints)
   listePoints.push(listePoints[0]);
-  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse, adresselgtlat:lnglat })
+  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse})
 })
 
 router.post('/envoi-adresse', async function(req, res, next){
