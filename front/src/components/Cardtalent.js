@@ -13,21 +13,21 @@ function Cardtalent(props){
 
 const { Meta } = Card
 const [visible, setVisible] = useState(false)
-const [experiences,setexperiences]=useState([])
-const [formations,setformations]=useState([])
-const [talent,settalent]=useState({})
-const [talentNameUC,settalentNameUC]=useState('')
-const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+var experiences = props.talent.experience
+var formations =props.talent.formation
+var talent =props.talent
+var talentNameUC=props.talent.lastName.toUpperCase()
 const [isinWishlist,setisinWishlist]=useState(false)
 
-/// Moyenne pour chaque critère:
 
 async function onliketalent (){
         const saveReq = await fetch('restaurants/addToWishList', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `talent=${talent._id}&token=${token}&isinWishlist=${isinWishlist}` 
-        })}
+        })
+        setisinWishlist(!isinWishlist)
+    }
 
         // const datawishlistRestaurant = await fetch(`/restaurants/addToWishList`)
         // const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
@@ -36,24 +36,19 @@ async function onliketalent (){
         
 
 
-useEffect(() => {
-var getTalentdata = async ()=> {
-    await settalent(props.talent)
-    await setwishlistRestaurantID(props.wishlistRestaurantID)}
-    getTalentdata()
-    setexperiences(talent.experience);
-    setformations(talent.formation)
-if (talent.lastName != undefined){
-    settalentNameUC(talent.lastName.toUpperCase())}
+// useEffect(() => {
+  
 
+// if (talent.lastName != undefined){
+    
+//     console.log('wishlistRestaurantId',wishlistRestaurantID)
+    
+// },[])
 
-console.log('wishlistcard',wishlistRestaurantID)
-if(wishlistRestaurantID.includes(talent._id)){
+if(props.wishlistRestaurantID.includes(props.talent._id) && isinWishlist==false){
+    console.log('include in wishlist')
     setisinWishlist(true)
     }
-
-},[])
-
 
 // for(let i=0;i<wishlistRestaurant.length;i++){
 //     if(talent._id === wishlistRestaurant[i]._id){

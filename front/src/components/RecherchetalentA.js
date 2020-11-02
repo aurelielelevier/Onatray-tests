@@ -41,10 +41,12 @@ const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talents,settalents]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5eefb680bdcd78984dc6b320103f777fcbaa9b36
 
 useEffect(() => {
-
 var getTalentdata = async ()=> {
     const dataTalent = await fetch(`/restaurants/getinformation`)
       const JSdataTalent = await dataTalent.json()
@@ -55,12 +57,11 @@ var getTalentdata = async ()=> {
 var getwishlist = async ()=>{
     const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`)
     const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-    setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
-    console.log('wishlistRestaurantID2',JSdatawishlistRestaurant.restaurantwishlistid)}
+    setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)}
     getwishlist()
-    
 },[])
 
+var token="Kz2Y0noPWgcRu7N8NRoA7gGaPvZnocxR"
 
 var talentslist = talents.map((talents,i) => {
     return (

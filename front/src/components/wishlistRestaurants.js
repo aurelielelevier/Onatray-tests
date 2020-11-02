@@ -17,11 +17,14 @@ const Submitform = values => {
         console.log(typedecontrat)
         };
 
+    
 
 const [posterecherché,setposterecherché]= useState('')
 const [typedecontrat,settypedecontrat]= useState('')
 const [liketalent,setliketalent]=useState(false)
 const [talent,settalent]=useState([])
+const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
+
 
 useEffect(() => {
 
@@ -29,13 +32,21 @@ var getwishlistRestaurant= async ()=> {
     const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`)
       const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
       settalent(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)
-    }
-    getwishlistRestaurant()
+
+      const wishlistID = await fetch(`/restaurants/getwishlist`)
+      const JSwishlistID = await wishlistID.json()
+      setwishlistRestaurantID(JSwishlistID.restaurantwishlistid)
+    console.log('wishlistid',JSwishlistID)}
+getwishlistRestaurant()
+
 },[])
+
+
+
 
 var wishlistlist = talent.map((talent,i) => {
     return (
-       <Cardtalent key={i} src={talent.src} talent={talent} />
+       <Cardtalent key={i} src={talent.src} talent={talent} wishlistRestaurantID={wishlistRestaurantID}/>
     )
   })
 

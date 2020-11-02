@@ -27,9 +27,8 @@ import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
 
+import token from './reducers/token'
 import isConnect from './reducers/connect';
-import isTalent from './reducers/isTalent';
-import isRestau from './reducers/isRestau';
 import restoaafficher from './reducers/restoaafficher';
 import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
@@ -37,11 +36,16 @@ import zone from './reducers/zone';
 import profil from './reducers/profil';
 
 import token from './reducers/token';
+import talentInfo from './reducers/talentInfo'
+import talentCompletInfo from './reducers/talentCompletInfo'
+import talentLocalisationInfo from './reducers/talentLocalisationInfo'
+import restauInfo from './reducers/restauInfo'
+import restauCompletInfo from './reducers/restauCompletInfo'
 
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, isRestau, isTalent, profil}));
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
 
 export default function App() {
   return (

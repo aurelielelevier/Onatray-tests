@@ -69,7 +69,7 @@ function SignUpRestauB(props){
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}&avatar=${avatar}`
         })
-        
+        props.onSendInfo({clientele : clienteleOptionChoosen, restaurant : restaurantOptionChoosen, food : foodOptionChoosen, pricing : pricing})
       };
 
       const photo = {
@@ -285,8 +285,15 @@ function SignUpRestauB(props){
 function mapStateToProps(state) {
     return { tokenToDisplay: state.token }
   }
+  function mapDispatchToProps(dispatch) {
+    return {
+      onSendInfo : function(restauCompletInfo){
+          dispatch({type:'addRestauCompletInfo', restauCompletInfo })
+      }
+    }
+  }
     
   export default connect(
     mapStateToProps, 
-    null
+    mapDispatchToProps
   )(SignUpRestauB);

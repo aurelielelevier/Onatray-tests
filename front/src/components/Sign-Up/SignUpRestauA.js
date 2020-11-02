@@ -67,6 +67,7 @@ function SignUpRestauA(props){
         props.onSendToken(response.token)
         props.onSubmitAdress(response.adresse)
         props.onSignup(response.profil)
+        props.onSendInfo({restaurantName:restaurantName, restaurantEmail : restaurantEmail, restaurantAdress : adresse, restaurantSiret: restaurantSiret, restaurantWebsite: restaurantWebsite, restaurantPhone : phoneRestaurant})
     }
 
     const onFinish = (values) => {
@@ -329,9 +330,12 @@ function mapDispatchToProps(dispatch) {
       },
       onSignup: function(profil){
         dispatch({type:'addProfil', profil:profil})
-      },
+      },onSendInfo : function(restauInfo){
+        dispatch({type:'AddRestauinfo', restauInfo})
+      }, 
+      }
     }
-  }
+  
   
   export default connect(
       null, 

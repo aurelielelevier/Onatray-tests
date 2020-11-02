@@ -26,7 +26,8 @@ function SignUpTalentB(props){
     const [languageChoosen, setLanguageChoosen] = useState([])
     const [languageToAdd, setLanguageToAdd] = useState('')
     const [language, setLanguage] = useState([])
-
+    const [contrat, setContrat] = useState([])
+    const [displayJobAndContrat, setDisplayJobAndContrat] = useState(false)
 
     
     const [redirect, setRedirect] = useState(false)
@@ -41,24 +42,66 @@ function SignUpTalentB(props){
     })
 
     const onFinish =  values => {
-        console.log(' its values',values)
+       // console.log(' its values',values)
         var langageToSend =  JSON.stringify(languageChoosen)
         var jobToSend =  JSON.stringify(jobChoosen)
         var formationToSend =  JSON.stringify(values.formation)
         var experienceToSend =  JSON.stringify(values.experience)
-    
+        var contratToSend = JSON.stringify(contrat)
+
          fetch('/talents/informations',{
             method:'POST',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${langageToSend}&job=${jobToSend}&experience=${experienceToSend}&formation=${formationToSend}`
+            body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${langageToSend}&job=${jobToSend}&experience=${experienceToSend}&formation=${formationToSend}&contrat=${contratToSend}`
         })
-
+        
+        props.onSendInfo({enRecherche : enRecherche, enPoste : enPoste, langage : languageChoosen, job : jobChoosen, experience : values.experience, formation : values.formation, contrat : contrat})
         setRedirect(true)
     }
+
+        if(enRecherche == true ){
+            var inputToDisplay = 
+            
+            <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
+            <span style={{paddingRight:10}}>Postes ?</span>
+            <Select 
+            onChange={(e)=>setJobChoosen(e)}
+            style={{width:'150px'}}
+            mode='multiple'>
+            <OptGroup label="En salle">
+            <Option value='Chef de rang'>Chef de rang</Option>
+            <Option value='manager'>Manager</Option>
+            <Option value='runner'>Runner</Option>
+            <Option value='sommelier'>Sommelier</Option>
+            </OptGroup>
+            <OptGroup label="En cuisine">
+            <Option value='chef'>Chef </Option>
+            <Option value='chefDePartie'>Chef de partie</Option>
+            <Option value='second'>Second</Option>
+            <Option value='plongeur'>Plongeur</Option>
+            </OptGroup>
+            </Select>
+        </Col>
       
+        }
+        if(enRecherche == true ){
+            var inputContractToDisplay = 
+            <Col offset={11} span={8}>
+            <span>Contrat ?  </span>
+            <Select
+            onChange={(e)=>setContrat(e)}
+            style={{width:'150px'}}
+            mode='multiple'
+            >
+              <Option value="CDD">CDD</Option>
+              <Option value="CDI">CDI</Option>
+              <Option value="Extra">Extra</Option>      
+            </Select>
+        </Col>
+        }
       
-  
-   
+
+
       if(redirect){
           return ( 
               <Redirect to='/signUpTalentC'></Redirect>
@@ -263,33 +306,15 @@ function SignUpTalentB(props){
                             </Col>
                         </Row> 
                         <Row style={{paddingTop:45}}>
-                            <Col span={6}>
+                            <Col span={4}>
                                 <span>Actuellement <QuestionCircleOutlined/></span>
                             </Col>
                             <Col span={7}>
                                 <Checkbox onChange={(e) => setEnPoste(!enPoste)}>En poste</Checkbox>
                                 <Checkbox onChange={(e) => setEnrecherche(!enRecherche)}>En recherche</Checkbox>
                             </Col>
-                            <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
-                                <span style={{paddingRight:10}}>Postes ?</span>
-                                <Select 
-                                onChange={(e)=>setJobChoosen(e)}
-                                style={{width:'150px'}}
-                                mode='multiple'>
-                                <OptGroup label="En salle">
-                                <Option value='chefDeRang'>Chef de rang</Option>
-                                <Option value='manager'>Manager</Option>
-                                <Option value='runner'>Runner</Option>
-                                <Option value='sommelier'>Sommelier</Option>
-                                </OptGroup>
-                                <OptGroup label="En cuisine">
-                                <Option value='chef'>Chef </Option>
-                                <Option value='chefDePartie'>Chef de partie</Option>
-                                <Option value='second'>Second</Option>
-                                <Option value='plongeur'>Plongeur</Option>
-                                </OptGroup>
-                                </Select>
-                            </Col>
+                            {inputToDisplay}
+                            {inputContractToDisplay}
                         </Row>
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
@@ -316,9 +341,17 @@ function SignUpTalentB(props){
 function mapStateToProps(state) {
     return {tokenToDisplay: state.token}
   }
+
+  function mapDispatchToProps(dispatch) {
+    return {
+      onSendInfo : function(talentCompletInfo){
+          dispatch({type:'addCompletInfo', talentCompletInfo })
+      }
+    }
+  }
     
   export default connect(
     mapStateToProps, 
-    null
+    mapDispatchToProps
   )(SignUpTalentB);
 
