@@ -18,7 +18,7 @@ function HeaderTalent(props) {
   const menu = (
     <Menu style={{padding:10}}>
       <Menu.Item>
-        <Link to='/messagerie'>Mon profil</Link>
+        <Link to='/talent-mon-profil'>Mon profil</Link>
       </Menu.Item>
       <Menu.Item>
       <Link to='/messagerie'>Mes messages</Link>
@@ -51,7 +51,7 @@ function HeaderTalent(props) {
           
               <div style={{float:'right'}}>
                 <Dropdown overlay={menu} placement="bottomCenter">
-                  <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/></Button>
+  <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.firstName}</Button>
                 </Dropdown>
               </div>
           </Menu>
@@ -75,7 +75,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return {tokenToDisplay: state.token, connectToDisplay : state.isConnect}
+  return {tokenToDisplay: state.token, connectToDisplay : state.isConnect, profilToDisplay: state.profil}
 }
 export default connect(
     mapStateToProps, 
