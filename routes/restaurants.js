@@ -10,6 +10,13 @@ var uid2 = require('uid2');
 var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dpyqb49ha', 
+  api_key: '513712396958631', 
+  api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
+});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -83,7 +90,7 @@ router.put('/informations', async function(req,res,next){
   var cuisine = JSON.parse(req.body.foodOption)
   var prix = JSON.parse(req.body.pricing)
   console.log(prix, 'prix', type, 'type', cuisine, 'cuisine')
-  await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix})
+  await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix, siret:req.body.avatar})
 })
 
 module.exports = router;

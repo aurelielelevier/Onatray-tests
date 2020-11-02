@@ -38,6 +38,7 @@ function ListeRestaurants(props){
     const [typeRestaurantcochee, setTypeRestaurantcochee] = useState(listeTypes)
     const[restoAAfficher, setRestoAAfficher] = useState({})
     const[visible, setVisible] = useState(false)
+    const latlngDomicile = [props.adresseToDisplay.coordinates[1], props.adresseToDisplay.coordinates[0]]
     
     const token = props.tokenToDisplay
 
@@ -337,22 +338,18 @@ function ListeRestaurants(props){
                             style={{marginLeft:'30px'}}> Afficher tous les restaurants </Button>
         </Row>
          
-        <Row style={style.row}>
-            <Checkbox style={{color:'white'}} onChange={onChange}>Afficher seulement les restaurants dans ma zone de recherche</Checkbox>
-        </Row>
 
         <Layout style={{ backgroundColor:'white', padding: '0 24px', minHeight: 280}}>
             <Row >
                 <Col span={12} >
                     <Card style={{ border:'none', width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                         <div>
-                        <Map center={[48.88, 2.33]} zoom={12} onClick={(e) => { console.log(e)}}>
-                            {/* remplacer par latlng user via props/store */}
+                        <Map center={latlngDomicile} zoom={12} onClick={(e) => { console.log(e)}}>
                             <TileLayer
                                 url="http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} "
                                 attribution='&copy; <a href="http://osm.org/copyright">"OpenStreet"Map</a> contributors'
                                 />
-                                <CircleMarker center={[48.0, 2.33]} pathOptions={{color:'red'}} radius={100}></CircleMarker>
+                                {/* <CircleMarker center={[48.0, 2.33]} pathOptions={{color:'red'}} radius={100}></CircleMarker> */}
                                  {listedesRestaurants.map((restaurant,i)=>{ 
                                         return (<Marker position={[restaurant.adresselgtlat.coordinates[1], restaurant.adresselgtlat.coordinates[0]]}>
                                                     <Popup ><div onClick={()=> onclick(restaurant)}>
@@ -419,7 +416,7 @@ function mapDispatchToProps(dispatch) {
   }
   
 function mapStateToProps(state) {
-return {tokenToDisplay: state.token, adresse: state.adresse, zoneToDisplay: state.zone}
+return {tokenToDisplay: state.token, adresseToDisplay: state.adresse, zoneToDisplay: state.zone}
 }
 
 export default connect(

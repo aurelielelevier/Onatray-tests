@@ -1,3 +1,4 @@
+var fileUpload = require('express-fileupload');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,6 +11,7 @@ var restaurantsRouter = require('./routes/restaurants')
 
 
 var app = express();
+app.use(fileUpload());
 var mongoose =require('./model/connection')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

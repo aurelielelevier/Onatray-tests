@@ -5,6 +5,8 @@ var restaurantModel = require ('../model/restaurants')
 var uid2 = require("uid2");
 var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
+var uniqid = require('uniqid');
+const fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -54,4 +56,19 @@ router.post('/sign_in', async function(req,res,next){
 //     }
 //   }
 // })
+
+router.post('/upload', async function(req, res, next) {
+  console.log(req.files.photo)
+
+  // var uniqidPhoto = uniqid()
+  // var resultCopy = await req.files.photo.mv(`./tmp/photo${uniqidPhoto}.jpg`);
+  // var resultCloudinary = await cloudinary.uploader.upload(`./tmp/photo${uniqidPhoto}.jpg`);
+  // if(!resultCopy && resultCloudinary) {
+  //   res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} );
+  //   fs.unlinkSync(`./tmp/photo${uniqidPhoto}.jpg`)     
+  // } else {
+  //   res.json({result: false, message:resultCopy});
+  // }
+});
+
 module.exports = router;

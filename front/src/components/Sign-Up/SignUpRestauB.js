@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 
-import { Row, Col, Steps , Button, Input, Select, Divider, Radio, Form} from 'antd';
+import { Row, Col, Steps , Button, Input, Select, Divider, Radio, Form, Upload, message} from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
@@ -28,6 +29,7 @@ function SignUpRestauB(props){
     const [foodOptionToAdd, setFoodOptionToAdd]= useState('');
     const [foodOption, setFoodOption] = useState([])
 
+    var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
                 
     var  addClienteleItem=(optionToAdd)=>{
         let newOption = {value:optionToAdd, label:optionToAdd}
@@ -65,11 +67,47 @@ function SignUpRestauB(props){
             await fetch('/restaurants/informations', {
             method:'PUT',
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}`
+            body : `token=${props.tokenToDisplay}&clientele=${clientele}&restaurantOption=${restaurantOption}&foodOption=${foodOption}&pricing=${pricing2}&avatar=${avatar}`
         })
         
       };
 
+      const photo = {
+        name: 'file',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        headers: {
+          authorization: 'authorization-text',
+        },
+        async onChange(info) {
+            
+          if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+            console.log(info, 'INFO')
+            // où est l'uri ???
+            var data = new FormData();
+                data.append('photo', {
+                  uri: info.file.response.url,
+                  type: 'image/jpeg',
+                  name: 'photo.jpg',
+                });
+                console.log(data)
+      
+                var rawResponse = await fetch(`/upload`, {
+                  method: 'post',
+                  body: data
+                })
+                var response = await rawResponse.json();
+                avatar = response
+            
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+          }
+        },
+      };
+      
     return(
     <div>
         <Header/>
@@ -221,12 +259,18 @@ function SignUpRestauB(props){
             </Row>
             </Col>
         </Row>
+        <Row style={{justifyContent:'center', paddingTop:40}}>
+            <Upload {...photo}>
+                <Button icon={<UploadOutlined />}>Télécharger une photo</Button>
+            </Upload>
+            
+        </Row>
         <Row style={{paddingTop:20}}>
             <Col offset={17} span={4}>
             <Form.Item>
                 <Link to='/signUpRestauC'>
                     <Button  type="primary" htmlType="submit"  onClick={()=> sendFormValues()}>
-                    Submit
+                        Submit
                     </Button>
                 </Link>
             </Form.Item>

@@ -34,23 +34,24 @@ function SignInScrenn(props){
         if ( response.result == 'Error'){
             setErrorMessage('Email ou mot de passe incorrect')
          }
-         else if(response.result === true && response.type=='talent'){
-           props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false})
+         else if(response.result === true && response.type==='talent'){
+            console.log(response)
+            props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false});
+            props.onSubmitAdress(response.adresse);
+            props.onSendZone(response.zone);
+            props.onLogin(response.profil);
+            props.onSendToken(response.token);
+            console.log(response)
             setIsSignIn(true)
             setIsTalent(true)
-            props.onSendToken(response.token)
-            props.onSubmitAdress(response.adresse)
-            console.log(response.adresse, response.zone, 'RESPONSE TEST')
-            props.onSendZone(response.zone)
-            props.onLogin(response.profil)
          
          }else if (response.result == true && response.type=='restaurant'){
-           props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
-            setIsRestau(true)
-            setIsSignIn(true)
+            props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
             props.onSendToken(response.token)
             props.onSubmitAdress(response.adresse)
             props.onLogin(response.profil)
+            setIsRestau(true)
+            setIsSignIn(true)
          } }
    
         
@@ -116,7 +117,7 @@ if(!isSignIn){
 }
 
 }
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
     return {
         onSendSignIn: function(isConnect) { 
             dispatch({type: 'AddConnect', isConnect}) 
