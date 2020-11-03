@@ -84,25 +84,13 @@ var listformationshorten= formations.map((formation,i) =>{
     return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)}
 })
 }
+// if (goToChatRoom == true){
+//     return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
+//  }else{
 
-<<<<<<< HEAD
 
-return(
 
-    <Col className="gutter-row" span={5}>
-            <Card
-                style={{
-                    margin:'10px',
-                }}
-                cover={
-                <img
-                    alt="image"
-                    src={props.src}
-                />
-=======
-if (goToChatRoom == true){
-    return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
- }else{
+
     return(
 
         <Col className="gutter-row" span={5}>
@@ -142,7 +130,7 @@ if (goToChatRoom == true){
                 style={{
                   justifyContent:'center',
                   textAlign:'center'
->>>>>>> chat
+
                 }
                 }
               >
@@ -200,7 +188,7 @@ if (goToChatRoom == true){
         )
  }
 
-  }
+  
 
 
 

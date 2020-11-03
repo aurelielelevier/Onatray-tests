@@ -44,12 +44,8 @@ import ChatroomId from './reducers/chatRoomId'
 
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
-<<<<<<< HEAD
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
-=======
-import WishlistRestaurants from './components/wishlistRestaurants';
+
 const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo, ChatroomId}));
->>>>>>> chat
 
 export default function App() {
   return (
