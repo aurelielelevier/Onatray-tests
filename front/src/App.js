@@ -60,7 +60,7 @@ export default function App() {
             <Route path="/restaurants" component={ListeRestaurants}/>
             <Route path="/restaurants-favoris" component={RestaurantsFavoris}/>
             <Route path="/messagerie" component={MessagerieListe}/>
-            <Route path="/recherchetalentA" component={RecherchetalentA}/>
+            <Route path="/recherchetalent" component={Recherchetalent}/>
             <Route path="/wishlistRestaurant" component={WishlistRestaurants}/>
             <Route path='/test' component={Test}/>
             <Route path='/messageRoom' component={MessageRoom}/>

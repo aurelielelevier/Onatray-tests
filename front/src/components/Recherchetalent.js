@@ -31,6 +31,8 @@ function RecherchetalentA(props) {
     const listeposterecherché=["Serveur","Cuisiner","Comis","Runner"]
     const listetypedecontrat=["CDI","CDD","Extra","Mi Temps","Interim"]
 
+// Etat et condition permettant de mettre à jour le header en fonction du status de l'utilisateur connecté:
+
     const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
@@ -77,28 +79,30 @@ var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
 loaddata()
 },[])
 
-
+// Mise à jour des filtres de recherches
 useEffect(()=>{
-async function cherche(){
-        if (posterecherché==[]){
-            setposterecherché(listeposterecherché)
-        }
-        if(typedecontrat==[]){
-            settypedecontrat(listetypedecontrat)
-        }
+    async function cherche(){
+            if (posterecherché==[]){
+                setposterecherché(listeposterecherché)
+            }
+            if(typedecontrat==[]){
+                settypedecontrat(listetypedecontrat)
+            }
 
-var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
-var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
-    method:'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-    body: `token=${token}&criteres=${criteres}`
-})
-    var response = await rechercheListe.json()
-    settalentaafficher(response.liste)
-    
- }
-cherche()
-    },[posterecherché,typedecontrat,rechercheeffectuée])
+    var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+    var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
+        method:'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `token=${token}&criteres=${criteres}`
+    })
+        var response = await rechercheListe.json()
+        settalentaafficher(response.liste)
+        
+    }
+    cherche()
+},[posterecherché,typedecontrat,rechercheeffectuée])
+
+// Fonction like talent -> ajout en wishlist et mise à jour des etats talentaafficher et wishlistrestaurantID
 
 async function onliketalent (id){
     const saveReq = await fetch('restaurants/addToWishList', {
@@ -111,10 +115,9 @@ async function onliketalent (id){
     setwishlistRestaurantID(response.restaurantwishlistid)
 }
 
-
-
+// Création de la liste de talent à afficher et 
+//définition de la couleur du coeur en fonction de la présence ou non de l'id talent dans la wishlist restaurant
 var talentslist = talentaafficher.map((e,i) => {
-    console.log('wishlistRestaurantID',wishlistRestaurantID,'talentaafficher._id',e._id)
     if(wishlistRestaurantID.includes(e._id)){
         var couleur= '#4B6584'
     }else{
@@ -134,50 +137,50 @@ return(
  <Col span={18} >
     <Form name="complex-form"  autoComplete="off" layout='inline'>
         <Col flex={2}>
-                <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
-                    <Select 
-                    showSearch
-                    onChange={(e)=>setposterecherché(e)}
-                   
-                    name={'Poste recherché'}
-                    className="basic-multi-select"
-                    classNamePrefix="select">
-                        <Option value='Tous les postes'>Tous les postes</Option>
-                        <Option value='Serveur'>Serveur</Option>
-                        <Option value='Cuisiner'>Cuisinier</Option>
-                        <Option value='Manager'>Manager</Option>
-                        <Option value='Comis'>Comis</Option>
-                        <Option value='Chef de rang'>Chef de rang</Option>
-                        <Option value='Runner'>Runner</Option>
-                        <Option value='Sommelier'>Sommelier</Option>
-                        <Option value='chef'>Chef </Option>
-                        <Option value='chefDePartie'>Chef de partie</Option>
-                        <Option value='Second'>Second</Option>
-                        <Option value='plongeur'>Plongeur</Option>
-                    </Select>
-                </Form.Item>
-            </Col>
-
-            <Col flex={3}>
-                <Form.Item label="Type de contrat">
-                    <Select 
-                    showSearch
-        
-                    onChange={(e)=>settypedecontrat(e)}
-                    name={'language'}
-                    className="basic-multi-select"
-                    classNamePrefix="select">
-                        <Option value='CDI'>CDI</Option>
-                        <Option value='CDD'>CDD</Option>
-                        <Option value='Mi Temps'>Mi Temps</Option>
-                        <Option value='Interim<'>Interim</Option>
+            <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
+                <Select 
+                showSearch
+                onChange={(e)=>setposterecherché(e)}
                 
-                    </Select>
-                </Form.Item>
-            </Col>
-            <Form.Item>
-            <Button onClick={Submitform()} type="primary" > Rechercher</Button>
+                name={'Poste recherché'}
+                className="basic-multi-select"
+                classNamePrefix="select">
+                    <Option value='Tous les postes'>Tous les postes</Option>
+                    <Option value='Serveur'>Serveur</Option>
+                    <Option value='Cuisiner'>Cuisinier</Option>
+                    <Option value='Manager'>Manager</Option>
+                    <Option value='Comis'>Comis</Option>
+                    <Option value='Chef de rang'>Chef de rang</Option>
+                    <Option value='Runner'>Runner</Option>
+                    <Option value='Sommelier'>Sommelier</Option>
+                    <Option value='chef'>Chef </Option>
+                    <Option value='chefDePartie'>Chef de partie</Option>
+                    <Option value='Second'>Second</Option>
+                    <Option value='plongeur'>Plongeur</Option>
+                </Select>
             </Form.Item>
+        </Col>
+
+        <Col flex={3}>
+            <Form.Item label="Type de contrat">
+                <Select 
+                showSearch
+    
+                onChange={(e)=>settypedecontrat(e)}
+                name={'language'}
+                className="basic-multi-select"
+                classNamePrefix="select">
+                    <Option value='CDI'>CDI</Option>
+                    <Option value='CDD'>CDD</Option>
+                    <Option value='Mi Temps'>Mi Temps</Option>
+                    <Option value='Interim<'>Interim</Option>
+            
+                </Select>
+            </Form.Item>
+        </Col>
+        <Form.Item>
+            <Button onClick={Submitform()} type="primary" > Rechercher</Button>
+        </Form.Item>
     </Form>
  </Col>
 </Row>

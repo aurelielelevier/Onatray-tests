@@ -16,7 +16,6 @@ var formations =props.talent.formation
 var token=props.token
 var talent =props.talent
 var talentNameUC=props.talent.lastName.toUpperCase()
-const [isinWishlist,setisinWishlist]=useState(props.wishlistRestaurantID.includes(talent._id))
 
     const [chatRoomId, setCahtRoomId] = useState() 
     const [goToChatRoom, setGoToChatRoom] = useState(false) 
@@ -47,7 +46,7 @@ var onSendDm = async () => {
 
 
 
-
+// condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
     return(`${experience.firm}- ${experience.job} - ${experience.startingDate} - ${experience.endingDate} - ${experience.city}\n`)
@@ -62,6 +61,7 @@ var listexperienceshorten= experiences.map((experience,i) =>{
 })
 }
 
+// condition mappant sur formation pour afficher les deux dernières formations de chaque talent
 
 if(formations !=undefined){
 var listformation= formations.map((formation,i) => {
@@ -80,76 +80,65 @@ var listformationshorten= formations.map((formation,i) =>{
  if (goToChatRoom == true){
      return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
   }else{
+return(
 
-    return(
-
-        <Col className="gutter-row" span={5}>
-                <Card
-                    style={{
-                        margin:'10px',
-                    }}
-                    cover={
-                    <img
-                        alt="image"
-                        src={talent.avatar}
-                        
-                    />
-                    }
-                    actions={[
-                    <SendOutlined onClick={()=> onSendDm()} key="sendOutlined"/>,
-                    <HeartFilled onClick={()=>{props.onliketalent(talent._id)}} style={{marginRight:'5px', color:props.couleur}}/>,
-                    // isinWishlist ===false?<HeartOutlined onClick={() => onliketalent()} key="HeartOutlined" />:<HeartFilled onClick={() => onliketalent()} key= "HeartFilled"/>,
-                    <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
-                    ]} >
+    <Col className="gutter-row" span={5}>
+            <Card
+                style={{
+                    margin:'10px',
+                }}
+                cover={
+                <img
+                    alt="image"
+                    src={talent.avatar}/>
+                }
+                actions={[
+                <SendOutlined onClick={()=> onSendDm()} key="sendOutlined"/>,
+                <HeartFilled onClick={()=>{props.onliketalent(talent._id)}} style={{marginRight:'5px', color:props.couleur}}/>,
+                <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
+                ]}>
                     <Meta/>
                     <h2>{talent.firstName}-{talentNameUC}</h2>
                     <p style={{fontWeight: "bold"}}>Formations</p>
                     
                     {listformationshorten}
-    
+
                     <p style={{fontWeight: "bold"}}>Expérience</p>
                     {listexperienceshorten}
-                    
-                    
-                </Card>
-            <Modal
-                centered
-                visible={visible}
-                onOk={() => setVisible(false)}
-                onCancel={() => setVisible(false)}
-                width={'80%'}
-                style={{
-                  justifyContent:'center',
-                  textAlign:'center'
-
-                }
-                }
-              >
-                  <Row>
-                    <Col style={{width:'40%'}} span={10}>
-                        <Image src={talent.src} />
-                    </Col>
-                    <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}} span={14}>
-                        <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
-                            <h1 style={{marginLeft:'15px', marginBottom:'2px'}}>Nom: {talentNameUC}</h1>
-                            <h1 style={{marginLeft:'15px',marginBottom:'2px'}}>Prenom:  {talent.firstName}</h1>
-                            <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adress}</h2>
-                        </Row>
-                            <h2 style={{marginLeft:'15px'}}>Formation: </h2>
-                            
-                        <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
+            </Card>
+        <Modal
+            centered
+            visible={visible}
+            onOk={() => setVisible(false)}
+            onCancel={() => setVisible(false)}
+            width={'80%'}
+            style={{
+                justifyContent:'center',
+                textAlign:'center'}}
+            >
+            <Row>
+                <Col style={{width:'40%'}} span={10}>
+                    <Image src={talent.src} />
+                </Col>
+                <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}} span={14}>
+                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
+                        <h1 style={{marginLeft:'15px', marginBottom:'2px'}}>Nom: {talentNameUC}</h1>
+                        <h1 style={{marginLeft:'15px',marginBottom:'2px'}}>Prenom:  {talent.firstName}</h1>
+                        <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adress}</h2>
+                    </Row>
+                        <h2 style={{marginLeft:'15px'}}>Formation: </h2>
+                        
+                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
                         {listformation}
-                        </Row> 
-    
-                            <h2 style={{marginLeft:'15px'}}>Experience: </h2>
-                       <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
-                           {listexperience}
-                       
-                        </Row> 
-                        <Row>
-                            <h2 style={{marginLeft:'15px'}}>Note des précédents employeurs: </h2>
-                        </Row>
-                        <Row tyle={{display:"flex", flexDirection:'row',alignItems:"start"}}>
+                    </Row> 
+                        <h2 style={{marginLeft:'15px'}}>Experience: </h2>
+                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
+                        {listexperience}
+                    </Row> 
+                    <Row>
+                        <h2 style={{marginLeft:'15px'}}>Note des précédents employeurs: </h2>
+                    </Row>
+                    <Row tyle={{display:"flex", flexDirection:'row',alignItems:"start"}}>
                         <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
                             <h3 style={{marginLeft:'20px'}}>Ponctualité : </h3>
                             <h3 style={{marginLeft:'20px'}}>Rigueur : </h3>
@@ -164,19 +153,16 @@ var listformationshorten= formations.map((formation,i) =>{
                             <Rate disabled defaultValue={2} />
                             <Rate disabled defaultValue={2} />
                         </Col>
-                        </Row>
-                            <Col style={{display:"flex", flexDirection:'row', alignItems:"start", justifyContent:"center"}}>
+                    </Row>
+                        <Col style={{display:"flex", flexDirection:'row', alignItems:"start", justifyContent:"center"}}>
                             <h4 style={{marginLeft:'15px'}}>Téléphone: {talent.phone} </h4>
-                          
                             <h4 style={{marginLeft:'15px'}}>E-mail: {talent.email} </h4>
-                            </Col>
-    
-                    </Col>
-                </Row>
-              </Modal>
-            </Col>
-    
-        )
+                        </Col>
+                </Col>
+            </Row>
+        </Modal>
+    </Col>
+    )
    }
 }
   
