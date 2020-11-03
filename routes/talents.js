@@ -47,7 +47,7 @@ router.post('/informations', async function(req,res,next){
   var job = JSON.parse(req.body.job)
   var langage = JSON.parse(req.body.langage)
 
-  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job})
+  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job, typeofContract:req.body.contrat})
   console.log(req.body.experience)
   
   //console.log('formation',req.body.formation)

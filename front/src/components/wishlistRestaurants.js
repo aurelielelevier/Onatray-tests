@@ -52,8 +52,7 @@ var header = <HeaderTalent/>
 
 
 const token = props.tokenToDisplay
-console.log('token:',token)
-const [posterecherché,setposterecherché]= useState('')
+const [posterecherché,setposterecherché]= useState('tous les postes')
 const [typedecontrat,settypedecontrat]= useState('')
 const [talent,settalent]=useState([])
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
@@ -100,7 +99,7 @@ useEffect(()=>{
 
 
 
-var wishlistlist = talent.map((talent,i) => {
+var wishlistlist = talentaafficher.map((talent,i) => {
     if(wishlistRestaurantID.includes(talent._id)){
         return (
        <Cardtalent key={i} src={talent.src} talent={talent} wishlistRestaurantID={wishlistRestaurantID} token={token}/>

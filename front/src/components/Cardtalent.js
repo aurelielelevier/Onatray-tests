@@ -17,7 +17,7 @@ var formations =props.talent.formation
 var token=props.token
 var talent =props.talent
 var talentNameUC=props.talent.lastName.toUpperCase()
-const [isinWishlist,setisinWishlist]=useState(false)
+const [isinWishlist,setisinWishlist]=useState(props.wishlistRestaurantID.includes(talent._id))
 
 
 async function onliketalent (){
@@ -29,31 +29,40 @@ async function onliketalent (){
         setisinWishlist(!isinWishlist)
     }
 
+useEffect(()=>{
+    console.log('isinWishlist',isinWishlist)
+    console.log('talent',talent._id)
+},[])
 
-if(props.wishlistRestaurantID.includes(talent._id) && isinWishlist===false){
-setisinWishlist(true)}
+// if(props.wishlistRestaurantID.includes(talent._id) && isinWishlist===false){
+// setisinWishlist(true)}
 
 
-
-if(experiences!==undefined){
-var listexperience= [...experiences]
-listexperience=experiences.map((experience,i) => {
-    return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
+if(experiences!= undefined){
+var listexperience=experiences.map((experience,i) => {
+    return(`${experience.firm}- ${experience.job} - ${experience.startingDate} - ${experience.endingDate} - ${experience.city}\n`)
 })
 
 var listexperienceshorten= experiences.map((experience,i) =>{
-    if(i<2){
-    return(<p>{experience.job} - {experience.firm} - {experience.startingDate} - {experience.endingDate}</p>)}
+    if(experience && i<2){
+    return(`${experience.firm}- ${experience.job} - ${experience.city}\n`)}
+    else{
+        return(`  -  -  - \n`) 
+    }
 })
 }
+
+
 if(formations !=undefined){
 var listformation= formations.map((formation,i) => {
-    return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)
+    return(`${formation.endingDate} - ${formation.city} - ${formation.school}`)
 })
 
 var listformationshorten= formations.map((formation,i) =>{
-    if(i<2){
-    return(<p>{formation.endingDate} - {formation.city} - {formation.school}</p>)}
+    if(i<2 && formation){
+    return(`${formation.endingDate} - ${formation.school}`)
+}else{
+    return(`  -  -  - \n`) }
 })
 }
 
@@ -68,7 +77,7 @@ return(
                 cover={
                 <img
                     alt="image"
-                    src={props.src}
+                    src={talent.avatar}
                 />
                 }
                 actions={[
@@ -79,13 +88,10 @@ return(
                 <Meta/>
                 <h2>{talent.firstName}-{talentNameUC}</h2>
                 <p style={{fontWeight: "bold"}}>Formations</p>
-                
                 {listformationshorten}
 
                 <p style={{fontWeight: "bold"}}>Expérience</p>
                 {listexperienceshorten}
-                
-                
             </Card>
         <Modal
             centered
@@ -101,7 +107,7 @@ return(
           >
               <Row>
                 <Col style={{width:'40%'}} span={10}>
-                    <Image src={talent.src} />
+                    <Image src={talent.avatar} />
                 </Col>
                 <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}} span={14}>
                     <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
