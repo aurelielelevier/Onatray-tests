@@ -56,7 +56,6 @@ function SignUpTalentB(props){
             body : `token=${props.tokenToDisplay}&recherche=${enRecherche}&poste=${enPoste}&langage=${langageToSend}&job=${jobToSend}&experience=${experienceToSend}&formation=${formationToSend}&contrat=${contratToSend}`
         })
         
-        props.onSendInfo({enRecherche : enRecherche, enPoste : enPoste, langage : languageChoosen, job : jobChoosen, experience : values.experience, formation : values.formation, contrat : contrat})
         setRedirect(true)
     }
 
@@ -385,15 +384,9 @@ function mapStateToProps(state) {
     return {tokenToDisplay: state.token}
 }
 
-function mapDispatchToProps(dispatch) {
-return {
-    onSendInfo : function(talentCompletInfo){
-        dispatch({type:'addCompletInfo', talentCompletInfo })
-    }
-}
-}
+
     
 export default connect(
 mapStateToProps, 
-mapDispatchToProps
+null
 )(SignUpTalentB);

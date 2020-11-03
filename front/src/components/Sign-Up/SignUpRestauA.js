@@ -42,7 +42,6 @@ function SignUpRestauA(props){
       }, [adresse])
 
     const [restaurantName, setRestaurantName] = useState('')
-    //const [restaurantAdress, setRestaurantAdress] = useState('')
     const [restaurantSiret, setRestaurantSiret] = useState('')
     const [restaurantWebsite, setRestaurantWebsite] = useState('')
     const [phoneRestaurant, setPhoneRestaurant] = useState('')
@@ -67,7 +66,6 @@ function SignUpRestauA(props){
         props.onSendToken(response.token)
         props.onSubmitAdress(response.adresse)
         props.onSignup(response.profil)
-        props.onSendInfo({restaurantName:restaurantName, restaurantEmail : restaurantEmail, restaurantAdress : adresse, restaurantSiret: restaurantSiret, restaurantWebsite: restaurantWebsite, restaurantPhone : phoneRestaurant})
     }
 
     const onFinish = (values) => {
@@ -330,9 +328,7 @@ function mapDispatchToProps(dispatch) {
       },
       onSignup: function(profil){
         dispatch({type:'addProfil', profil:profil})
-      },onSendInfo : function(restauInfo){
-        dispatch({type:'AddRestauinfo', restauInfo})
-      }, 
+      },
       }
     }
   

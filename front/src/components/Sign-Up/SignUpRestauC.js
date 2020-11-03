@@ -74,12 +74,7 @@ function SignUpRestauC(props){
     </div>
     )
 }
+export default SignUpRestauC;
 
-function mapStateToProps(state) {
-    return {  restauInfoToDisplay : state.restauInfo, restauCompletInfoToDisplay: state.restauCompletInfo}
-}
-  export default connect(
-    mapStateToProps, 
-    null
-  )(SignUpRestauC);
+
 
