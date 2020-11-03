@@ -8,12 +8,10 @@ import { PhoneOutlined, MailOutlined, HomeOutlined, EditOutlined, LinkedinOutlin
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 function MonProfilTalentt(props) {
-    var user = props.profilToDisplay
  
     const[profil, setProfil]= useState({})
     const[domicile, setDomicile]= useState([48.85,2.33])
     const[polygone, setPolygone]= useState([])
-    const { Meta } = Card;
     
     const style= {
         titres:{
@@ -40,9 +38,7 @@ function MonProfilTalentt(props) {
             setDomicile([profil.adresselgtlat.coordinates[1], profil.adresselgtlat.coordinates[0]])
         }
         cherche()
-         props.onChargeProfil(profil)
-         console.log(profil, 'PROFIL PAGE PROFIL')
-         
+        props.onChargeProfil(profil)
     },[])
     
     if(profil.formation){

@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import '../../App.less';
 import 'antd/dist/antd.less';
 import {List, Rate, Tooltip} from 'antd';
-import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, HeartFilled } from '@ant-design/icons';
 import {connect} from 'react-redux';
-
-// ajouter image resto, note
 
 const style= {
     textCard:{
@@ -40,9 +38,7 @@ function ListeCardsRestaurants(props){
             <List.Item
                 
                 key={item.name}
-                actions={[
-                   // <p style={style.textCard}><HeartOutlined style={{color:'red', fontSize:'20px', marginRight:'20px'}}/>J'ajoute ce restaurant en favori !</p>,
-                ]}
+                actions={[]}
                 extra={
                 <img
                     width={272}
@@ -51,7 +47,7 @@ function ListeCardsRestaurants(props){
                 />
                 }
             >
-                <List.Item.Meta
+              <List.Item.Meta
                 title={<div>
                     <Tooltip title="Afficher les détails" color='#4B6584' key="J'aime">
                     <div style={{ fontWeight:'bold', fontSize:'20px', color:'#4B6584'}}>{item.name}</div>
@@ -70,12 +66,11 @@ function ListeCardsRestaurants(props){
                                 <p style={style.textCard}>2 (10 votes)</p>
                             </div>
                             }
-                />
-                </List.Item>
+              />
+            </List.Item>
             )
         }
-        />
-                
+        />   
     )
 }
 
@@ -87,11 +82,7 @@ function mapDispatchToProps(dispatch) {
     }
   }
 
-  function mapStateToProps(state) {
-    return { listeToDisplay : state.listerestoaafficher}
-  }
-    
   export default connect(
-    mapStateToProps, 
+    null, 
     mapDispatchToProps
   )(ListeCardsRestaurants);
