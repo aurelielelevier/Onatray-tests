@@ -9,7 +9,7 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 function MonProfilTalentt(props) {
     var user = props.profilToDisplay
-    console.log(user)
+ 
     const[profil, setProfil]= useState({})
     const[domicile, setDomicile]= useState([48.85,2.33])
     const[polygone, setPolygone]= useState([])
@@ -118,7 +118,7 @@ function MonProfilTalentt(props) {
           <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Mon profil</Row>
           <Row>
             <Col span={8} style={{backgroundColor:'#d1d8e0', height:'100%', padding:20}}>
-                <div style={{borderRadius:'50%',width:200, margin:'auto', height:200, border:'6px solid #4B6584', backgroundImage:`url(${props.profilToDisplay.avatar})`, backgroundRepeat: 'no-repeat',
+                <div style={{borderRadius:'50%',width:200, margin:'auto', height:200, border:'6px solid #4B6584', backgroundImage:`url(${profil.avatar})`, backgroundRepeat: 'no-repeat',
                     backgroundSize: "cover",}}></div>
                 <div className="site-card-border-less-wrapper" style={{marginTop:30, textAlign:'center'}}>
                     <Card title={`${profil.firstName} ${profil.lastName}`} bordered={false} style={{ width:'100%', fontWeight:'bold', color:'#4B6584' }}>

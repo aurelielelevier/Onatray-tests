@@ -3,12 +3,14 @@ import {connect} from 'react-redux'
 import 'antd/dist/antd.less';
 import '../../App.less';
 import HeaderRestaurant from '../HeaderRestaurant';
-import {Button, Card, Rate, Row, Col, Image} from 'antd';
-import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import {Card, Rate, Row, Col} from 'antd';
+import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, EditOutlined } from '@ant-design/icons';
+import {Link} from 'react-router-dom'
 
 function MonProfilRestaurant(props) {
-    var restaurant = props.profilToDisplay
-    console.log(restaurant)
+    // var restaurant = props.profilToDisplay
+    const[restaurant, setRestaurant]= useState({})
+
 
     const { Meta } = Card;
     const style= {
@@ -21,8 +23,28 @@ function MonProfilRestaurant(props) {
             margin:'0px',
             fontSize:'20px',
             margin:'0px 20px'
+        },
+        edit:{
+            color:"#4B6584",
+            margin:'0px',
+            fontSize:'20px',
+            margin:'0px 20px', 
+            justifyContent:'center'
         }
     }
+
+    useEffect(() => {
+        async function cherche() {
+            var chercheProfil = await fetch(`/restaurants/profil/${props.tokenToDisplay}`);
+            var profil = await chercheProfil.json()
+            setRestaurant(profil)
+        }
+        cherche()
+         //props.onChargeProfil(restaurant)
+         console.log(restaurant, 'PROFIL PAGE PROFIL')
+    },[])
+    
+
     var cuisine = ' '
     if(restaurant.typeOfFood){
         for(var i=0; i<restaurant.typeOfFood.length; i++){
@@ -67,7 +89,7 @@ function MonProfilRestaurant(props) {
           <HeaderRestaurant keyheader='5'/>
           <div style={{ textAlign:'center', justifyContents:'center'}}>
           <div style={{height:'300px', 
-                        backgroundImage:`url("https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg")`, 
+                        backgroundImage:`url(${restaurant.photo})`, 
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: "cover"}}>          
         </div>
@@ -83,6 +105,7 @@ function MonProfilRestaurant(props) {
                         description={  
                             <div>
                                 <Row style={{marginTop:'20px'}}>
+                                    
                                     <Col span={8}>
                                         <div>
                                             <p>Coordonnées :</p>
@@ -106,6 +129,7 @@ function MonProfilRestaurant(props) {
                                         <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
                                     </Col>
                                 </Row>
+                                <Row style={style.edit}><Link to='/signUpRestauB'><EditOutlined/></Link></Row>
                                 
                             </div>
                         } 
@@ -117,7 +141,7 @@ function MonProfilRestaurant(props) {
 }
 
 function mapStateToProps(state) {
-    return {profilToDisplay: state.profil}
+    return {profilToDisplay: state.profil, tokenToDisplay: state.token}
     }
 
 export default connect(

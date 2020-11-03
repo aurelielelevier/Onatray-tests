@@ -7,6 +7,7 @@ const restaurantSchema = mongoose.Schema({
 		password:String,
 		token :String,
 		siret : String,
+		photo: String,
 		website : String,
 		phone: String,
 		adress:String,

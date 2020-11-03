@@ -18,7 +18,7 @@ function HeaderRestaurant(props) {
   const menu = (
     <Menu style={{padding:10}}>
       <Menu.Item>
-        <Link to='/messagerie'>Mon profil</Link>
+        <Link to='/restaurant-mon-profil'>Mon profil</Link>
       </Menu.Item>
       <Menu.Item>
       <Link to='/messagerie'>Mes messages</Link>
@@ -27,7 +27,7 @@ function HeaderRestaurant(props) {
          Déconnexion 
       </Menu.Item>
     </Menu>)
-  if(!isSignIn){
+  if(!props.tokenToDisplay){
      console.log(props.tokenToDisplay, 'props.tokentodisplay')
      return( <Redirect to='/'/>)
    } else {
@@ -45,12 +45,12 @@ function HeaderRestaurant(props) {
          <Menu.Item  key="2"><Link to='/recherchetalentA'>Rechercher des talents</Link></Menu.Item>
          <Menu.Item  key="3"><Link to='/wishlistRestaurant'>Mes favoris</Link></Menu.Item>
          <Menu.Item  key="4"><Link to='/messageRoom'>Mes messages</Link></Menu.Item>
-         <Menu.Item  key="5"><Link to='/restaurant-mon-profil'>Mon profil</Link></Menu.Item>
+         {/* <Menu.Item  key="5"><Link to='/restaurant-mon-profil'>Mon profil</Link></Menu.Item> */}
 
      
          <div style={{float:'right'}}>
            <Dropdown overlay={menu} placement="bottomCenter">
-             <Button type="primary" ><UserOutlined style={{color:'#4b6584'}}/>Mon profil</Button>
+             <Button type="primary" ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.name}</Button>
            </Dropdown>
          </div>
      
@@ -69,12 +69,12 @@ function HeaderRestaurant(props) {
 function mapDispatchToProps(dispatch) {
   return {
     onDisconnect: function(valeur) { 
-        dispatch( {type: 'disconnect', isConnect : false }) 
+        dispatch( {type: 'disconnect'}) 
     }
   }
 }
 function mapStateToProps(state) {
-  return {tokenToDisplay: state.token, connectToDisplay : state.isConnect}
+  return {tokenToDisplay: state.token, connectToDisplay : state.isConnect, profilToDisplay : state.profil}
 }
 export default connect(
     mapStateToProps, 

@@ -128,7 +128,7 @@ function SignUpTalentC(props){
         <Row style={{justifyContent:'center'}}>
             <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                     ou 
-             <Link to={'/signUpTalentD'}><Button type='primary' onClick={() => {envoiPolygone(); envoiAdresse()} }> Valider le périmètre</Button></Link>
+             <Link to={'/talent-mon-profil'}><Button type='primary' onClick={() => {envoiPolygone(); envoiAdresse()} }> Valider le périmètre</Button></Link>
         </Row>
         
         <Row>

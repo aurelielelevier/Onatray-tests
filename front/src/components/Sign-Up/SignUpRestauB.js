@@ -6,6 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 
+import HeaderRestaurant from '../HeaderRestaurant'
 import Header from '../Header'
 
 const { Step } = Steps;
@@ -252,7 +253,7 @@ function SignUpRestauB(props){
         <Row style={{paddingTop:20}}>
             <Col offset={17} span={4}>
             <Form.Item>
-                <Link to='/signUpRestauC'>
+                <Link to='/restaurant-mon-profil'>
                     <Button  type="primary" htmlType="submit"  onClick={()=> sendFormValues()}>
                         Submit
                     </Button>

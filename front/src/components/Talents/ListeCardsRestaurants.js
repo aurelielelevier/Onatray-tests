@@ -47,7 +47,7 @@ function ListeCardsRestaurants(props){
                 <img
                     width={272}
                     alt="logo"
-                    src={item.siret}
+                    src={item.photo}
                 />
                 }
             >

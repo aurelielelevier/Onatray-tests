@@ -63,7 +63,7 @@ function ModalDetailRestaurant(props){
     } else {
         var prix = '--'
     }
-    
+    console.log('RESTAURANT', restaurant)
     
     return( 
         <Modal
@@ -91,7 +91,7 @@ function ModalDetailRestaurant(props){
                 <Meta   
                         description={  
                             <div style={{height:'300px', 
-                                        backgroundImage:`url(${restaurant.siret})`, 
+                                        backgroundImage:`url(${restaurant.photo})`, 
                                         backgroundRepeat: 'no-repeat',
                                         backgroundSize: "cover"}}>          
                             </div>

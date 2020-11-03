@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
 
-import Header from '../Header'
+import HeaderRestaurant from '../HeaderRestaurant'
 
 import {Row, Col, Card} from 'antd'
 import {EditOutlined} from "@ant-design/icons"
@@ -50,7 +50,7 @@ function SignUpRestauC(props){
 
     return(
     <div>
-        <Header/>
+        <HeaderRestaurant/>
         <Row style={{paddingTop:50}}>
                 <Col offset={5} span={8} >
                     <Card title="Votre compte" extra={<EditOutlined onClick={()=>console.log('click on edit')} />} style={{ width: 300 }}>
