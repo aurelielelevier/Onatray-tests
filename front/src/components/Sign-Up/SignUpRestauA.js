@@ -107,7 +107,7 @@ function SignUpRestauA(props){
                     <Steps current={0} style={{paddingTop:40}}>
                         <Step title="Créer un compte" />
                         <Step title="Renseigner vos informations" />
-                        <Step title="Récapitulatif"/>
+                        {/* <Step title="Récapitulatif"/> */}
                     </Steps>
                 </Col>
                 <Col span={4}></Col>
@@ -302,7 +302,7 @@ function SignUpRestauA(props){
                         </Form.Item>
 
                         <Form.Item >
-                            <Link to='signUpRestauB/'>
+                            <Link to='/signUpRestauB'>
                             <Button  type="primary"  onClick={()=> sendFormValues()}>
                                 Submit
                             </Button>

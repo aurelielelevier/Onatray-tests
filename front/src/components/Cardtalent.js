@@ -90,13 +90,10 @@ var listformationshorten= formations.map((formation,i) =>{
     return(`  -  -  - \n`) }
 })
 }
-<<<<<<< HEAD
 if (goToChatRoom == true){
     return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
  }else{
 
-=======
->>>>>>> 79331ac77b18fc4489f05e67a7f4f777cf8687b7
 
 
  if (goToChatRoom == true){
@@ -198,12 +195,9 @@ if (goToChatRoom == true){
             </Col>
     
         )
-<<<<<<< HEAD
  }
-=======
-   }
->>>>>>> 79331ac77b18fc4489f05e67a7f4f777cf8687b7
-}
+}}
+
   
 
 

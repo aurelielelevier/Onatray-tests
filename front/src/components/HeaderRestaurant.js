@@ -11,65 +11,62 @@ import {Link, Redirect} from 'react-router-dom';
 const { SubMenu } = Menu;
 const { Header } = Layout;
 
-
 function HeaderRestaurant(props) {
   var  isSignIn = props.connectToDisplay.isSignIn
   
-  const menu = (
-    <Menu style={{padding:10}}>
-      <Menu.Item>
-        <Link to='/restaurant-mon-profil'>Mon profil</Link>
-      </Menu.Item>
-      <Menu.Item>
-      <Link to='/messagerie'>Mes messages</Link>
-      </Menu.Item>
-      <Menu.Item onClick={()=>{{props.onDisconnect()}}}>
-         Déconnexion 
-      </Menu.Item>
-    </Menu>)
-  if(!props.tokenToDisplay){
-     console.log(props.tokenToDisplay, 'déconnecté')
-     return( <Redirect to='/'/>)
-   } else {
-     console.log(props.tokenToDisplay, 'TOKEN')
-     return( <div style={{justifyContent:'center'}}>
-         
-     <Menu style={{padding:'20px'}} mode="horizontal" defaultSelectedKeys={['1']}>
-       
-     <Link to='/'><Image
-                   width={'50px'}
-                   src="./images/logo-onatray.png"
-                 /> </Link>
+const menu = (
+  <Menu style={{padding:10}}>
+    <Menu.Item>
+      <Link to='/restaurant-mon-profil'>Mon profil</Link>
+    </Menu.Item>
+    <Menu.Item>
+    <Link to='/messagerie'>Mes messages</Link>
+    </Menu.Item>
+    <Menu.Item onClick={()=>{{props.onDisconnect()}}}>
+      Déconnexion 
+    </Menu.Item>
+  </Menu>
+)
 
-         <Menu.Item  key="1"><Link to='/'>Accueil</Link></Menu.Item>
-         <Menu.Item  key="2"><Link to='/recherchetalentA'>Rechercher des talents</Link></Menu.Item>
-         <Menu.Item  key="3"><Link to='/wishlistRestaurant'>Mes favoris</Link></Menu.Item>
-         <Menu.Item  key="4"><Link to='/messagerie'>Mes messages</Link></Menu.Item>
-         {/* <Menu.Item  key="5"><Link to='/restaurant-mon-profil'>Mon profil</Link></Menu.Item> */}
+if(!isSignIn){
+  console.log(props.tokenToDisplay, 'props.tokentodisplay')
+  return( <Redirect to='/'/>)
+} else {
 
-     
-         <div style={{float:'right'}}>
-           <Dropdown overlay={menu} placement="bottomCenter">
-             <Button type="primary" ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.name}</Button>
-           </Dropdown>
-         </div>
-     
-     </Menu>
-
-     <div style={{ textAlign:'center'}}>
-     
-     </div>
-
- </div>
-   
-
-  )}
+  return( 
+    <div style={{justifyContent:'center'}}>
+          
+    {(props.tokenToDisplay === '')?<Redirect to='/' />:
+      <Menu style={{padding:'20px'}} mode="horizontal" defaultSelectedKeys={['1']}>
+        <Link to='/'>
+          <Image
+            width={'50px'}
+            src="./images/logo-onatray.png"
+          /> 
+        </Link>
+        <Menu.Item  key="1"><Link to='/'>Accueil</Link></Menu.Item>
+        <Menu.Item  key="2"><Link to='/recherchetalentA'>Rechercher des talents</Link></Menu.Item>
+        <Menu.Item  key="3"><Link to='/wishlistRestaurant'>Mes favoris</Link></Menu.Item>
+        <Menu.Item  key="4"><Link to='/messagerie'>Mes messages</Link></Menu.Item>
+        
+        <div style={{float:'right'}}>
+          <Dropdown overlay={menu} placement="bottomCenter">
+            <Button type="primary" ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.name}</Button>
+          </Dropdown>
+        </div>
+      </Menu>
+      }
+      <div style={{ textAlign:'center'}}>
+      </div>
+    </div>
+  )
+}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onDisconnect: function(valeur) { 
-        dispatch( {type: 'disconnect'}) 
+        dispatch( {type: 'disconnect', isConnect : false}) 
     }
   }
 }

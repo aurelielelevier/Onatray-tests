@@ -35,8 +35,8 @@ router.post('/createAccount', async function(req,res,next){
       salt : salt,
       password : SHA256(req.body.restaurantPassword + salt).toString(encBase64),
       token: uid2(32), 
-      siret : avatar,
-      //req.body.restaurantSiret,
+      siret : req.body.restaurantSiret,
+      photo : avatar ,
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
@@ -107,5 +107,10 @@ router.put('/informations', async function(req,res,next){
   console.log(prix, 'prix', type, 'type', cuisine, 'cuisine')
   await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix, siret:req.body.avatar})
 })
+
+router.get('/profil/:token', async function( req, res, next){  
+   var user = await (await restaurantModel.findOne({token: req.params.token})) 
+    console.log(user)   
+    res.json(user) })
 
 module.exports = router;

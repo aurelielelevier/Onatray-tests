@@ -107,7 +107,7 @@ function SignUpRestauB(props){
                 <Steps current={1} style={{paddingTop:40}}>
                     <Step title="Créer un compte" />
                     <Step title="Renseigner vos informations" />
-                    <Step title="Récapitulatif"/>
+                    {/* <Step title="Récapitulatif"/> */}
                 </Steps>
             </Col>
             <Col span={4}></Col>
@@ -164,7 +164,7 @@ function SignUpRestauB(props){
                     style={{ width: 100 }}
                         onChange={(e) => setClienteleOptionToAdd(e.target.value)} 
                         value={clienteleOptionToAdd}
-                    />
+                    /> 
                     <Button style={{ height: 30 }} type="primary" onClick={()=>addClienteleItem(clienteleOptionToAdd)}>Add</Button>
                 </Col>    
             </Row>
@@ -213,7 +213,7 @@ function SignUpRestauB(props){
             </Col>
             <Col span={18}>
             <Row>
-                <Col span={6}>
+                <Col  span={6}>
                     <Form.Item >
                     <Select
                     onChange={(e)=>setFoodOptionChoosen(e)}
@@ -237,7 +237,7 @@ function SignUpRestauB(props){
                     style={{ width: 100 }}
                         onChange={(e) => setFoodOptionToAdd(e.target.value)} 
                         value={foodOptionToAdd}
-                    />
+                    /> 
                     <Button style={{ height: 30 }} type="primary" onClick={()=>addFoodItem(foodOptionToAdd)}>Add</Button>
                 </Col>    
             </Row>
