@@ -43,9 +43,6 @@ var onSendDm = async () => {
  }
 
 
-
-
-
 // condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
@@ -75,8 +72,9 @@ var listformationshorten= formations.map((formation,i) =>{
     return(`  -  -  - \n`) }
 })
 }
-
-
+if (goToChatRoom == true){
+    return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
+ }else{
  if (goToChatRoom == true){
      return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
   }else{
@@ -165,9 +163,7 @@ return(
     )
    }
 }
-  
-
-
+}
 
   function mapStateToProps(state) {
     return { currentToken : state.token }

@@ -186,7 +186,7 @@ return(
 function mapStateToProps(state) {
     return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
   }
-    
+
   export default connect(
     mapStateToProps, 
     null
