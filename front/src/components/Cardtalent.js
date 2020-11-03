@@ -3,8 +3,7 @@ import 'antd/dist/antd.less';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {Col,Card,Modal, Image, Row,Rate} from 'antd';
-import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,
-  } from "@ant-design/icons"
+import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,} from "@ant-design/icons"
 
 
 
@@ -25,8 +24,6 @@ const [isinWishlist,setisinWishlist]=useState(props.wishlistRestaurantID.include
     var idToSend ;
 
 var onSendDm = async () => {
-        //console.log(`envoyer un dm à ${talent.token}`)
-       // console.log(currentUser)
      // fonction qui crée une chat room entre deux personnes 
         
         let rawResponse = await fetch('/createChatRoom', {
