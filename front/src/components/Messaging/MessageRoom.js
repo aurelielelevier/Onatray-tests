@@ -1,6 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+
+import queryString from 'query-string'
+import socketIOClient from "socket.io-client";
 
 import Header from '../Header'
 import HeaderTalent from '../HeaderTalent'
@@ -10,18 +13,35 @@ import {Row, Col, Button, Input, Card, message } from 'antd'
 import { HeartOutlined, SendOutlined,ExpandAltOutlined} from "@ant-design/icons";
 
 
+
+
 const {TextArea} = Input;
 const { Meta } = Card;
 
+const socket = socketIOClient("http://localhost:3000");
 
-function MessageRoom(props){
-
-    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
-    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
-    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
+function MessageRoom({location, connectToDisplay, tokenToDisplay}){
+    const [myToken, setMyToken] = useState('')
+    const [sender, setSender] = useState('')
+    const [desti, setDesti] = useState('')
+    //var talentInfo
     
     const [messageList, setMessageList] = useState([])
-    const [newMessage, setNewMessage] = useState('')
+    const [messageToSend, setMessageToSend] = useState('')
+    const [chatroom, setchatroom] = useState('')
+    var chatRoomId ;
+    var tokenDesti ;
+    
+    const [avatar, setAvatar] = useState('')
+    const [firstNameTalent, setFirstNameTalent] = useState('')
+    const [lastNameTalent, setLastNameTalent] = useState('')
+    const [isWorking, setIsWorking] = useState('')
+    const [isLookingFor, setIsLookingFor] = useState('')
+    const [jobLookingFor, setJobLookingFor] = useState([])
+
+    const [isSignIn, setIsSignIn] = useState(connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
 
     if(!isSignIn){
         var header = <Header/>
@@ -31,21 +51,148 @@ function MessageRoom(props){
         var header = <HeaderTalent/>
       }
 
-    var sendMessage = (newMessage) => {
-        console.log(newMessage)
-        setMessageList([...messageList, newMessage])
-        setNewMessage('')
-    }
+  
+
+      useEffect(()=>{
+        const {name, desti , room} = queryString.parse(location.search)
+       
+        chatRoomId = room
+        setchatroom(room)
+        setSender(name)
+        setDesti(desti)
+        tokenDesti = desti
+        setMyToken(name)
+
+
+        socket.emit('join', {name, room}, ({})=>{
+            
+        })
+        
+        return ()=> {
+            socket.emit('disconnect')
+            socket.off();
+        }
+     }, [socket, location.search] )
+
+     useEffect(()=>{
+         
+         socket.on('message',(message)=>{
+             setMessageList([...messageList,{message : message.message,token : message.tokenExpe} ])
+            })
+        }, [messageList])
+        
+        
+        useEffect(async()=>{
+            
+            let rawResponse = await fetch('/getOldMessage', {
+                method:'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body : `chatRoomId=${chatRoomId}&token=${tokenDesti}`
+            })
+            
+            let response = await rawResponse.json()
+            
+            var messageTab = response.result
+            var tempMessageTab = []
+            for(let i=0; i<messageTab.length; i++){
+                tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
+            }
+            setMessageList(tempMessageTab)
+            console.log(response.card)
+            setAvatar(response.card.avatar)
+            setFirstNameTalent(response.card.firstName)
+            setLastNameTalent(response.card.lastName)
+
+            if(response.card.working == true){
+                setIsWorking('En poste')
+            }else{
+                setIsWorking("N'as pas de poste")
+            }
+            if(response.card.lookingForJob == true){
+                setIsLookingFor("en recherche d'emploie")
+                //setLookingFor(response.card.lookingJob)
+                    var tempTab = []
+                for(let i=0;i<response.card.lookingJob.length;i++) {
+                    tempTab.push(<li>- {response.card.lookingJob[i]}</li>)
+                }
+                setJobLookingFor(tempTab)
+            }else {
+                setIsLookingFor("ne recherche pas d'emploie pour le moment")
+            }
+            
+        }, [])
+        
+  if(connectToDisplay.isTalent == true){
+        var cardTalentToDisplay;
+  }else{
+
+  var cardTalentToDisplay = <Col style={{border:'1px solid black'}} offset={2} span={6}>
+  <Card  
+      cover={
+      <img
+          //style={{height:'200px', width:'150px'}}
+          alt="example"
+          src={avatar}
+      />
+      }
+      // actions={[
+      // <HeartOutlined key="setting" />,
+      // <ExpandAltOutlined key="ellipsis" />
+      // ]}
+      >   
+      <Meta
+      //style={{height:'200px'}}
+      title={<h3>{firstNameTalent} {lastNameTalent}</h3>}
+      />
+      
+      <p>Acutellement : {isWorking}, {isLookingFor} pour être : 
+        {jobLookingFor}  
+       </p>
+      
+     
+  </Card>
+</Col>
+  }
+    
+
+    var sendMessage = async (message) =>  {
+        //console.log(desti)
+        socket.emit("sendMessage", {message, name: sender, desti:desti , room : chatroom }, ()=>{
+            })
+            setMessageList([...messageList, {message : message, token : myToken}])
+            setMessageToSend('')
+        }
+        
 
     var dataRecentMessage = messageList.map(function(message, i){
-       return (
-        <Row style={{paddingBottom:5}}>
-            <span style={{paddingLeft:5, fontSize:10}}>12h12 le 12/12/12</span>
-            <Col span={24} style={{ backgroundColor:'#FED330', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                <span >{message}</span>
-            </Col>
-       </Row>
-       )
+            if(message.token == myToken){
+                return (
+                <Row style={{display:'flex', justifyContent:'flex-end',}}>
+                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                        <Row style={{paddingBottom:5}}>
+                            <span style={{paddingLeft:5, fontSize:10}}>NOM </span>
+                            <Col span={24} style={{ backgroundColor:'#FED330', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                <span >{message.message}</span>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+                )
+            }else {
+                return (
+                <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
+                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                        <Row style={{paddingBottom:5}}>
+                            <span style={{paddingLeft:5, fontSize:10}}>NOM</span>
+                            <Col span={24} style={{ backgroundColor:'red', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                <span >{message.message}</span>
+                            </Col>
+                    </Row>
+                   </Col>
+                </Row>
+
+                   )
+            }
     })
     return(
 
@@ -54,7 +201,7 @@ function MessageRoom(props){
                 {header}
                 <Row style={{paddingTop:20, paddingBottom:20}}>
                     <Col offset={2} span={2}>
-                    <Link>
+                    <Link to='/messagerie'>
                         <Button type='primary'>
                             Retour
                         </Button>
@@ -62,49 +209,24 @@ function MessageRoom(props){
                     </Col>
                 </Row>
                 <Row >
-                    <Col style={{border:'1px solid black', display:'flex', flexDirection:'column-reverse'}} offset={2} span={13}>
+                    <Col style={{border:'1px solid black', display:'flex',height:'70vh', flexDirection:'column-reverse'}} offset={2} span={13}>
                         <Row>
                             <Col offset={4} span={12}>
-                            <TextArea onChange={(e)=>setNewMessage(e.target.value)} value={newMessage} placeholder="Votre message" autoSize />
+                            <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
                             <div style={{ margin: '24px 0' }} />
                             </Col>
                             <Col offset={1} span={4}>
-                                <Button onClick={()=>sendMessage(newMessage)} type="primary">Envoyer</Button>
+                                <Button onClick={()=>sendMessage(messageToSend)} type="primary">Envoyer</Button>
                             </Col>
                         </Row>
                             
-                        <Row style={{display:'flex', justifyContent:'flex-end', paddingBottom:50}}>
-                            <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                        <div style={{overflowY: 'scroll'}}>
                             {dataRecentMessage}
-                            </Col>
-                       
-                        </Row>
-                            
+                        </div>
                             
                     </Col>
-                    <Col style={{border:'1px solid black'}} offset={2} span={6}>
-                        <Card  
-                            cover={
-                            <img
-                                //style={{height:'200px', width:'150px'}}
-                                alt="example"
-                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            />
-                            }
-                            actions={[
-                            <HeartOutlined key="setting" />,
-                            <ExpandAltOutlined key="ellipsis" />
-                            ]}
-                            >   
-                            <Meta
-                            //style={{height:'200px'}}
-                            title="Card title"
-                            />
-                            <p>Card content Card content Card content Card content Card content Card content Card content Card content v</p>
-                            <p>Card content</p>
-                            <p>Card content</p>
-                        </Card>
-                    </Col>
+                        {cardTalentToDisplay}    
+                    
                 </Row>
             </Col>
         </Row>
