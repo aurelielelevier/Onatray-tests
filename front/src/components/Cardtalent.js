@@ -25,7 +25,6 @@ const [isinWishlist,setisinWishlist]=useState(props.wishlistRestaurantID.include
 
 var onSendDm = async () => {
      // fonction qui crée une chat room entre deux personnes 
-        
         let rawResponse = await fetch('/createChatRoom', {
              method:'POST',
              headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -45,22 +44,8 @@ var onSendDm = async () => {
  }
 
 
-async function onliketalent (){
-        const saveReq = await fetch('restaurants/addToWishList', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `talent=${talent._id}&token=${token}&isinWishlist=${isinWishlist}` 
-        })
-        setisinWishlist(!isinWishlist)
-    }
 
-useEffect(()=>{
-    console.log('isinWishlist',isinWishlist)
-    console.log('talent',talent._id)
-},[])
 
-// if(props.wishlistRestaurantID.includes(talent._id) && isinWishlist===false){
-// setisinWishlist(true)}
 
 
 if(experiences!= undefined){
@@ -112,7 +97,8 @@ var listformationshorten= formations.map((formation,i) =>{
                     }
                     actions={[
                     <SendOutlined onClick={()=> onSendDm()} key="sendOutlined"/>,
-                    isinWishlist ===false?<HeartOutlined onClick={() => onliketalent()} key="HeartOutlined" />:<HeartFilled onClick={() => onliketalent()} key= "HeartFilled"/>,
+                    <HeartFilled onClick={()=>{props.onliketalent(talent._id)}} style={{marginRight:'5px', color:props.couleur}}/>,
+                    // isinWishlist ===false?<HeartOutlined onClick={() => onliketalent()} key="HeartOutlined" />:<HeartFilled onClick={() => onliketalent()} key= "HeartFilled"/>,
                     <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
                     ]} >
                     <Meta/>

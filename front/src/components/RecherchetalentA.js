@@ -62,24 +62,19 @@ const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 
 
 useEffect(() => {
-var getTalentdata = async ()=> {
-    const dataTalent = await fetch(`/restaurants/getinformation`)
-      const JSdataTalent = await dataTalent.json()
-      settalents(JSdataTalent.talentlist)
-    }
-    getTalentdata()
-    
-var getwishlist = async ()=>{
-        const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`, {
-            method:'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `token=${token}`})
-        const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
-        setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
-        console.log('Jsdata',JSdatawishlistRestaurant.restaurantwishlistid)
-    }
-    getwishlist()
+async function loaddata(){
 
+var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
+    method:'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: `token=${token}&criteres=${criteres}`
+})
+    var response = await rechercheListe.json()
+    settalentaafficher(response.liste)
+    setwishlistRestaurantID(response.restaurantwishlistid)  
+}
+loaddata()
 },[])
 
 
@@ -105,14 +100,29 @@ var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
 cherche()
     },[posterecherché,typedecontrat,rechercheeffectuée])
 
+async function onliketalent (id){
+    const saveReq = await fetch('restaurants/addToWishList', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `id=${id}&token=${token}` 
+    })
+    var response= await saveReq.json()
+    settalentaafficher(response.liste)
+    setwishlistRestaurantID(response.restaurantwishlistid)
+}
+
+
 
 var talentslist = talentaafficher.map((e,i) => {
-    console.log('wishlistrestoID',wishlistRestaurantID)
+    console.log('wishlistRestaurantID',wishlistRestaurantID,'talentaafficher._id',e._id)
+    if(wishlistRestaurantID.includes(e._id)){
+        var couleur= '#4B6584'
+    }else{
+        var couleur='#a5b1c2'
+    }
         return (
-           <Cardtalent key={i} src={e.src} talent={e} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
+           <Cardtalent key={i} src={e.src} talent={e} onliketalent={onliketalent} wishlistRestaurantID={wishlistRestaurantID} token={token} couleur={couleur}/>
         )})
-
-
 
 return(
                      

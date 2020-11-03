@@ -63,16 +63,19 @@ const [zone, setZone] = useState(zoneFrance)
 
 
 
-
 useEffect(() => {
 var getwishlistRestaurant= async ()=> {
-    const datawishlistRestaurant = await fetch(`/restaurants/getwishlist`,{
-        method:'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: `token=${props.tokenToDisplay}`})
-      const JSdatawishlistRestaurant = await datawishlistRestaurant.json();
-      settalent(JSdatawishlistRestaurant.restaurantwishlist.wishlistRestaurant)
-      setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)}
+    var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
+    method:'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: `token=${token}&criteres=${criteres}`
+})
+    var response = await rechercheListe.json()
+    console.log('response',response.liste)
+    settalentaafficher(response.liste)
+    setwishlistRestaurantID(response.restaurantwishlistid)
+}
 getwishlistRestaurant()
 },[])
 
@@ -97,15 +100,27 @@ useEffect(()=>{
     cherche()
         },[posterecherché,typedecontrat,rechercheeffectuée])
 
+async function onliketalent (id){
+    const saveReq = await fetch('restaurants/addToWishList', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `id=${id}&token=${token}` 
+    })
+    var response= await saveReq.json()
 
+    settalentaafficher(response.liste)
+    setwishlistRestaurantID(response.restaurantwishlistid)
+}
 
-var wishlistlist = talentaafficher.map((talent,i) => {
-    if(wishlistRestaurantID.includes(talent._id)){
+var wishlistlist = talentaafficher.map((e,i) => {
+    console.log('wishlistRestaurantID',wishlistRestaurantID,'talentaafficher._id',e._id)
+    if(wishlistRestaurantID.includes(e._id)){
+        var couleur= '#4B6584'
         return (
-       <Cardtalent key={i} src={talent.src} talent={talent} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
-    )}
-  })
-
+            <Cardtalent key={i} src={e.src} talent={e} onliketalent={onliketalent} wishlistRestaurantID={wishlistRestaurantID} token={token} couleur={couleur}/>
+            )}})
+        
+            
 return(
                      
 <div>
