@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.less';
 import '../../App.less';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {Avatar,  Comment, Tooltip} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -9,7 +9,7 @@ import moment from 'moment';
 function MessageCourt(props){
 
     const [color, setColor] = useState('#ffffff')
-
+    const [goToRoom, setGoToRoom] = useState(false)
     if(props.avatar){
         var avatar = <Avatar style={{marginLeft:'15px'}}
         size='large'
@@ -19,12 +19,27 @@ function MessageCourt(props){
     } else {
         var avatar = <Avatar style={{marginLeft:'15px'}} icon={<UserOutlined />} />
     }
+
+
+    var ToRoom = () => {
+       setGoToRoom(true)
+    }
+
+    if(goToRoom == true ){
+        return(
+            <Redirect to={`messageRoom?name=${props.myToken}&desti=${props.tokenDesti}&room=${props.roomName}`}/>
+
+           )
+    }else {
+
     
    return(
 
-    <Link to={'/messageRoom'}>
+    
     
     <Comment
+
+        onClick={()=>ToRoom()}
         onMouseEnter={()=> setColor("#fed330")}
         onMouseLeave={()=> setColor("#ffffff")} 
         style={{border:'1px solid #4b6584', textAlign:'left', backgroundColor:color, borderRadius:10, margin:'20px', color:'black'}}
@@ -43,7 +58,8 @@ function MessageCourt(props){
             </Tooltip>
         }
     />
-    </Link>
+   
 )}
+}
 
 export default MessageCourt

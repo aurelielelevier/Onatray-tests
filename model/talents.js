@@ -21,6 +21,7 @@ const talentSchema = mongoose.Schema({
     wishlistTalent:[{type: mongoose.Schema.Types.ObjectId, ref: 'restaurant'}],
     experience: [{type: mongoose.Schema.Types.ObjectId, ref: 'experience' }],
     formation: [{type: mongoose.Schema.Types.ObjectId, ref: 'formation'}],
+    chatRoom: [{type: mongoose.Schema.Types.ObjectId, ref: 'chatRoom' }]
 })
 
 const talentModel = mongoose.model('talent', talentSchema)

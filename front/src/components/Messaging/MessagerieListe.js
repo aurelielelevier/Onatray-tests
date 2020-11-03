@@ -17,13 +17,16 @@ function MessagerieListe(props) {
     
     const [user, setUser] = useState('')
     const [recherche, setRecherche] = useState('')
-    const [listeMessages, setListeMessages] = useState([]) // faire requête pour afficher tous les messages
+    const [listeRoom, setListeRoom] = useState([]) // faire requête pour afficher tous les messages
     const [listeinterlocuteurs, setlisteinterlocuteurs] = useState([])
 
     const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
- // const[color, setColor] = useState('#ffffff')
+
+    const[token, setToken] = useState(props.tokenToDisplay)
+
+
     
   if(!isSignIn){
     var header = <HeaderScreen /> // redirect  plutôt ???
@@ -33,41 +36,27 @@ function MessagerieListe(props) {
     var header = <HeaderTalent keyheader='4'/>
   }
 
-  useEffect(() => {
-    setListeMessages([{date: '23/10/2020 12:00', 
-                        nom:'Aurélie L', 
-                        contenu : `We supply a series of design principles, practical patterns and high 
-                        quality design resources (Sketch and Axure), to help people create their product 
-                        prototypes beautifully and efficiently.`, 
-                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
-                        {date: '23/10/2020 12:00', 
-                        nom:'La Capsule', 
-                        contenu : `We supply a series of design principles, practical patterns and high 
-                        quality design resources (Sketch and Axure), to help people create their product 
-                        prototypes beautifully and efficiently.`, 
-                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
-                        {date: '23/10/2020 12:00', 
-                        nom:'La Capsule', 
-                        contenu : `We supply a series of design principles, practical patterns and high 
-                        quality design resources (Sketch and Axure), to help people create their product 
-                        prototypes beautifully and efficiently.`, 
-                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
-                        {date: '23/10/2020 12:00', 
-                        nom:'La Capsule', 
-                        contenu : `We supply a series of design principles, practical patterns and high 
-                        quality design resources (Sketch and Axure), to help people create their product 
-                        prototypes beautifully and efficiently.`, 
-                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" },
-                        {date: '23/10/2020 12:00', 
-                        nom:'La Capsule', 
-                        contenu : `We supply a series of design principles, practical patterns and high 
-                        quality design resources (Sketch and Axure), to help people create their product 
-                        prototypes beautifully and efficiently.`, 
-                        avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" }
-                    ])
-    var liste = listeMessages.map(message => ({value: message.nom}))
+  useEffect( async () => {
+   
+    let rawResponse = await fetch('/getMyChatRoom', {
+      method:'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body : `token=${props.tokenToDisplay}`
+  })
+  
+   let response = await rawResponse.json()
+   console.log(response)
+
+    var tempList = [] 
+   for (let i=0;i<response.result.length;i++){
+      tempList.push({nom : response.result[i].message[0].destinataire, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :'Qy55LG6vyGbCu0f493CkkNS6RHiJexJc', tokenDesti : response.result[i].message[0].tokenDesti })
+   }
+
+   setListeRoom(tempList)
+
+    var liste = listeRoom.map(message => ({value: message.nom}))
     setlisteinterlocuteurs(liste)
-    }, [recherche])
+    }, [])
 
   return (
         <div style={{textAlign:'center', backgroundColor:'#4b6584'}}>
@@ -91,7 +80,7 @@ function MessagerieListe(props) {
                               backgroundSize: "cover",}}>
                 <Col className="gutter-row" span={16}>
                 <div style={{overflowY: 'scroll', height:'400px',  padding:'15px 30px', borderRadius:5}}>
-                      {listeMessages.map((message,i)=>{
+                      {listeRoom.map((message,i)=>{
                           if (message.contenu.length > 50){
                               var contenu=message.contenu.slice(0, 60) + '...'
                           } else {
@@ -100,7 +89,7 @@ function MessagerieListe(props) {
                         
                           return ( 
                              
-                            <MessageCourt key={i} contenu={contenu} avatar={message.avatar} date={message.date} nom={message.nom}/>
+                            <MessageCourt key={i} roomName={message.roomName} myToken={message.myToken} tokenDesti={message.tokenDesti} contenu={contenu} nom={message.nom}/>
                           )
                       })}
                     </div>

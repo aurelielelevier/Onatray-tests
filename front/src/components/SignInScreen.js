@@ -120,15 +120,14 @@ if(!isSignIn){
 }
 function mapDispatchToProps (dispatch) {
     return {
-        
-        onSendSignIn: function(isConnect) { 
-            dispatch({type: 'AddConnect', isConnect}) 
+        onSendToken: function(token) { 
+            dispatch( {type: 'addToken', token:token} ) 
         },
         onSubmitAdress: function(pointAdresse){
             dispatch({type:'AddAdress', adresse:pointAdresse})
         },
-        onSendToken: function(token) { 
-            dispatch( {type: 'addToken', token:token} ) 
+        onSendSignIn: function(isConnect) { 
+            dispatch({type: 'AddConnect', isConnect}) 
         },
         onSendZone: function(zone) { 
             dispatch( {type: 'addZone', zone:zone} ) 

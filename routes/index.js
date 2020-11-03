@@ -7,7 +7,7 @@ var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 var uniqid = require('uniqid');
 const fs = require('fs');
-const rimraf = require('rimraf')
+
 
 var cloudinary = require('cloudinary').v2;
 
@@ -17,6 +17,7 @@ cloudinary.config({
   api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
 });
 
+var chatRoomModel = require('../model/chatRoom')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -88,5 +89,70 @@ router.post('/upload/:token', async function(req, res, next) {
   //   res.json({result: false, message:resultCopy});
   // }
 });
+
+router.post('/createChatRoom', async function(req,res,next){
+
+
+  var expediteur = await restaurantModel.findOne(
+    { token : req.body.expediteur }
+ )
+  var destinataire = await talentModel.findOne(
+    {token : req.body.desti}
+  )
+
+   // console.log('expe ID', expediteur )
+   // console.log('DESTI ID', destinataire)
+
+    var chatRoomTocheck = await chatRoomModel.findOne({
+      name : `chatRoomOf${req.body.expediteur}and${req.body.desti}`
+    })
+    if (chatRoomTocheck){
+      res.json({result:`chat room déja existante entre ${req.body.expediteur} et ${req.body.desti} id : ${chatRoomTocheck.id}`, chatRoomId : chatRoomTocheck.id})
+
+    }else{
+      var newRoom = await new chatRoomModel({
+        name : `chatRoomOf${req.body.expediteur}and${req.body.desti}`
+      })
+      await newRoom.save()
+      await restaurantModel.updateOne({token : req.body.expediteur},{$addToSet:{chatRoom : newRoom.id}})
+      await talentModel.updateOne({token : req.body.desti},{$addToSet:{chatRoom : newRoom.id}})
+      res.json({result : ` création de chatRoomOf${req.body.expediteur}and${req.body.desti} id : ${newRoom.id}`, chatRoomId : newRoom.id})
+    }
+
+
+})
+
+router.post('/getOldMessage',async function(req,res,next){
+  var talentToFind = await talentModel.findOne({token:req.body.token})
+ 
+
+  let chatRoomId = req.body.chatRoomId
+  var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
+  if(chatRoomToFind){
+    res.json({result : chatRoomToFind.message, card: talentToFind})
+  }else {
+    res.json({result : 'no old messages', card: talentToFind})
+  }
+
+//console.log('body',req.body.token)
+
+
+
+})
+
+router.post('/getMyChatRoom', async function(req,res,next){
+  console.log(req.body.token)
+  var talentToFind = await talentModel.findOne({token: req.body.token}).populate('chatRoom').exec()
+  console.log(talentToFind)
+  if(talentToFind){
+    //console.log(talentToFind.chatRoom)
+    res.json({result : talentToFind.chatRoom})
+  }else{
+    var restauToFind = await restaurantModel.findOne({token:req.body.token}).populate('chatRoom').exec()
+    //console.log(restauToFind.chatRoom)
+    res.json({result : restauToFind.chatRoom})
+  }
+})
+
 
 module.exports = router;
