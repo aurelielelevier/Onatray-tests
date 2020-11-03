@@ -34,6 +34,7 @@ function MonProfilRestaurant(props) {
     }
 
     useEffect(() => {
+        console.log(props.tokenToDisplay)
         async function cherche() {
             var chercheProfil = await fetch(`/restaurants/profil/${props.tokenToDisplay}`);
             var profil = await chercheProfil.json()
@@ -87,6 +88,7 @@ function MonProfilRestaurant(props) {
     return(
         <div>
           <HeaderRestaurant keyheader='5'/>
+
           <div style={{ textAlign:'center', justifyContents:'center'}}>
           <div style={{height:'300px', 
                         backgroundImage:`url(${restaurant.photo})`, 
@@ -141,7 +143,7 @@ function MonProfilRestaurant(props) {
 }
 
 function mapStateToProps(state) {
-    return {profilToDisplay: state.profil, tokenToDisplay: state.token}
+    return {tokenToDisplay: state.token}
     }
 
 export default connect(
