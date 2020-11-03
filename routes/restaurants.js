@@ -69,32 +69,33 @@ if (jobminuscule== 'tous les postes'){
     lookingJob:{$in:jobminuscule }
   }).populate('formation').populate('experience').exec()
 }
-  res.json({liste:responseAenvoyer})
+let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+
+  res.json({liste:responseAenvoyer,restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
  })
 
- 
-  router.post('/getwishlist', async function(req,res,next){
-    let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-    let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
-   res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
-  
-  })
 
  router.post('/addToWishList', async function (req,res,next){
-  
-   if(req.body.isinWishlist == 'false'){
-  console.log("add to wishlist")
 
-await restaurantModel.updateOne({token:req.body.token},{$addToSet:{wishlistRestaurant:req.body.talent}})
-}else{
-  console.log('delete from wishlist')
-  await restaurantModel.updateOne({token:req.body.token},{ $pull:{wishlistRestaurant:{$in:`${req.body.talent}`}}}
-  )
-}
 
-var wishlist=restaurantModel.findOne({token:req.body.token})
+  var user = await restaurantModel.findOne({token: req.body.token})
+    var talent = await talentModel.findOne({_id: req.body.id})
+      console.log(talent)  
 
- res.json({wishlist:wishlist.wishlistRestaurant})
+      if(user.wishlistRestaurant.includes(talent.id)){ 
+           await restaurantModel.updateOne({token: req.body.token}, { $pull: {wishlistRestaurant:{ $in:`${req.body.id}` }} })
+      console.log('retrait whishlist')  
+    } else {
+       await restaurantModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistRestaurant:req.body.id}})
+      console.log('ajout whishlist')}
+
+
+var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+var wishlist= await restaurantModel.findOne({token:req.body.token})
+console.log("wishlist.wishlistRestaurant",wishlist.wishlistRestaurant)
+
+ res.json({restaurantwishlistid:wishlist.wishlistRestaurant,liste:responseAenvoyer})
  })
 
 
