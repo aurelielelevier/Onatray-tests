@@ -90,9 +90,9 @@ var listformationshorten= formations.map((formation,i) =>{
     return(`  -  -  - \n`) }
 })
 }
-// if (goToChatRoom == true){
-//     return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
-//  }else{
+if (goToChatRoom == true){
+    return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
+ }else{
 
 
 
@@ -193,7 +193,7 @@ var listformationshorten= formations.map((formation,i) =>{
     
         )
  }
-
+}
   
 
 
