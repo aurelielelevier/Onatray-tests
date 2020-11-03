@@ -34,17 +34,13 @@ import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
 import profil from './reducers/profil';
-import talentInfo from './reducers/talentInfo';
-import talentCompletInfo from './reducers/talentCompletInfo';
-import talentLocalisationInfo from './reducers/talentLocalisationInfo';
-import restauInfo from './reducers/restauInfo';
-import restauCompletInfo from './reducers/restauCompletInfo';
-import ChatroomId from './reducers/chatRoomId'
 
+import ChatroomId from './reducers/chatRoomId'
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
 import WishlistRestaurants from './components/wishlistRestaurants';
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo, ChatroomId}));
+
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil, ChatroomId}));
 
 export default function App() {
   return (

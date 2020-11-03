@@ -171,7 +171,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                         <Row style={{paddingBottom:5}}>
                             <span style={{paddingLeft:5, fontSize:10}}>NOM </span>
-                            <Col span={24} style={{ backgroundColor:'#FED330', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                            <Col span={24} style={{ backgroundColor:'#FED330',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                 <span >{message.message}</span>
                             </Col>
                         </Row>
@@ -184,7 +184,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                         <Row style={{paddingBottom:5}}>
                             <span style={{paddingLeft:5, fontSize:10}}>NOM</span>
-                            <Col span={24} style={{ backgroundColor:'red', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                            <Col span={24} style={{ backgroundColor:'red',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                 <span >{message.message}</span>
                             </Col>
                     </Row>

@@ -91,6 +91,7 @@ async function cherche(){
         if(typedecontrat==[]){
             settypedecontrat(listetypedecontrat)
         }
+
 var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
 var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
     method:'POST',
@@ -99,6 +100,7 @@ var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
 })
     var response = await rechercheListe.json()
     settalentaafficher(response.liste)
+    
  }
 cherche()
     },[posterecherché,typedecontrat,rechercheeffectuée])

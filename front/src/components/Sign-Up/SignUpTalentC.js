@@ -166,9 +166,6 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
   return {
-    onSendInfo : function(talentLocalisationInfo){
-        dispatch({type:'addLocalisationInfo', talentLocalisationInfo })
-    },
     onSendZone: function(zone) { 
       dispatch( {type: 'addZone', zone} ) 
   },
