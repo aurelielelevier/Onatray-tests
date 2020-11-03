@@ -28,7 +28,7 @@ function HeaderRestaurant(props) {
       </Menu.Item>
     </Menu>)
   if(!props.tokenToDisplay){
-     console.log(props.tokenToDisplay, 'props.tokentodisplay')
+     console.log(props.tokenToDisplay, 'déconnecté')
      return( <Redirect to='/'/>)
    } else {
      console.log(props.tokenToDisplay, 'TOKEN')
