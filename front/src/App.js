@@ -30,7 +30,6 @@ import MonProfilTalentt from './components/Talents/MonProfilTalent';
 import token from './reducers/token'
 import isConnect from './reducers/connect';
 import restoaafficher from './reducers/restoaafficher';
-import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
 import profil from './reducers/profil';
@@ -40,7 +39,7 @@ import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
 import WishlistRestaurants from './components/wishlistRestaurants';
 
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil, ChatroomId}));
+const store = createStore(combineReducers({token, isConnect, restoaafficher, adresse, zone, profil, ChatroomId}));
 
 export default function App() {
   return (

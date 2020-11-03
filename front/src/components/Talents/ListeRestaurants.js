@@ -3,10 +3,9 @@ import '../../App.less';
 import '../../index.less'
 import 'antd/dist/antd.less';
 import ListeCardsRestaurants from './ListeCardsRestaurants'
-import { Layout, Card, Row, Button, Checkbox, Col, Select, Form, Modal, Rate} from 'antd';
+import { Layout, Card, Row, Button, Col, Select, Form, Modal, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
-import { Map, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
-import L from 'leaflet';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import HeaderTalent from '../HeaderTalent'
 import {connect} from 'react-redux';
 const { Meta } = Card;
@@ -15,8 +14,6 @@ const listePrix = [0, 1, 2]
 const listeCuisines = ['francaise', 'italienne', 'japonaise', 'healthy' ]
 const listeTypes = ['touristique', 'quartier', 'jeune', 'agée']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
-
-
 
 const zoneFrance= [
     [ -5.3173828125, 48.458124202908934 ],
@@ -51,20 +48,20 @@ function ListeRestaurants(props){
             }
         }
     }
-
+    
     async function whishlist (id){
         var rawResponse = await fetch(`/talents/whishlist`, {
-             method:'POST',
-             headers: {'Content-Type':'application/x-www-form-urlencoded'},
-             body: `token=${token}&restaurant=${id}`
-         })
-         
-         var response = await rawResponse.json()
-         colorationCoeur(response.liste, response.whishlist)
-         setListedesRestaurants(response.liste)   
-     }
-
-     useEffect(() => {
+            method:'POST',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body: `token=${token}&restaurant=${id}`
+        })
+        
+        var response = await rawResponse.json()
+        colorationCoeur(response.liste, response.whishlist)
+        setListedesRestaurants(response.liste)   
+    }
+    
+    useEffect(() => {
         async function cherche(){
             if(ambianceCochee==[]){
                 setAmbiancecochee(listeAmbiances)
@@ -86,13 +83,12 @@ function ListeRestaurants(props){
             })
             var response = await rechercheListe.json()
             colorationCoeur(response.liste, response.whishlist)
-            props.onSubmitformulaire(response.liste)
             setListedesRestaurants(response.liste)
         }
         cherche()
     }, [])
-
-     useEffect(() => {
+    
+    useEffect(() => {
         async function cherche(){
             if(ambianceCochee==[]){
                 setAmbiancecochee(listeAmbiances)
@@ -114,7 +110,6 @@ function ListeRestaurants(props){
             })
             var response = await rechercheListe.json()
             colorationCoeur(response.liste, response.whishlist)
-            props.onSubmitformulaire(response.liste)
             setListedesRestaurants(response.liste)
         }
         cherche()
@@ -123,15 +118,6 @@ function ListeRestaurants(props){
     const onclick = (resto) => {
         setRestoAAfficher(resto);
         setVisible(true);
-    }
-
-    function onChange(e) {
-        if(!e.target.cheked){
-            console.log(props.zoneToDisplay, 'zoneToDisplay')
-            setZone(props.zoneToDisplay)
-        } else {
-            setZone(zoneFrance)
-        };
     }
 
     var cuisine = ' '
@@ -175,11 +161,11 @@ function ListeRestaurants(props){
     }
       
     return(
-    <div >
+      <div >
         
         <HeaderTalent keyheader='2'/>
         <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Les restaurants inscrits</Row>
-        { <Modal
+        <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
             centered
             cancelText='Revenir à la liste'
@@ -195,11 +181,10 @@ function ListeRestaurants(props){
             }
           >
                 
-              <Card
-                hoverable
-                style={{ width: '80vw' }}
-                // cover={<img alt="example" src="https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg" />}
-            >
+                <Card
+                    hoverable
+                    style={{ width: '80vw' }}
+                >
                 
                 <Meta   
                         description={  
@@ -210,14 +195,13 @@ function ListeRestaurants(props){
                             </div>
                         } 
                         />
-            </Card>
-            <Card
-                hoverable
-                style={{ width: '100%' }}
-            >
+                </Card>
+                <Card
+                    hoverable
+                    style={{ width: '100%' }}
+                >
                 
-                <Meta   
-                        //title= 
+                    <Meta
                         description={  
                             <div>
                                 <Row style={{marginTop:'20px'}}>
@@ -243,12 +227,13 @@ function ListeRestaurants(props){
                                 </Row>
                             </div>
                         } 
-                        />
-            </Card>
+                    />
+                </Card>
             
-          </Modal> }
+        </Modal>
 
         <Row style={style.row2}>
+
             <Col span={6}>
                 Type d'ambiance :
                 <Form.Item >
@@ -280,10 +265,10 @@ function ListeRestaurants(props){
                             <Option value={0}>€</Option>
                             <Option value={1}>€€</Option>
                             <Option value={2}>€€€</Option>
-                    
                         </Select>
                 </Form.Item>
             </Col>
+
             <Col span={6}>
                 Type de cuisine :
                 <Form.Item >
@@ -296,11 +281,12 @@ function ListeRestaurants(props){
                         classNamePrefix="select">
                     {listeCuisines.map((e, i)=>{
                         return (<Option key={e + i} value={e}>{e}</Option>)
-                    })}
-                
+                    })
+                    }
                     </Select>
                 </Form.Item>
             </Col>
+
             <Col span={6}>
                 Type de restaurant :
                 <Form.Item >
@@ -313,7 +299,8 @@ function ListeRestaurants(props){
                         classNamePrefix="select">
                     {listeTypes.map((e, i)=>{
                         return (<Option key={e + i} value={e}>{e}</Option>)
-                    })}
+                    })
+                    }
                 
                     </Select>
                 </Form.Item>
@@ -321,12 +308,14 @@ function ListeRestaurants(props){
         </Row> 
 
         <Row style={style.row} >
+
             <Button onClick={()=>{{ 
                                     setZone(props.zoneToDisplay);
                                 }}
                             } 
                             type="primary"
                             style={{marginLeft:'30px'}}> Afficher les restaurants dans ma zone de recherche </Button>
+            
             <Button onClick={()=>{{ 
                                     setTypeRestaurantcochee(listeTypes); 
                                     setAmbiancecochee(listeAmbiances); 
@@ -345,12 +334,12 @@ function ListeRestaurants(props){
                 <Col span={12} >
                     <Card style={{ border:'none', width: '100%', textAlign:'center', backgroundColor:'#fed330', marginTop:'30px' }}>
                         <div>
-                        <Map center={latlngDomicile} zoom={12} onClick={(e) => { console.log(e)}}>
+                        <Map center={latlngDomicile} zoom={12}>
                             <TileLayer
                                 url="http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} "
                                 attribution='&copy; <a href="http://osm.org/copyright">"OpenStreet"Map</a> contributors'
                                 />
-                                {/* <CircleMarker center={[48.0, 2.33]} pathOptions={{color:'red'}} radius={100}></CircleMarker> */}
+                                {/* Affiche un marker à l'adresse de tous les restaurants avec une Popup qui mentionne leurs coordonnées  */}
                                  {listedesRestaurants.map((restaurant,i)=>{ 
                                         return (<Marker position={[restaurant.adresselgtlat.coordinates[1], restaurant.adresselgtlat.coordinates[0]]}>
                                                     <Popup ><div onClick={()=> onclick(restaurant)}>
@@ -370,11 +359,12 @@ function ListeRestaurants(props){
                 </Col>
 
                 <Col span={12} style={{margin:'30px 0px'}}>
+                    {/* Composant liste des restaurants : */}
                     <ListeCardsRestaurants liste={listedesRestaurants} onclick={onclick} whishlist={whishlist}/>
                 </Col>
             </Row>
         </Layout>
-    </div>
+      </div>
     )
 }
 
@@ -406,15 +396,6 @@ const style= {
         margin:'0px 20px'
     }
 }
-
-
-function mapDispatchToProps(dispatch) {
-    return {
-      onSubmitformulaire: function(liste) { 
-          dispatch( {type: 'listerestoaafficher', liste} ) 
-      }
-    }
-  }
   
 function mapStateToProps(state) {
 return {tokenToDisplay: state.token, adresseToDisplay: state.adresse, zoneToDisplay: state.zone}
@@ -422,5 +403,5 @@ return {tokenToDisplay: state.token, adresseToDisplay: state.adresse, zoneToDisp
 
 export default connect(
     mapStateToProps, 
-    mapDispatchToProps
+    null
 )(ListeRestaurants);
