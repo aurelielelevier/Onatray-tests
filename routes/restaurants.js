@@ -60,29 +60,30 @@ router.get('/getinformation', async function(req,res,next){
  })
 
 router.post('/recherche-liste-talents',async function(req,res,next){
+// renvoi un tableau filtré en fonction des critères choisis
   var données= JSON.parse(req.body.criteres)
-console.log('lowercase',données.posterecherché.toLowerCase())
-
-
-var jobminuscule=données.posterecherché.toLowerCase()
-console.log(jobminuscule)
-if (jobminuscule== 'tous les postes'){
-  var responseAenvoyer=await talentModel.find()
-}else{
+  var jobminuscule=données.posterecherché.toLowerCase()
+  if (jobminuscule== 'tous les postes'){
+  var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+  }else{  
   var responseAenvoyer = await talentModel.find({
     lookingJob:{$in:jobminuscule }
-  })
+  }).populate('formation').populate('experience').exec()
 }
-  res.json({liste:responseAenvoyer})
+//renvoi la wishlist:
+var restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+var restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+
+  res.json({liste:responseAenvoyer,restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
  })
 
  
-  router.post('/getwishlist', async function(req,res,next){
-    let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-    let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
-   res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
+  // router.post('/getwishlist', async function(req,res,next){
+  //   let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+  //   let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+  //  res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
   
-  })
+  // })
 
  router.post('/addToWishList', async function (req,res,next){
   

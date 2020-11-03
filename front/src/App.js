@@ -22,7 +22,6 @@ import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
 import RecherchetalentA from './components/RecherchetalentA';
-import WishlistRestaurants from './components/wishlistRestaurants';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
@@ -44,8 +43,13 @@ import ChatroomId from './reducers/chatRoomId'
 
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
+<<<<<<< HEAD
 
 const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo, ChatroomId}));
+=======
+import WishlistRestaurants from './components/wishlistRestaurants';
+const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil,talentInfo, talentCompletInfo, talentLocalisationInfo, restauInfo, restauCompletInfo}));
+>>>>>>> filtrewishlist
 
 export default function App() {
   return (
