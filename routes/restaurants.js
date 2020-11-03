@@ -25,8 +25,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/createAccount', async function(req,res,next){
   console.log(JSON.parse(req.body.lnglat))
-  var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg";
-  var salt = uid2(32);
+  var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
+  var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
   if(restauToCheck === null){
     var newRestau = await new restaurantModel({
@@ -35,15 +35,14 @@ router.post('/createAccount', async function(req,res,next){
       salt : salt,
       password : SHA256(req.body.restaurantPassword + salt).toString(encBase64),
       token: uid2(32), 
-      photo : avatar,
-      siret: req.body.restaurantSiret,
+      siret : avatar,
+      //req.body.restaurantSiret,
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
       adresselgtlat: JSON.parse(req.body.lnglat),
 
     })
-    console.log(avatar)
     var restauSaved = await newRestau.save();
     if(restauSaved){
       res.json({token:restauSaved.token, adresse:restauSaved.adresselgtlat, profil: restauSaved})
@@ -60,30 +59,26 @@ router.get('/getinformation', async function(req,res,next){
  })
 
 router.post('/recherche-liste-talents',async function(req,res,next){
-// renvoi un tableau filtré en fonction des critères choisis
   var données= JSON.parse(req.body.criteres)
-  var jobminuscule=données.posterecherché.toLowerCase()
-  if (jobminuscule== 'tous les postes'){
+
+var jobminuscule=données.posterecherché.toLowerCase()
+if (jobminuscule== 'tous les postes'){
   var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
-  }else{  
+}else{
   var responseAenvoyer = await talentModel.find({
     lookingJob:{$in:jobminuscule }
   }).populate('formation').populate('experience').exec()
 }
-//renvoi la wishlist:
-var restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-var restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
-
-  res.json({liste:responseAenvoyer,restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
+  res.json({liste:responseAenvoyer})
  })
 
  
-  // router.post('/getwishlist', async function(req,res,next){
-  //   let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-  //   let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
-  //  res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
+  router.post('/getwishlist', async function(req,res,next){
+    let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+    let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+   res.json({restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
   
-  // })
+  })
 
  router.post('/addToWishList', async function (req,res,next){
   
@@ -112,12 +107,5 @@ router.put('/informations', async function(req,res,next){
   console.log(prix, 'prix', type, 'type', cuisine, 'cuisine')
   await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix, siret:req.body.avatar})
 })
-
-router.get('/profil/:token', async function( req, res, next){
-  var user = await (await restaurantModel.findOne({token: req.params.token}))
-  console.log(user)
-  res.json(user)
-})
-
 
 module.exports = router;
