@@ -110,7 +110,7 @@ var listformationshorten= formations.map((formation,i) =>{
                     cover={
                     <img
                         alt="image"
-                        src={props.src}
+                        src={talent.avatar}
                         
                     />
                     }
