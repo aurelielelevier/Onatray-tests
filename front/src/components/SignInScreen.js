@@ -47,8 +47,8 @@ function SignInScrenn(props){
             setIsTalent(true)
          
          }else if (response.result == true && response.type=='restaurant'){
-            props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
             props.onSendToken(response.token)
+            props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
             props.onSubmitAdress(response.adresse)
             props.onLogin(response.profil)
             setIsRestau(true)
