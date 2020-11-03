@@ -60,6 +60,7 @@ const [posterecherché,setposterecherché]=useState('tous les postes')
 const [typedecontrat,settypedecontrat]=useState(listetypedecontrat)
 const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 
+
 useEffect(() => {
 var getTalentdata = async ()=> {
     const dataTalent = await fetch(`/restaurants/getinformation`)
@@ -75,13 +76,14 @@ var getwishlist = async ()=>{
             body: `token=${token}`})
         const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
         setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
+        console.log('Jsdata',JSdatawishlistRestaurant.restaurantwishlistid)
     }
     getwishlist()
 
 },[])
 
-useEffect(()=>{
 
+useEffect(()=>{
 async function cherche(){
         if (posterecherché==[]){
             setposterecherché(listeposterecherché)
@@ -102,10 +104,13 @@ cherche()
     },[posterecherché,typedecontrat,rechercheeffectuée])
 
 
-var talentslist = talentaafficher.map((talents,i) => {
+var talentslist = talentaafficher.map((e,i) => {
+    console.log('wishlistrestoID',wishlistRestaurantID)
         return (
-           <Cardtalent key={i} src={talents.src} talent={talents} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
+           <Cardtalent key={i} src={e.src} talent={e} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
         )})
+
+
 
 return(
                      
@@ -114,7 +119,7 @@ return(
 
 <Row style={{backgroundColor:"#4B6584", height:"150px", display:"flex", justifyContent:"center", alignItems:'center', marginBottom:"15px"}}>
     
-    <Col span={18} >
+ <Col span={18} >
     <Form name="complex-form"  autoComplete="off" layout='inline'>
         <Col flex={2}>
                 <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
@@ -162,9 +167,9 @@ return(
             <Button onClick={Submitform()} type="primary" > Rechercher</Button>
             </Form.Item>
     </Form>
-</Col>
+ </Col>
 </Row>
-<Row style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
+<Row type='flex' style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
 
     {talentslist}
     
