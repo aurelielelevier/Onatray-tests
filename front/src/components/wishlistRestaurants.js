@@ -31,11 +31,11 @@ const listetypedecontrat=["CDI","CDD","Extra","Mi Temps","Interim"]
 
 function WishlistRestaurants(props) {
 
-// const Submitform = values => {
-//         console.log('Received values of form:', values);
-//         console.log(posterecherché)
-//         console.log(typedecontrat)
-//         };
+const Submitform = values => {
+        console.log('Received values of form:', values);
+        console.log(posterecherché)
+        console.log(typedecontrat)
+        };
 
 // Etat et condition permettant de mettre à jour le header en fonction du status de l'utilisateur connecté:
 const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)

@@ -114,7 +114,7 @@ if(!isSignIn){
 }else if(isSignIn && isTalent){
     <Redirect to='/restaurants'/>
 }else if(isSignIn && isRestau){
-    <Redirect to='/recherchetalentA'/>
+    <Redirect to='/recherchetalent'/>
 }
 
 }

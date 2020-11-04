@@ -60,13 +60,23 @@ router.get('/getinformation', async function(req,res,next){
 
 router.post('/recherche-liste-talents',async function(req,res,next){
   var données= JSON.parse(req.body.criteres)
-
+  var restaurant = await restaurantModel.findOne({token:req.body.token})
 var jobminuscule=données.posterecherché.toLowerCase()
 if (jobminuscule== 'tous les postes'){
+  console.log('tous les postes')
   var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
-}else{
+}else {
+  console.log(('chargement avec tri'))
   var responseAenvoyer = await talentModel.find({
-    lookingJob:{$in:jobminuscule }
+    lookingJob:{$in:jobminuscule },
+    polygone: {
+      $geoIntersects: {
+         $geometry: {
+            type: "Point" ,
+            coordinates: restaurant.adresselgtlat.coordinates,
+         }
+      }
+    }
   }).populate('formation').populate('experience').exec()
 }
 let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()

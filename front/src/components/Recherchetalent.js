@@ -66,7 +66,7 @@ const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 useEffect(() => {
 async function loaddata(){
 
-var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone, adresse:props.profilToDisplay.adresselgtlat.coordinates})
 var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
     method:'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -89,7 +89,7 @@ useEffect(()=>{
                 settypedecontrat(listetypedecontrat)
             }
 
-    var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+    var criteres = JSON.stringify({posterecherché: posterecherché})
     var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
         method:'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -196,7 +196,7 @@ return(
 }
 
 function mapStateToProps(state) {
-    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token, profilToDisplay: state.profil}
   }
     
   export default connect(
