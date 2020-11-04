@@ -124,7 +124,7 @@ router.post('/createChatRoom', async function(req,res,next){
 
 router.post('/getOldMessage',async function(req,res,next){
   var talentToFind = await talentModel.findOne({token:req.body.token})
- 
+  
 
   let chatRoomId = req.body.chatRoomId
   var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
@@ -141,7 +141,7 @@ router.post('/getOldMessage',async function(req,res,next){
 })
 
 router.post('/getMyChatRoom', async function(req,res,next){
-  console.log(req.body.token)
+  console.log('token : ',req.body.token)
   var talentToFind = await talentModel.findOne({token: req.body.token}).populate('chatRoom').exec()
   console.log(talentToFind)
   if(talentToFind){

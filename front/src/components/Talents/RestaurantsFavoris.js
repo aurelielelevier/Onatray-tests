@@ -2,23 +2,31 @@ import React, {useState, useEffect} from 'react'
 import '../../App.less';
 import '../../index.less'
 import 'antd/dist/antd.less';
-import ListeCardsRestaurants from './ListeCardsRestaurants'
 import { Layout, Card, Row, Col, Modal, Rate} from 'antd';
+
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+
+import ListeCardsRestaurants from './ListeCardsRestaurants'
 import HeaderTalent from '../HeaderTalent'
+
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom'
+
 const { Meta } = Card;
 
 
 function RestaurantsFavoris(props){
 
     const token = props.tokenToDisplay
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
 
     const [listedesRestaurants, setListedesRestaurants] = useState([])
-    const[restoAAfficher, setRestoAAfficher] = useState({})
-    const[visible, setVisible] = useState(false)
+    const [restoAAfficher, setRestoAAfficher] = useState({})
+    const [visible, setVisible] = useState(false)
     
     function colorationCoeur(liste, whishlist){
         for(var i=0; i<liste.length; i++){
@@ -100,7 +108,10 @@ function RestaurantsFavoris(props){
     } else {
         var prix = '--'
     }
-      
+
+      if(!isSignIn){
+      return <Redirect to="/"/>
+    }else{
     return(
     <div >
         
@@ -211,7 +222,7 @@ function RestaurantsFavoris(props){
         </Layout>
     </div>
     )
-}
+}}
 
 const style= {
     row: {
@@ -252,7 +263,7 @@ function mapDispatchToProps(dispatch) {
   }
   
   function mapStateToProps(state) {
-    return {tokenToDisplay: state.token, adresseToDisplay: state.adresse}
+    return {tokenToDisplay: state.token,connectToDisplay: state.isConnect, adresseToDisplay: state.adresse}
   }
   export default connect(
       mapStateToProps, 

@@ -37,7 +37,8 @@ const Submitform = values => {
         console.log(typedecontrat)
         };
 
-
+console.log(props.connectToDisplay)
+console.log(props.tokenToDisplay)
 const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
 const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
 const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)

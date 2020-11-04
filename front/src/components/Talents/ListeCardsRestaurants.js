@@ -88,7 +88,7 @@ function mapDispatchToProps(dispatch) {
   }
 
   function mapStateToProps(state) {
-    return { listeToDisplay : state.listerestoaafficher}
+    return { listeToDisplay : state.listerestoaafficher, tokenToDisplay: state.token}
   }
     
   export default connect(

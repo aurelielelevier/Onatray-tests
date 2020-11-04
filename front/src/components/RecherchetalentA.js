@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 import 'antd/dist/antd.less';
 import '../App.less'
@@ -30,6 +31,7 @@ function RecherchetalentA(props) {
     
     const listeposterecherché=["Serveur","Cuisiner","Comis","Runner"]
     const listetypedecontrat=["CDI","CDD","Extra","Mi Temps","Interim"]
+
 
     const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
@@ -62,6 +64,9 @@ const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 
 
 useEffect(() => {
+console.log('token',props.tokenToDisplay)
+console.log('connect',props.connectToDisplay)
+
 var getTalentdata = async ()=> {
     const dataTalent = await fetch(`/restaurants/getinformation`)
       const JSdataTalent = await dataTalent.json()
@@ -76,7 +81,7 @@ var getwishlist = async ()=>{
             body: `token=${token}`})
         const JSdatawishlistRestaurant = await datawishlistRestaurant.json()
         setwishlistRestaurantID(JSdatawishlistRestaurant.restaurantwishlistid)
-        console.log('Jsdata',JSdatawishlistRestaurant.restaurantwishlistid)
+       // console.log('Jsdata',JSdatawishlistRestaurant.restaurantwishlistid)
     }
     getwishlist()
 
@@ -107,83 +112,88 @@ cherche()
 
 
 var talentslist = talentaafficher.map((e,i) => {
-    console.log('wishlistrestoID',wishlistRestaurantID)
+    //console.log('wishlistrestoID',wishlistRestaurantID)
         return (
            <Cardtalent key={i} src={e.src} talent={e} wishlistRestaurantID={wishlistRestaurantID} token={token}/>
         )})
 
 
+// if(!isSignIn){
+//     return <Redirect to="/"/>
+// }else {
 
-return(
-                     
-<div>
-{header}
-
-<Row style={{backgroundColor:"#4B6584", height:"150px", display:"flex", justifyContent:"center", alignItems:'center', marginBottom:"15px"}}>
+    return(
+                         
+    <div>
+    {header}
     
- <Col span={18} >
-    <Form name="complex-form"  autoComplete="off" layout='inline'>
-        <Col flex={2}>
-                <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
-                    <Select 
-                    showSearch
-                    onChange={(e)=>setposterecherché(e)}
-                   
-                    name={'Poste recherché'}
-                    className="basic-multi-select"
-                    classNamePrefix="select">
-                        <Option value='Tous les postes'>Tous les postes</Option>
-                        <Option value='Serveur'>Serveur</Option>
-                        <Option value='Cuisiner'>Cuisinier</Option>
-                        <Option value='Manager'>Manager</Option>
-                        <Option value='Comis'>Comis</Option>
-                        <Option value='Chef de rang'>Chef de rang</Option>
-                        <Option value='Runner'>Runner</Option>
-                        <Option value='Sommelier'>Sommelier</Option>
-                        <Option value='chef'>Chef </Option>
-                        <Option value='chefDePartie'>Chef de partie</Option>
-                        <Option value='Second'>Second</Option>
-                        <Option value='plongeur'>Plongeur</Option>
-                    </Select>
-                </Form.Item>
-            </Col>
-
-            <Col flex={3}>
-                <Form.Item label="Type de contrat">
-                    <Select 
-                    showSearch
+    <Row style={{backgroundColor:"#4B6584", height:"150px", display:"flex", justifyContent:"center", alignItems:'center', marginBottom:"15px"}}>
         
-                    onChange={(e)=>settypedecontrat(e)}
-                    name={'language'}
-                    className="basic-multi-select"
-                    classNamePrefix="select">
-                        <Option value='CDI'>CDI</Option>
-                        <Option value='CDD'>CDD</Option>
-                        <Option value='Mi Temps'>Mi Temps</Option>
-                        <Option value='Interim<'>Interim</Option>
-                
-                    </Select>
-                </Form.Item>
-            </Col>
-            <Form.Item>
-            <Button onClick={Submitform()} type="primary" > Rechercher</Button>
-            </Form.Item>
-    </Form>
- </Col>
-</Row>
-<Row type='flex' style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
-
-    {talentslist}
+     <Col span={18} >
+        <Form name="complex-form"  autoComplete="off" layout='inline'>
+            <Col flex={2}>
+                    <Form.Item label="Poste recherché" style={{color: '#ffffff'}}>
+                        <Select 
+                        showSearch
+                        onChange={(e)=>setposterecherché(e)}
+                       
+                        name={'Poste recherché'}
+                        className="basic-multi-select"
+                        classNamePrefix="select">
+                            <Option value='Tous les postes'>Tous les postes</Option>
+                            <Option value='Serveur'>Serveur</Option>
+                            <Option value='Cuisiner'>Cuisinier</Option>
+                            <Option value='Manager'>Manager</Option>
+                            <Option value='Comis'>Comis</Option>
+                            <Option value='Chef de rang'>Chef de rang</Option>
+                            <Option value='Runner'>Runner</Option>
+                            <Option value='Sommelier'>Sommelier</Option>
+                            <Option value='chef'>Chef </Option>
+                            <Option value='chefDePartie'>Chef de partie</Option>
+                            <Option value='Second'>Second</Option>
+                            <Option value='plongeur'>Plongeur</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
     
-</Row>
-
-</div>
-
-    )
-}
+                <Col flex={3}>
+                    <Form.Item label="Type de contrat">
+                        <Select 
+                        showSearch
+            
+                        onChange={(e)=>settypedecontrat(e)}
+                        name={'language'}
+                        className="basic-multi-select"
+                        classNamePrefix="select">
+                            <Option value='CDI'>CDI</Option>
+                            <Option value='CDD'>CDD</Option>
+                            <Option value='Mi Temps'>Mi Temps</Option>
+                            <Option value='Interim<'>Interim</Option>
+                    
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Form.Item>
+                <Button onClick={Submitform()} type="primary" > Rechercher</Button>
+                </Form.Item>
+        </Form>
+     </Col>
+    </Row>
+    <Row type='flex' style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
+    
+        {talentslist}
+        
+    </Row>
+    
+    </div>
+    
+        )
+    }   
+//}
 
 function mapStateToProps(state) {
-    return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}
+    
+    return {tokenToDisplay: state.token, connectToDisplay : state.isConnect }
   }
     
   export default connect(

@@ -30,23 +30,30 @@ function SignInScrenn(props){
         })
 
         let response = await rawResponse.json()
-        console.log('reponse',response)
+        //console.log('reponse',response)
         if ( response.result == 'Error'){
             setErrorMessage('Email ou mot de passe incorrect')
          }
          else if(response.result === true && response.type==='talent'){
-            console.log(response)
+            console.log('response talent',response)
             props.onSubmitAdress(response.adresse);
             props.onSendZone(response.zone);
             props.onLogin(response.profil);
             props.onSendToken(response.token);
             props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false});
            
-            console.log(response)
-            setIsSignIn(true)
+           
             setIsTalent(true)
+            setIsSignIn(true)
          
          }else if (response.result == true && response.type=='restaurant'){
+
+
+            console.log(response)
+            console.log(response.token)
+            console.log(response.result)
+
+            
             props.onSendToken(response.token)
             props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true})
             props.onSubmitAdress(response.adresse)
@@ -100,11 +107,9 @@ if(!isSignIn){
                     <Checkbox>Se souvenir de moi</Checkbox>
                 </Form.Item>
                 <Form.Item style={{paddingTop:'20px'}}>
-                    <Link to='/'>
-                        <Button onClick={()=>sendFormValues()} type="primary" htmlType="submit" className="login-form-button"> 
-                        Se connecter
-                        </Button>   
-                    </Link>     
+                    <Button onClick={()=>sendFormValues()} type="primary" htmlType="submit" className="login-form-button"> 
+                    Se connecter
+                    </Button>   
                 </Form.Item>
             </Form>
             </Row>
@@ -112,22 +117,23 @@ if(!isSignIn){
         </Row>
     )
 }else if(isSignIn && isTalent){
-    <Redirect to='/restaurants'/>
+   return <Redirect to='/restaurants'/>
+
 }else if(isSignIn && isRestau){
-    <Redirect to='/recherchetalentA'/>
+  return <Redirect to='/recherchetalentA'/>
 }
 
 }
 function mapDispatchToProps (dispatch) {
     return {
-        onSendToken: function(token) { 
-            dispatch( {type: 'addToken', token:token} ) 
+        onSendSignIn: function(isConnect) { 
+            dispatch( {type: 'addConnect', isConnect : isConnect} ) 
         },
+        onSendToken: function(token) { 
+            dispatch( {type: 'addToken', token} ) 
+         },
         onSubmitAdress: function(pointAdresse){
             dispatch({type:'AddAdress', adresse:pointAdresse})
-        },
-        onSendSignIn: function(isConnect) { 
-            dispatch({type: 'AddConnect', isConnect}) 
         },
         onSendZone: function(zone) { 
             dispatch( {type: 'addZone', zone:zone} ) 
@@ -137,7 +143,7 @@ function mapDispatchToProps (dispatch) {
         }
         }
     }
-  
+
   export default connect(
       null, 
       mapDispatchToProps
