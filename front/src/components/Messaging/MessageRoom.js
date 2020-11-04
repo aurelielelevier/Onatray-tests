@@ -24,7 +24,6 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [myToken, setMyToken] = useState('')
     const [sender, setSender] = useState('')
     const [desti, setDesti] = useState('')
-    //var talentInfo
     
     const [messageList, setMessageList] = useState([])
     const [messageToSend, setMessageToSend] = useState('')
@@ -97,27 +96,30 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
             }
             setMessageList(tempMessageTab)
-            console.log(response.card)
-            setAvatar(response.card.avatar)
-            setFirstNameTalent(response.card.firstName)
-            setLastNameTalent(response.card.lastName)
+            
+           
+                console.log(response.card)
+                setAvatar(response.card.avatar)
+                setFirstNameTalent(response.card.firstName)
+                setLastNameTalent(response.card.lastName)
 
-            if(response.card.working == true){
-                setIsWorking('En poste')
-            }else{
-                setIsWorking("N'as pas de poste")
-            }
-            if(response.card.lookingForJob == true){
-                setIsLookingFor("en recherche d'emploie")
-                //setLookingFor(response.card.lookingJob)
-                    var tempTab = []
-                for(let i=0;i<response.card.lookingJob.length;i++) {
-                    tempTab.push(<li>- {response.card.lookingJob[i]}</li>)
+                if(response.card.working == true){
+                    setIsWorking('En poste')
+                } else {
+                    setIsWorking("N'as pas de poste")
                 }
-                setJobLookingFor(tempTab)
-            }else {
-                setIsLookingFor("ne recherche pas d'emploie pour le moment")
-            }
+                if(response.card.lookingForJob == true){
+                    setIsLookingFor("en recherche d'emploie")
+                    //setLookingFor(response.card.lookingJob)
+                        var tempTab = []
+                    for(let i=0;i<response.card.lookingJob.length;i++) {
+                        tempTab.push(<li>- {response.card.lookingJob[i]}</li>)
+                    }
+                    setJobLookingFor(tempTab)
+                } else {
+                    setIsLookingFor("ne recherche pas d'emploie pour le moment")
+                } 
+            
             
         }, [])
         
@@ -172,7 +174,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                         <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                             <Row style={{paddingBottom:5}}>
                                 {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
-                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', color:'#778ca3', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                     <span>{message.message}</span>  
                                 </Col>
                             </Row>
@@ -184,18 +186,9 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
             }else {
                 return (
                 <div>
-                    <Row style={{display:'flex', justifyContent:'flex-end',}}>
-                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
-                            <Row style={{paddingBottom:5}}>
-                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
-                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', color:'#778ca3', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                                    <span>{message.message}</span>  
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                    
                     <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
-                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                        <Col span={10} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                             <Row style={{paddingBottom:5}}>
                                 {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name}</span> */}
                                 <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
