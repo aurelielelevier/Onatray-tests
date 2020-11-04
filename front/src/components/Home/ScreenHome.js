@@ -51,7 +51,7 @@ function ScreenHome(props) {
      )
      }else if( isSignIn  && isRestau ){
        return(
-         <Redirect to="/recherchetalentA"/>
+         <Redirect to="/recherchetalent"/>
       )
      }
  }

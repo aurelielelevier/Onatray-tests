@@ -21,7 +21,7 @@ import MessagerieListe from './components/Messaging/MessagerieListe';
 import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
-import RecherchetalentA from './components/RecherchetalentA';
+import Recherchetalent from './components/Recherchetalent';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
@@ -30,7 +30,6 @@ import MonProfilTalentt from './components/Talents/MonProfilTalent';
 import token from './reducers/token'
 import isConnect from './reducers/isConnect';
 import restoaafficher from './reducers/restoaafficher';
-import listerestoaafficher from './reducers/listerestosaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
 import profil from './reducers/profil';
@@ -40,7 +39,7 @@ import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
 import WishlistRestaurants from './components/wishlistRestaurants';
 
-const store = createStore(combineReducers({token, isConnect, listerestoaafficher, restoaafficher, adresse, zone, profil, ChatroomId}));
+const store = createStore(combineReducers({token, isConnect, restoaafficher, adresse, zone, profil, ChatroomId}));
 
 export default function App() {
   return (
@@ -58,7 +57,7 @@ export default function App() {
             <Route path="/restaurants" component={ListeRestaurants}/>
             <Route path="/restaurants-favoris" component={RestaurantsFavoris}/>
             <Route path="/messagerie" component={MessagerieListe}/>
-            <Route path="/recherchetalentA" component={RecherchetalentA}/>
+            <Route path="/recherchetalent" component={Recherchetalent}/>
             <Route path="/wishlistRestaurant" component={WishlistRestaurants}/>
             <Route path='/test' component={Test}/>
             <Route path='/messageRoom' component={MessageRoom}/>

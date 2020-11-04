@@ -15,6 +15,7 @@ const talentSchema = mongoose.Schema({
     adress : String,
     adresselgtlat:Object,
     perimetre:Array,
+    polygone: Object,
     countFave:Number,
     lookingJob : Array,
     typeofContract:Array,

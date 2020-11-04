@@ -55,7 +55,7 @@ router.post('/informations', async function(req,res,next){
   
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
-    
+    console.log("experience",experience)
   for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
   school : formation[i].school,
@@ -72,7 +72,8 @@ router.post('/informations', async function(req,res,next){
     firm : experience[i].firm,
     city : experience[i].city,
     startingDate : experience[i].startDate,
-    endingDate : experience[i].endDate
+    endingDate : experience[i].endDate,
+    job: experience[i].job,
     })
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
@@ -85,7 +86,12 @@ router.post('/envoi-secteur', async function(req, res, next){
   var listePoints = await JSON.parse(req.body.liste);
   console.log(listePoints)
   listePoints.push(listePoints[0]);
-  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse})
+  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse, polygone: {
+    type: "Polygon" ,
+    coordinates: [
+      listePoints
+    ]
+ }})
 })
 
 router.post('/envoi-adresse', async function(req, res, next){
@@ -93,16 +99,6 @@ router.post('/envoi-adresse', async function(req, res, next){
   console.log(req.body.adresse)
   await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
 })
-
-// router.get(`/cherche-liste-restaurant/:token`, async function(req, res, next){
-//   //console.log('requête reçue', req.params.token)
-//   var liste = await restaurantModel.find()
-//   var user = await talentModel.findOne({token:req.params.token})
-//   var whishlist = user.wishlistTalent
-//   console.log(user)
-//   console.log(liste)
-//   res.json({liste: liste, whishlist: whishlist} )
-// })
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)

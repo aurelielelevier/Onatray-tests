@@ -44,7 +44,7 @@ const menu = (
           /> 
         </Link>
         <Menu.Item  key="1"><Link to='/'>Accueil</Link></Menu.Item>
-        <Menu.Item  key="2"><Link to='/recherchetalentA'>Rechercher des talents</Link></Menu.Item>
+        <Menu.Item  key="2"><Link to='/recherchetalent'>Rechercher des talents</Link></Menu.Item>
         <Menu.Item  key="3"><Link to='/wishlistRestaurant'>Mes favoris</Link></Menu.Item>
         <Menu.Item  key="4"><Link to='/messagerie'>Mes messages</Link></Menu.Item>
         
