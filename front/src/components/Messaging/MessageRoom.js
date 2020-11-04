@@ -30,6 +30,11 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [chatroom, setchatroom] = useState('')
     var chatRoomId ;
     var tokenDesti ;
+
+    const [restauName, setRestauName] = useState()
+    const [clientele, setClientele] = useState()
+    const [food, setFood] = useState()
+    const [restaurant, setRestaurant]= useState()
     
     const [avatar, setAvatar] = useState('')
     const [firstNameTalent, setFirstNameTalent] = useState('')
@@ -102,21 +107,20 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
             }
             setMessageList(tempMessageTab)
-            console.log(response.card)
+            console.log(response)
 
             if(isRestau){
-
+                
                 setAvatar(response.card.avatar)
                 setFirstNameTalent(response.card.firstName)
                 setLastNameTalent(response.card.lastName)
-    
                 if(response.card.working == true){
                     setIsWorking('En poste')
                 } else {
                     setIsWorking("N'as pas de poste")
                 }
                 if(response.card.lookingForJob == true){
-                    setIsLookingFor("en recherche d'emploie")
+                    setIsLookingFor("en recherche d'emploi")
                     //setLookingFor(response.card.lookingJob)
                         var tempTab = []
                     for(let i=0;i<response.card.lookingJob.length;i++) {
@@ -124,21 +128,63 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     }
                     setJobLookingFor(tempTab)
                 } else {
-                    setIsLookingFor("ne recherche pas d'emploie pour le moment")
+                    setIsLookingFor("ne recherche pas d'emploi pour le moment")
                 }  
             }else if (isTalent){
                 console.log(response.card)
+                setAvatar(response.card.photo)
+                setRestauName(response.card.name)
+                
+                var tempTab = []
+                for(let i=0;i<response.card.clientele.length;i++){
+                        tempTab.push(<li>- {response.card.clientele[i]}</li>)
+                }
+                setClientele(tempTab)
+
+                var tempTabb = []
+                for(let i=0;i<response.card.typeOfFood.length;i++){
+                    tempTab.push(<li>- {response.card.typeOfFood[i]}</li>)
             }
+                 setFood(tempTabb)
+            }
+
               
                
         }, [])
         
-  if(connectToDisplay.isTalent == true){
-        var cardTalentToDisplay;
+  if(isTalent){
+        var cardToDisplay = 
+        <Col style={{border:'1px solid black'}} offset={2} span={6}>
+        <Card  
+            cover={
+            <img
+                style={{height:'45vh'}}
+                alt="example"
+                src={avatar}
+            />
+            }
+            // actions={[
+            // <HeartOutlined key="setting" />,
+            // <ExpandAltOutlined key="ellipsis" />
+            // ]}
+                    >   
+            <Meta
+            //style={{height:'200px'}}
+            title={<h3>{restauName}</h3>}
+            />
+            <p>{restauName} est un restaurant ayant une clientèle : 
+            {clientele}  
+            </p>
+            <p>La nourriture servis est : {food} </p>
+            
+    </Card>
+        
+        </Col>
   }else{
 
-  var cardTalentToDisplay = <Col style={{border:'1px solid black'}} offset={2} span={6}>
-  <Card  
+  var cardToDisplay = 
+  <Col style={{border:'1px solid black'}} offset={2} span={6}>
+    <Card  
       cover={
       <img
         style={{height:'45vh'}}
@@ -156,12 +202,10 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
       title={<h3>{firstNameTalent} {lastNameTalent}</h3>}
       />
       
-      <p>Acutellement : {isWorking}, {isLookingFor} pour être : 
+      <p>Acutellement : {isWorking}, {isLookingFor} pour devenir : 
         {jobLookingFor}  
        </p>
-      
-     
-  </Card>
+    </Card>
 </Col>
   }
     
@@ -249,7 +293,7 @@ if(!isSignIn){
                         </div>
                             
                     </Col>
-                        {cardTalentToDisplay}    
+                        {cardToDisplay}    
                     
                 </Row>
             </Col>
