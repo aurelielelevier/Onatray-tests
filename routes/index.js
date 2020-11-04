@@ -91,22 +91,26 @@ router.post('/createChatRoom', async function(req,res,next){
 
 router.post('/getOldMessage',async function(req,res,next){
   var talentToFind = await talentModel.findOne({token:req.body.token})
-  var restoToFind = await restaurantModel.findOne({token:req.body.token})
-  if(!talentToFind){
-    var interlocuteur = talentToFind
-    var type = 'talent'
-  } else {
-    var interlocuteur = restoToFind
-    var type = 'restaurant'
+  console.log('token get old message',req.body.token)
+  if(talentToFind){
+    let chatRoomId = req.body.chatRoomId
+    var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
+    if(chatRoomToFind){
+      res.json({result : chatRoomToFind.message, card: talentToFind})
+    } else {
+      res.json({result : 'no old messages', card: talentToFind})
+    }
   }
-
-  let chatRoomId = req.body.chatRoomId
-  var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
-  if(chatRoomToFind){
-    res.json({result : chatRoomToFind.message, card: talentToFind})
-  } else {
-    res.json({result : 'no old messages', card: interlocuteur, type:type})
-  }
+   else{
+     var restauToFind = await restaurantModel.findOne({token:req.body.token})
+     let chatRoomId = req.body.chatRoomId
+     let chatRoomToFind = await chatRoomModel.findById(chatRoomId)
+     if(chatRoomToFind){
+       res.json({result:chatRoomToFind.message, card : restauToFind})
+     }else{
+       res.json({result : 'no old messages', card : restauToFind})
+     }
+   }
 })
 
 router.post('/getMyChatRoom', async function(req,res,next){

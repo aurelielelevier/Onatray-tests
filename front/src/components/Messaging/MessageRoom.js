@@ -59,9 +59,14 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
         setchatroom(room)
         setSender(name)
         setDesti(desti)
-        tokenDesti = desti
         setMyToken(name)
+        tokenDesti = desti
+        // if(isRestau){
 
+        //     tokenDesti = desti
+        // }else if(isTalent){
+        //         tokenDesti = name
+        // }
 
         socket.emit('join', {name, room}, ({})=>{
             
@@ -97,13 +102,14 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
             }
             setMessageList(tempMessageTab)
-            
-           
-                console.log(response.card)
+            console.log(response.card)
+
+            if(isRestau){
+
                 setAvatar(response.card.avatar)
                 setFirstNameTalent(response.card.firstName)
                 setLastNameTalent(response.card.lastName)
-
+    
                 if(response.card.working == true){
                     setIsWorking('En poste')
                 } else {
@@ -119,9 +125,12 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     setJobLookingFor(tempTab)
                 } else {
                     setIsLookingFor("ne recherche pas d'emploie pour le moment")
-                } 
-            
-            
+                }  
+            }else if (isTalent){
+                console.log(response.card)
+            }
+              
+               
         }, [])
         
   if(connectToDisplay.isTalent == true){

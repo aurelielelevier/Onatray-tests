@@ -51,16 +51,24 @@ function MessagerieListe(props) {
    console.log(response)
 
     var tempList = [] 
-   for (let i=0;i<response.result.length;i++){
-      tempList.push({nom : response.result[i].message[0].destinataire, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :props.tokenToDisplay, tokenDesti : response.result[i].message[0].tokenDesti })
-   }
+
+    if(isTalent){
+      for (let i=0;i<response.result.length;i++){
+        tempList.push({nom : response.result[i].message[0].expediteur, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :props.tokenToDisplay, tokenDesti : response.result[i].message[0].tokenExpe})
+     }
+    }else if (isRestau){
+      for (let i=0;i<response.result.length;i++){
+         tempList.push({nom : response.result[i].message[0].destinataire, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :props.tokenToDisplay, tokenDesti : response.result[i].message[0].tokenDesti })
+      }
+
+    }
 
    setListeRoom(tempList)
    console.log(tempList)
     var liste = listeRoom.map(message => ({value: message.nom}))
     setlisteinterlocuteurs(liste)
     }, [])
-
+console.log(listeRoom)
     if(!isSignIn){
       return <Redirect to="/"/>
     }else{
