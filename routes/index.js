@@ -17,7 +17,8 @@ cloudinary.config({
   api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
 });
 
-var chatRoomModel = require('../model/chatRoom')
+var chatRoomModel = require('../model/chatRoom');
+const { isValidObjectId } = require('mongoose');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -118,20 +119,23 @@ router.post('/createChatRoom', async function(req,res,next){
       await talentModel.updateOne({token : req.body.desti},{$addToSet:{chatRoom : newRoom.id}})
       res.json({result : ` création de chatRoomOf${req.body.expediteur}and${req.body.desti} id : ${newRoom.id}`, chatRoomId : newRoom.id})
     }
-
-
 })
 
 router.post('/getOldMessage',async function(req,res,next){
   var talentToFind = await talentModel.findOne({token:req.body.token})
- 
+  var restoToFind = await restaurantModel.findOne({token:req.body.token})
+  if(!talentToFind){
+    var interlocuteur = talentToFind
+  } else {
+    var interlocuteur = restoToFind
+  }
 
   let chatRoomId = req.body.chatRoomId
   var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
   if(chatRoomToFind){
     res.json({result : chatRoomToFind.message, card: talentToFind})
   }else {
-    res.json({result : 'no old messages', card: talentToFind})
+    res.json({result : 'no old messages', card: interlocuteur})
   }
 
 //console.log('body',req.body.token)
@@ -145,7 +149,7 @@ router.post('/getMyChatRoom', async function(req,res,next){
   var talentToFind = await talentModel.findOne({token: req.body.token}).populate('chatRoom').exec()
   console.log(talentToFind)
   if(talentToFind){
-    //console.log(talentToFind.chatRoom)
+    console.log(talentToFind.chatRoom)
     res.json({result : talentToFind.chatRoom})
   }else{
     var restauToFind = await restaurantModel.findOne({token:req.body.token}).populate('chatRoom').exec()

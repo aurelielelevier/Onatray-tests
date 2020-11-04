@@ -49,11 +49,11 @@ function MessagerieListe(props) {
 
     var tempList = [] 
    for (let i=0;i<response.result.length;i++){
-      tempList.push({nom : response.result[i].message[0].destinataire, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :'Qy55LG6vyGbCu0f493CkkNS6RHiJexJc', tokenDesti : response.result[i].message[0].tokenDesti })
+      tempList.push({nom : response.result[i].message[0].expediteur, contenu :response.result[i].message[0].content , roomName :response.result[i]._id, myToken :'Qy55LG6vyGbCu0f493CkkNS6RHiJexJc', tokenDesti : response.result[i].message[0].tokenDesti })
    }
 
    setListeRoom(tempList)
-
+   console.log(tempList)
     var liste = listeRoom.map(message => ({value: message.nom}))
     setlisteinterlocuteurs(liste)
     }, [])
@@ -76,7 +76,7 @@ function MessagerieListe(props) {
             <Button type="primary" >Chercher</Button>
             </Row>
             
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }} style={{justifyContent:'center', marginTop:'50px', backgroundImage:`url("../images/ardoise.jpg")`, backgroundRepeat: 'no-repeat',
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }} style={{minHeight:'600px' , justifyContent:'center', marginTop:'50px', backgroundImage:`url("../images/resto-fond.jpg")`, backgroundRepeat: 'no-repeat',
                               backgroundSize: "cover",}}>
                 <Col className="gutter-row" span={16}>
                 <div style={{overflowY: 'scroll', height:'400px',  padding:'15px 30px', borderRadius:5}}>

@@ -9,7 +9,7 @@ import Header from '../Header'
 import HeaderTalent from '../HeaderTalent'
 import HeaderRestaurant from '../HeaderRestaurant'
 
-import {Row, Col, Button, Input, Card, message } from 'antd'
+import {Row, Col, Button, Input, Card, message, Badge } from 'antd'
 import { HeartOutlined, SendOutlined,ExpandAltOutlined} from "@ant-design/icons";
 
 
@@ -167,38 +167,56 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     var dataRecentMessage = messageList.map(function(message, i){
             if(message.token == myToken){
                 return (
-                <Row style={{display:'flex', justifyContent:'flex-end',}}>
-                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
-                        <Row style={{paddingBottom:5}}>
-                            <span style={{paddingLeft:5, fontSize:10}}>NOM </span>
-                            <Col span={24} style={{ backgroundColor:'#FED330',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                                <span >{message.message}</span>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
+                 <div>
+                     
+                    <Row style={{display:'flex', justifyContent:'flex-end',}}>
+                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                            <Row style={{paddingBottom:5}}>
+                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
+                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', color:'#778ca3', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                    <span>{message.message}</span>  
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+
+                 </div>   
                 )
             }else {
                 return (
-                <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
-                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
-                        <Row style={{paddingBottom:5}}>
-                            <span style={{paddingLeft:5, fontSize:10}}>NOM</span>
-                            <Col span={24} style={{ backgroundColor:'red',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                                <span >{message.message}</span>
-                            </Col>
+                <div>
+                    <Row style={{display:'flex', justifyContent:'flex-end',}}>
+                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                            <Row style={{paddingBottom:5}}>
+                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
+                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', color:'#778ca3', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                    <span>{message.message}</span>  
+                                </Col>
+                            </Row>
+                        </Col>
                     </Row>
-                   </Col>
-                </Row>
-
+                    <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
+                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                            <Row style={{paddingBottom:5}}>
+                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name}</span> */}
+                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                    <span >{message.message}</span>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </div>
                    )
             }
     })
     return(
-
+        <div>
+        
         <Row>
             <Col span={24}>
                 {header}
+    <Row style={{justifyContent:'center', backgroundColor:'#4b6584', color:'white', fontWeight:'bold', fontSize:'30px'}}>Discussion entre {firstNameTalent} et </Row>
+            
                 <Row style={{paddingTop:20, paddingBottom:20}}>
                     <Col offset={2} span={2}>
                     <Link to='/messagerie'>
@@ -209,7 +227,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     </Col>
                 </Row>
                 <Row >
-                    <Col style={{border:'1px solid black', display:'flex',height:'70vh', flexDirection:'column-reverse'}} offset={2} span={13}>
+                    <Col style={{border:'1px solid black', borderRadius:5,padding:10, display:'flex',height:'70vh', flexDirection:'column-reverse', backgroundColor:'#4b6584'}} offset={2} span={13}>
                         <Row>
                             <Col offset={4} span={12}>
                             <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
@@ -220,7 +238,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                             </Col>
                         </Row>
                             
-                        <div style={{overflowY: 'scroll'}}>
+                        <div style={{overflowY: 'scroll', padding:30}}>
                             {dataRecentMessage}
                         </div>
                             
@@ -230,7 +248,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 </Row>
             </Col>
         </Row>
-        
+        </div>
     )
 }
 function mapStateToProps(state) {
