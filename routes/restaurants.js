@@ -64,23 +64,36 @@ router.post('/recherche-liste-talents',async function(req,res,next){
   var données= JSON.parse(req.body.criteres)
   var restaurant = await restaurantModel.findOne({token:req.body.token})
 var jobminuscule=données.posterecherché.toLowerCase()
+
+var typedecontrat=données.typedecontrat
+
+console.log(typedecontrat,jobminuscule)
 if (jobminuscule== 'tous les postes'){
-  console.log('tous les postes')
-  var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
-}else {
-  console.log(('chargement avec tri'))
-  var responseAenvoyer = await talentModel.find({
-    lookingJob:{$in:jobminuscule },
-    polygone: {
-      $geoIntersects: {
-         $geometry: {
-            type: "Point" ,
-            coordinates: restaurant.adresselgtlat.coordinates,
-         }
-      }
-    }
-  }).populate('formation').populate('experience').exec()
-}
+    if(typedecontrat == 'Tous type de contrat'){
+      var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+        }else{
+        var responseAenvoyer=await talentModel.find({typeofContract:{$in:typedecontrat}}).populate('formation').populate('experience').exec()
+  }}else if(typedecontrat == 'Tous type de contrat'){
+    if(jobminuscule== 'tous les postes'){
+      var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+    }else{
+    var responseAenvoyer=await talentModel.find({lookingJob:{$in:jobminuscule }}).populate('formation').populate('experience').exec()
+  }}
+        else
+        {   var responseAenvoyer = await talentModel.find({
+            lookingJob:{$in:jobminuscule},
+            typeofContract:{$in:typedecontrat},
+            polygone: {
+              $geoIntersects: {
+                $geometry: {
+                    type: "Point" ,
+                    coordinates: restaurant.adresselgtlat.coordinates,
+                }
+              }
+            }
+          }).populate('formation').populate('experience').exec()
+          console.log(('chargement avec tri',responseAenvoyer))
+        }
 let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
 let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 

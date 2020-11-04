@@ -63,14 +63,16 @@ router.post('/informations', async function(req,res,next){
   //console.log(req.body)
   var job = JSON.parse(req.body.job)
   var langage = JSON.parse(req.body.langage)
+  var typeofContract=JSON.parse(req.body.contrat)
 
-  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job, typeofContract:req.body.contrat})
+  await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job, typeofContract:typeofContract})
   console.log(req.body.experience)
   
   //console.log('formation',req.body.formation)
   //console.log('experience',req.body.experience)
   
   var formation = JSON.parse(req.body.formation)
+  console.log('formation',formation)
   var experience = JSON.parse(req.body.experience)
     console.log("experience",experience)
   for (let i=0;i<formation.length;i++){
@@ -78,7 +80,7 @@ router.post('/informations', async function(req,res,next){
   school : formation[i].school,
   diploma : formation[i].diploma,
   endingDate : formation[i].year,
-  city : formation[i].city
+  citys : formation[i].city
   })
   await newFormation.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{formation:newFormation.id}})

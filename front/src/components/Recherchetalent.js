@@ -59,7 +59,7 @@ const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
 const [talentaafficher,settalentaafficher]=useState([])
 const [zone, setZone] = useState(zoneFrance)
 const [posterecherché,setposterecherché]=useState('tous les postes')
-const [typedecontrat,settypedecontrat]=useState(listetypedecontrat)
+const [typedecontrat,settypedecontrat]=useState('Tous type de contrat')
 const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 
 
@@ -89,7 +89,7 @@ useEffect(()=>{
                 settypedecontrat(listetypedecontrat)
             }
 
-    var criteres = JSON.stringify({posterecherché: posterecherché})
+    var criteres = JSON.stringify({posterecherché: posterecherché,typedecontrat:typedecontrat})
     var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
         method:'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -167,13 +167,14 @@ return(
                 showSearch
     
                 onChange={(e)=>settypedecontrat(e)}
-                name={'language'}
+                name={'Type de contrat'}
                 className="basic-multi-select"
                 classNamePrefix="select">
+                    <Option value='Tous type de contrat'>Tous type de contrat</Option>
                     <Option value='CDI'>CDI</Option>
                     <Option value='CDD'>CDD</Option>
                     <Option value='Mi Temps'>Mi Temps</Option>
-                    <Option value='Interim<'>Interim</Option>
+                    <Option value='Extra<'>Extra</Option>
             
                 </Select>
             </Form.Item>

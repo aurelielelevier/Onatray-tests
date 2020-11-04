@@ -35,16 +35,16 @@ var formations =props.talent.formation
 var token=props.token
 var talent =props.talent
 var talentNameUC=props.talent.lastName.toUpperCase()
-if(props.talent.polygone){
+
+if(props.talent.polygone != undefined){
     var polygone=props.talent.perimetre.map(point => [point[1], point[0]])
 }
 
-if(props.talent.polygone){
+if(props.talent.domicile != undefined){
 var domicile=[props.talent.adresselgtlat.coordinates[1], props.talent.adresselgtlat.coordinates[0]]
 }
 
-console.log('polygone',polygone)
-console.log('domicile',domicile)
+
 
     const [chatRoomId, setCahtRoomId] = useState() 
     const [goToChatRoom, setGoToChatRoom] = useState(false) 
@@ -84,6 +84,7 @@ var listexperienceshorten= experiences.map((experience,i) =>{
     return(<p>{experience.firm}- {experience.job} - {experience.city}</p>)}
 })
 }
+console.log('formations',formations)
 
 // condition mappant sur formation pour afficher les deux dernières formations de chaque talent
 if(formations !=undefined){
@@ -142,7 +143,7 @@ if(talent.working){
 }
 
 if(talent.lookingJob){
-  var jobs = 'en tant que '
+  var jobs = ' en tant que '
   for(var i=0; i<talent.lookingJob.length; i++){
       if(i==talent.lookingJob.length-1){
        jobs+= ' '+talent.lookingJob[i]+'.'
@@ -254,7 +255,7 @@ return(
                 {langues}
                 </Panel>
                 <Panel header="Situation Professionnelle" key="2">
-                {enposte}
+                <p>{enposte}</p>
                 {chercheUnEmploi}{jobs}
                 </Panel>
             </Collapse>
