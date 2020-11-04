@@ -23,15 +23,15 @@ function HeaderTalent(props) {
       <Menu.Item>
       <Link to='/messagerie'>Mes messages</Link>
       </Menu.Item>
-      <Menu.Item onClick={()=>{{props.onDisconnect()}}}>
+      <Menu.Item 
+      //onClick={()=>{{props.onDisconnect()}}}
+      >
          Déconnexion 
-      </Menu.Item>
-    </Menu>)
+      </Menu.Item> 
+    </Menu>
+  )
   
-  if(!isSignIn){
-    console.log(props.tokenToDisplay, 'props.tokentodisplay')
-    return( <Redirect to='/'/>)
-  } else {
+ 
 
   return (
    
@@ -51,7 +51,7 @@ function HeaderTalent(props) {
           
               <div style={{float:'right'}}>
                 <Dropdown overlay={menu} placement="bottomCenter">
-  <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.firstName}</Button>
+                <Button type="primary" onClick={() => setVisible(true)} ><UserOutlined style={{color:'#4b6584'}}/>{props.profilToDisplay.firstName}</Button>
                 </Dropdown>
               </div>
           </Menu>
@@ -64,15 +64,16 @@ function HeaderTalent(props) {
         
   );
 }
-}
+
 
 function mapDispatchToProps(dispatch) {
   return {
-    onDisconnect: function(valeur) { 
-        dispatch( {type: 'disconnect', isConnect : false }) 
+   // onDisconnect: function() { 
+      //  dispatch( {type: 'disconnect'}) 
+    
     }
   }
-}
+//}
 
 function mapStateToProps(state) {
   return {tokenToDisplay: state.token, connectToDisplay : state.isConnect, profilToDisplay: state.profil}

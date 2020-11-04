@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import queryString from 'query-string'
@@ -42,7 +42,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [isSignIn, setIsSignIn] = useState(connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
-
+    console.log(tokenToDisplay)
+    console.log(connectToDisplay)
     if(!isSignIn){
         var header = <Header/>
       } else if (isSignIn && isRestau){
@@ -50,8 +51,6 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
       } else if (isSignIn && isTalent){
         var header = <HeaderTalent/>
       }
-
-  
 
       useEffect(()=>{
         const {name, desti , room} = queryString.parse(location.search)
@@ -130,9 +129,9 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
   <Card  
       cover={
       <img
-          //style={{height:'200px', width:'150px'}}
-          alt="example"
-          src={avatar}
+        style={{height:'45vh'}}
+        alt="example"
+        src={avatar}
       />
       }
       // actions={[
@@ -209,6 +208,10 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                    )
             }
     })
+if(!isSignIn){
+    return (<Redirect to='/'/>)
+    }else{
+
     return(
         <div>
         
@@ -250,6 +253,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
         </Row>
         </div>
     )
+    }
 }
 function mapStateToProps(state) {
     return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}

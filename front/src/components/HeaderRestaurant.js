@@ -22,16 +22,15 @@ const menu = (
     <Menu.Item>
     <Link to='/messagerie'>Mes messages</Link>
     </Menu.Item>
-    <Menu.Item onClick={()=>{{props.onDisconnect()}}}>
+    <Menu.Item 
+    //onClick={()=>{{props.onDisconnect()}}}
+    >
       Déconnexion 
-    </Menu.Item>
+    </Menu.Item> 
   </Menu>
 )
 
-if(!isSignIn){
-  console.log(props.tokenToDisplay, 'props.tokentodisplay')
-  return( <Redirect to='/'/>)
-} else {
+
 
   return( 
     <div style={{justifyContent:'center'}}>
@@ -61,15 +60,15 @@ if(!isSignIn){
     </div>
   )
 }
-}
+
 
 function mapDispatchToProps(dispatch) {
   return {
-    onDisconnect: function(valeur) { 
-        dispatch( {type: 'disconnect', isConnect : false}) 
+   // onDisconnect: function() { 
+      //  dispatch( {type: 'disconnect'}) 
     }
   }
-}
+//}
 function mapStateToProps(state) {
   return {tokenToDisplay: state.token, connectToDisplay : state.isConnect, profilToDisplay : state.profil}
 }

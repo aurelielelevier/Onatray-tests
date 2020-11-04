@@ -2,12 +2,19 @@ import React, {useState, useEffect} from 'react'
 import '../../App.less';
 import '../../index.less'
 import 'antd/dist/antd.less';
-import ListeCardsRestaurants from './ListeCardsRestaurants'
 import { Layout, Card, Row, Button, Col, Select, Form, Modal, Rate} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+
+import ListeCardsRestaurants from './ListeCardsRestaurants'
 import HeaderTalent from '../HeaderTalent'
+import HeaderScreen from '../Header'
+import HeaderRestaurant from '../HeaderRestaurant'
+
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+
 import {connect} from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 const { Meta } = Card;
 const { Option } = Select
 const listePrix = [0, 1, 2]
@@ -36,9 +43,14 @@ function ListeRestaurants(props){
     const[restoAAfficher, setRestoAAfficher] = useState({})
     const[visible, setVisible] = useState(false)
     const latlngDomicile = [props.adresseToDisplay.coordinates[1], props.adresseToDisplay.coordinates[0]]
+
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
     
     const token = props.tokenToDisplay
-
+    console.log(props.tokenToDisplay)
+    console.log(props.connectToDisplay)
     function colorationCoeur(liste, whishlist){
         for(var i=0; i<liste.length; i++){
             if(whishlist.includes(liste[i]._id)){
@@ -159,11 +171,23 @@ function ListeRestaurants(props){
     } else {
         var prix = '--'
     }
+
+    if(!isSignIn){
+        var header = <HeaderScreen /> // redirect  plutôt ???
+      } else if (isSignIn && isRestau){
+        var header = <HeaderRestaurant keyheader='4'/>
+      } else if (isSignIn && isTalent){
+        var header = <HeaderTalent keyheader='2'/>
+      }
+      if(!isSignIn){
+          return <Redirect to='/'/>
+      }else{
+
       
     return(
       <div >
         
-        <HeaderTalent keyheader='2'/>
+       {header}
         <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Les restaurants inscrits</Row>
         <Modal
             title={<p style={{color:'#4B6584', fontSize:'20px', fontWeight:'bold', margin:'0px'}}>{restoAAfficher.name}</p>}
@@ -367,6 +391,7 @@ function ListeRestaurants(props){
       </div>
     )
 }
+}
 
 const style= {
     row: {
@@ -398,7 +423,7 @@ const style= {
 }
   
 function mapStateToProps(state) {
-return {tokenToDisplay: state.token, adresseToDisplay: state.adresse, zoneToDisplay: state.zone}
+return {tokenToDisplay: state.token, connectToDisplay:state.isConnect ,adresseToDisplay: state.adresse, zoneToDisplay: state.zone}
 }
 
 export default connect(

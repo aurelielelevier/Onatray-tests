@@ -66,6 +66,7 @@ function SignUpRestauA(props){
         props.onSendToken(response.token)
         props.onSubmitAdress(response.adresse)
         props.onSignup(response.profil)
+        props.onSendSignIn({isSignIn:true, isTalent:false, isRestau:true});
     }
 
     const onFinish = (values) => {
@@ -329,6 +330,9 @@ function mapDispatchToProps(dispatch) {
       onSignup: function(profil){
         dispatch({type:'addProfil', profil:profil})
       },
+      onSendSignIn: function(isConnect){
+        dispatch({type:'addConnect', isConnect})
+      }
       }
     }
   

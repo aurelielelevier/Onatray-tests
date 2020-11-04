@@ -28,7 +28,7 @@ import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';
 import MonProfilTalentt from './components/Talents/MonProfilTalent';
 
 import token from './reducers/token'
-import isConnect from './reducers/connect';
+import isConnect from './reducers/isConnect';
 import restoaafficher from './reducers/restoaafficher';
 import adresse from './reducers/adresse';
 import zone from './reducers/zone';
@@ -43,9 +43,7 @@ const store = createStore(combineReducers({token, isConnect, restoaafficher, adr
 
 export default function App() {
   return (
-     <Provider
-     store={store}
-    >
+     <Provider store={store}>
       <Router>
           <Switch>
             <Route path="/" exact component={ScreenHome}/>

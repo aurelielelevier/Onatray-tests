@@ -37,7 +37,7 @@ io.on('connection', async function(socket){
   }) 
 
   socket.on('sendMessage', async (message, )=>{
-    console.log(message)
+    
 
     
     
@@ -50,10 +50,13 @@ io.on('connection', async function(socket){
     
     if(expeToCheck){
        expediteur = expeToCheck.firstName
+       console.log('je passe ici')
     }
     else{
-      expeToCheck = await restaurantModel.findOne({token:message.name})
-       expediteur = expeToCheck.name
+      console.log("je passe la ")
+      expeToCheckk = await restaurantModel.findOne({token:message.name})
+      console.log('expetocheck',expeToCheckk)
+     expediteur = expeToCheckk.name
     }
     
     var destiToCheck = await talentModel.findOne({token : message.desti})

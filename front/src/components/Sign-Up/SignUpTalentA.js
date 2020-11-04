@@ -30,6 +30,7 @@ function SignUpTalentA(props){
         var response = await rawResponse.json()
         props.onSendToken(response.token)
         props.onSignup(response.profil)
+        props.onSendSignIn({isSignIn:true, isTalent:true, isRestau:false});
        
 }
 
@@ -251,6 +252,9 @@ function mapDispatchToProps(dispatch) {
       },
       onSignup: function(profil){
         dispatch({type:'addProfil', profil:profil})
+      }, 
+      onSendSignIn:function(isConnect){
+          dispatch({type:'addConnect', isConnect})
       }
       }
     }

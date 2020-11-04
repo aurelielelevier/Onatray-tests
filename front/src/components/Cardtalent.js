@@ -2,9 +2,8 @@ import React, {useState,useEffect} from 'react'
 import 'antd/dist/antd.less';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {Col,Card,Modal, Image, Row,Rate} from 'antd';
+import {Col,Card,Modal, Image, Row,Rate, Divider} from 'antd';
 import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,} from "@ant-design/icons"
-
 
 
 function Cardtalent(props){
@@ -44,6 +43,7 @@ var onSendDm = async () => {
 
 
 // condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
+console.log("experiences",experiences)
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
     return(`${experience.firm}- ${experience.job} - ${experience.startingDate} - ${experience.endingDate} - ${experience.city}\n`)
@@ -78,32 +78,35 @@ if (goToChatRoom == true){
  if (goToChatRoom == true){
      return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
   }else{
+
 return(
 
-    <Col className="gutter-row" span={5}>
-            <Card
-                style={{
-                    margin:'10px',
-                }}
-                cover={
-                <img
-                    alt="image"
-                    src={talent.avatar}/>
-                }
-                actions={[
-                <SendOutlined onClick={()=> onSendDm()} key="sendOutlined"/>,
-                <HeartFilled onClick={()=>{props.onliketalent(talent._id)}} style={{marginRight:'5px', color:props.couleur}}/>,
-                <ExpandAltOutlined  onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
-                ]}>
-                    <Meta/>
-                    <h2>{talent.firstName}-{talentNameUC}</h2>
-                    <p style={{fontWeight: "bold"}}>Formations</p>
-                    
+    <Col className="gutter-row" span={4} style={{padding:'0px',display:'flex',flexDirection:'column',alignSelf:'stretch',margin:'5px',borderStyle:'solid',borderWidth:'1px',borderColor:'#a5b1c2'}}>
+           <Image
+                width='100%'
+                height='350px'
+                src={talent.avatar}
+                />
+            <Row style={{padding:'10px',display:'flex',flexDirection:'column',alignSelf:'stretch',height:'100%',borderBottomStyle:'solid',borderColor:'#a5b1c2',  borderBottomWidth:'1px', alignItems:'center' }} >
+                    <h2 style={{fontWeight:"bold"}}>{talent.firstName} {talentNameUC}</h2>
+                    <Divider style={{fontWeight:"bold"}}>Formation </Divider>
                     {listformationshorten}
-
-                    <p style={{fontWeight: "bold"}}>Expérience</p>
+                    <Divider style={{fontWeight:"bold"}}>Expérience </Divider>
                     {listexperienceshorten}
-            </Card>
+            </Row>
+            <Row style={{display:'flex', fontSize:'25px',flexDirection:'row', height:'50px', alignItems:"center", padding:'8px'}} >
+                <Col flex={1}  style={{display:'flex',justifyContent:'center'}}>
+                    <SendOutlined  onClick={()=> onSendDm()} key="sendOutlined"/>
+                </Col>
+                <Col flex={1} style={{display:'flex',justifyContent:'center',borderLeftStyle:'solid', borderLeftWidth:'1px',borderColor:'#a5b1c2'}}>
+                    <HeartFilled  onClick={()=>{props.onliketalent(talent._id)}} style={{marginRight:'5px', color:props.couleur}}/>
+                </Col>
+                <Col flex={1} style={{display:'flex',justifyContent:'center',borderLeftStyle:'solid', borderLeftWidth:'1px',borderColor:'#a5b1c2'}}>
+                    <ExpandAltOutlined onClick={()=>setVisible(true)} key="ExpandAltOutlined" />
+                </Col>
+            </Row>
+           
+            
         <Modal
             centered
             visible={visible}
@@ -116,7 +119,7 @@ return(
             >
             <Row>
                 <Col style={{width:'40%'}} span={10}>
-                    <Image src={talent.src} />
+                    <Image src={talent.avatar} />
                 </Col>
                 <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}} span={14}>
                     <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
@@ -124,6 +127,7 @@ return(
                         <h1 style={{marginLeft:'15px',marginBottom:'2px'}}>Prenom:  {talent.firstName}</h1>
                         <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adress}</h2>
                     </Row>
+                    
                         <h2 style={{marginLeft:'15px'}}>Formation: </h2>
                         
                     <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
