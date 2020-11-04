@@ -9,8 +9,8 @@ import Header from '../Header'
 import HeaderTalent from '../HeaderTalent'
 import HeaderRestaurant from '../HeaderRestaurant'
 
-import {Row, Col, Button, Input, Card, message, Badge } from 'antd'
-import { HeartOutlined, SendOutlined,ExpandAltOutlined} from "@ant-design/icons";
+import {Row, Col, Button, Input, Card, Badge } from 'antd'
+
 
 
 
@@ -44,6 +44,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
     console.log(tokenToDisplay)
     console.log(connectToDisplay)
+
     if(!isSignIn){
         var header = <Header/>
       } else if (isSignIn && isRestau){
