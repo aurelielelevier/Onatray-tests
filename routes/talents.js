@@ -55,7 +55,7 @@ router.post('/informations', async function(req,res,next){
   
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
-    
+    console.log("experience",experience)
   for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
   school : formation[i].school,
@@ -72,7 +72,8 @@ router.post('/informations', async function(req,res,next){
     firm : experience[i].firm,
     city : experience[i].city,
     startingDate : experience[i].startDate,
-    endingDate : experience[i].endDate
+    endingDate : experience[i].endDate,
+    job: experience[i].job,
     })
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
