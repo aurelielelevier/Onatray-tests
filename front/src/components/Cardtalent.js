@@ -66,12 +66,14 @@ var listformation= formations.map((formation,i) => {
 })
 
 var listformationshorten= formations.map((formation,i) =>{
-    if(i<2 && formation){
+    if(i<2){
     return(`${formation.endingDate} - ${formation.school}`)
-}else{
-    return(`  -  -  - \n`) }
+}
 })
 }
+
+
+
 if (goToChatRoom == true){
     return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
  }else{
@@ -81,7 +83,7 @@ if (goToChatRoom == true){
 
 return(
 
-    <Col className="gutter-row" span={4} style={{padding:'0px',display:'flex',flexDirection:'column',alignSelf:'stretch',margin:'5px',borderStyle:'solid',borderWidth:'1px',borderColor:'#a5b1c2'}}>
+    <Col className="gutter-row" span={4} style={{padding:'0px',display:'flex',flexDirection:'column',alignSelf:'stretch',margin:'5px',borderStyle:'solid',borderWidth:'1px',borderColor:'#95a5a6'}}>
            <Image
                 width='100%'
                 height='350px'
