@@ -21,7 +21,8 @@ import MessagerieListe from './components/Messaging/MessagerieListe';
 import ListeRestaurants from './components/Talents/ListeRestaurants';
 
 import Test from './components/Test';
-import RecherchetalentA from './components/RecherchetalentA';
+
+import Recherchetalent from './components/Recherchetalent';
 import RestaurantsFavoris from './components/Talents/RestaurantsFavoris';
 
 import MonProfilRestaurant from './components/Restaurants/MonProfilRestaurant';

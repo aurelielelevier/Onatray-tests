@@ -15,7 +15,7 @@ const { Option } = Select
 const { Meta } = Card
 
 
-function RecherchetalentA(props) {
+function Recherchetalent(props) {
 
     const zoneFrance= [
         [ -5.3173828125, 48.458124202908934 ],
@@ -184,7 +184,7 @@ return(
     </Form>
  </Col>
 </Row>
-<Row type='flex' style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
+<Row type='flex' gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} style={{display:"flex", justifyContent:"center", alignItems:'center'}}>
 
     {talentslist}
     
@@ -202,4 +202,4 @@ function mapStateToProps(state) {
   export default connect(
     mapStateToProps, 
     null
-  )(RecherchetalentA);
+  )(Recherchetalent);

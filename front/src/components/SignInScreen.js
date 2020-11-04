@@ -112,9 +112,9 @@ if(!isSignIn){
         </Row>
     )
 }else if(isSignIn && isTalent){
-    <Redirect to='/restaurants'/>
+    return <Redirect to='/restaurants'/>
 }else if(isSignIn && isRestau){
-    <Redirect to='/recherchetalentA'/>
+  return  <Redirect to='/recherchetalent'/>
 }
 
 }
