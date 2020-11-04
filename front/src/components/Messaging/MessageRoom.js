@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import queryString from 'query-string'
@@ -42,7 +42,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [isSignIn, setIsSignIn] = useState(connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
-
+    console.log(tokenToDisplay)
+    console.log(connectToDisplay)
     if(!isSignIn){
         var header = <Header/>
       } else if (isSignIn && isRestau){
@@ -50,8 +51,6 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
       } else if (isSignIn && isTalent){
         var header = <HeaderTalent/>
       }
-
-  
 
       useEffect(()=>{
         const {name, desti , room} = queryString.parse(location.search)
@@ -130,9 +129,9 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
   <Card  
       cover={
       <img
-          //style={{height:'200px', width:'150px'}}
-          alt="example"
-          src={avatar}
+        style={{height:'45vh'}}
+        alt="example"
+        src={avatar}
       />
       }
       // actions={[
@@ -181,10 +180,10 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
             }else {
                 return (
                 <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
-                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                    <Col span={8} style={{paddingLeft:5, display:'flex' ,flexDirection:'column'}} >
                         <Row style={{paddingBottom:5}}>
                             <span style={{paddingLeft:5, fontSize:10}}>NOM</span>
-                            <Col span={24} style={{ backgroundColor:'red',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                            <Col span={24} style={{ backgroundColor:'#a5b1c2',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                 <span >{message.message}</span>
                             </Col>
                     </Row>
@@ -194,44 +193,49 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                    )
             }
     })
-    return(
+    if(!isSignIn){
+    return (<Redirect to='/'/>)
+    }else{
 
-        <Row>
-            <Col span={24}>
-                {header}
-                <Row style={{paddingTop:20, paddingBottom:20}}>
-                    <Col offset={2} span={2}>
-                    <Link to='/messagerie'>
-                        <Button type='primary'>
-                            Retour
-                        </Button>
-                    </Link>
-                    </Col>
-                </Row>
-                <Row >
-                    <Col style={{border:'1px solid black', display:'flex',height:'70vh', flexDirection:'column-reverse'}} offset={2} span={13}>
-                        <Row>
-                            <Col offset={4} span={12}>
-                            <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
-                            <div style={{ margin: '24px 0' }} />
-                            </Col>
-                            <Col offset={1} span={4}>
-                                <Button onClick={()=>sendMessage(messageToSend)} type="primary">Envoyer</Button>
-                            </Col>
-                        </Row>
-                            
-                        <div style={{overflowY: 'scroll'}}>
-                            {dataRecentMessage}
-                        </div>
-                            
-                    </Col>
-                        {cardTalentToDisplay}    
-                    
-                </Row>
-            </Col>
-        </Row>
-        
-    )
+        return(
+    
+            <Row>
+                <Col span={24}>
+                    {header}
+                    <Row style={{paddingTop:20, paddingBottom:20}}>
+                        <Col offset={2} span={2}>
+                        <Link to='/messagerie'>
+                            <Button type='primary'>
+                                Retour
+                            </Button>
+                        </Link>
+                        </Col>
+                    </Row>
+                    <Row >
+                        <Col style={{border:'1px solid grey',borderRadius:10, display:'flex',height:'70vh', flexDirection:'column-reverse'}} offset={2} span={13}>
+                            <Row>
+                                <Col offset={4} span={12}>
+                                <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
+                                <div style={{ margin: '24px 0' }} />
+                                </Col>
+                                <Col offset={1} span={4}>
+                                    <Button onClick={()=>sendMessage(messageToSend)} type="primary">Envoyer</Button>
+                                </Col>
+                            </Row>
+                                
+                            <div style={{overflowY: 'scroll'}}>
+                                {dataRecentMessage}
+                            </div>
+                                
+                        </Col>
+                            {cardTalentToDisplay}    
+                        
+                    </Row>
+                </Col>
+            </Row>
+            
+        )
+    }
 }
 function mapStateToProps(state) {
     return { connectToDisplay : state.isConnect, tokenToDisplay: state.token}

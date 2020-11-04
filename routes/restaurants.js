@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var restaurantModel = require('../model/restaurants')
-var talentModel = require('../model/talents')
-var formationModel = require('../model/formation')
-var experienceModel = require('../model/experience')
+
+var restaurantModel = require('../model/restaurants');
+var talentModel = require('../model/talents');
+
+var formationModel = require('../model/formation');
+var experienceModel = require('../model/experience');
 
 const {request} = require('express');
 var uid2 = require('uid2');

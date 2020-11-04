@@ -38,6 +38,7 @@ const Submitform = values => {
         };
 
 // Etat et condition permettant de mettre à jour le header en fonction du status de l'utilisateur connecté:
+
 const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
 const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
 const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)

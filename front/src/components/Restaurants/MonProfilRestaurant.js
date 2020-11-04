@@ -1,15 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
+import {Link, Redirect} from 'react-router-dom'
+
 import 'antd/dist/antd.less';
 import '../../App.less';
-import HeaderRestaurant from '../HeaderRestaurant';
 import {Card, Rate, Row, Col} from 'antd';
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined, EditOutlined } from '@ant-design/icons';
-import {Link} from 'react-router-dom'
+
+import HeaderRestaurant from '../HeaderRestaurant';
+import HeaderScreen from '../Header'
+import HeaderTalent from '../HeaderTalent'
+
+
 
 function MonProfilRestaurant(props) {
-    // var restaurant = props.profilToDisplay
+    
     const[restaurant, setRestaurant]= useState({})
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
 
 
     const { Meta } = Card;
@@ -85,65 +94,78 @@ function MonProfilRestaurant(props) {
     } else {
         var prix = '--'
     }
-    return(
-        <div>
-          <HeaderRestaurant keyheader='5'/>
 
-          <div style={{ textAlign:'center', justifyContents:'center'}}>
-          <div style={{height:'300px', 
-                        backgroundImage:`url(${restaurant.photo})`, 
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: "cover"}}>          
-        </div>
-           
-            
-            <Card
-                hoverable
-                style={{ width: '100%' }}
-            >
-                
-                <Meta   
-                        title= {<h1>{restaurant.name}</h1>}
-                        description={  
-                            <div>
-                                <Row style={{marginTop:'20px'}}>
-                                    
-                                    <Col span={8}>
-                                        <div>
-                                            <p>Coordonnées :</p>
-                                            <p style={style.textCard}>{restaurant.adress}</p>
-                                            <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{restaurant.phone}</p>
-                                            <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {restaurant.email}</p>
-                                            <p style={style.textCard}><LinkOutlined  style={{marginRight:'10px'}}/> {restaurant.website}</p>
-                                            <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
-                                            
-                                        </div>
-                                    </Col>
-                                    <Col span={8}>
-                                        <p>Détails :</p>
-                                        <p style={style.textCard}><strong>Cuisine : </strong>{cuisine}</p> 
-                                        <p style={style.textCard}><strong>Gamme de prix : </strong>{prix}</p> 
-                                        <p style={style.textCard}><strong>Clientèle : </strong>{clientele}</p> 
-                                        <p style={style.textCard}><strong>Ambiance : </strong>{ambiance}</p> 
-                                    </Col>
-                                    <Col span={8}>
-                                        <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Votre note moyenne attribuée par nos talents :</p> 
-                                        <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
-                                    </Col>
-                                </Row>
-                                <Row style={style.edit}><Link to='/signUpRestauB'><EditOutlined/></Link></Row>
-                                
-                            </div>
-                        } 
-                        />
-            </Card>
-            </div>
-        </div>
-    )
+    if(!isSignIn){
+        var header = <HeaderScreen /> // redirect  plutôt ???
+      } else if (isSignIn && isRestau){
+        var header = <HeaderRestaurant keyheader='5'/>
+      } else if (isSignIn && isTalent){
+        var header = <HeaderTalent keyheader='4'/>
+      }
+      
+      if(!isSignIn){
+          return <Redirect to="/"/>
+      }else{
+
+          return(
+              <div>
+                {header}
+                <div style={{ textAlign:'center', justifyContents:'center'}}>
+                <div style={{height:'300px', 
+                              backgroundImage:`url(${restaurant.photo})`, 
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: "cover"}}>          
+              </div>
+                 
+                  
+                  <Card
+                      hoverable
+                      style={{ width: '100%' }}
+                  >
+                      
+                      <Meta   
+                              title= {<h1>{restaurant.name}</h1>}
+                              description={  
+                                  <div>
+                                      <Row style={{marginTop:'20px'}}>
+                                          
+                                          <Col span={8}>
+                                              <div>
+                                                  <p>Coordonnées :</p>
+                                                  <p style={style.textCard}>{restaurant.adress}</p>
+                                                  <p style={style.textCard}><PhoneOutlined style={{marginRight:'10px'}}/>{restaurant.phone}</p>
+                                                  <p style={style.textCard}><MailOutlined style={{marginRight:'10px'}}/> {restaurant.email}</p>
+                                                  <p style={style.textCard}><LinkOutlined  style={{marginRight:'10px'}}/> {restaurant.website}</p>
+                                                  <p style={style.textCard2}><FacebookOutlined /> <InstagramOutlined /></p>
+                                                  
+                                              </div>
+                                          </Col>
+                                          <Col span={8}>
+                                              <p>Détails :</p>
+                                              <p style={style.textCard}><strong>Cuisine : </strong>{cuisine}</p> 
+                                              <p style={style.textCard}><strong>Gamme de prix : </strong>{prix}</p> 
+                                              <p style={style.textCard}><strong>Clientèle : </strong>{clientele}</p> 
+                                              <p style={style.textCard}><strong>Ambiance : </strong>{ambiance}</p> 
+                                          </Col>
+                                          <Col span={8}>
+                                              <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Votre note moyenne attribuée par nos talents :</p> 
+                                              <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                                          </Col>
+                                      </Row>
+                                      <Row style={style.edit}><Link to='/signUpRestauB'><EditOutlined/></Link></Row>
+                                      
+                                  </div>
+                              } 
+                              />
+                  </Card>
+                  </div>
+              </div>
+          )
+      }
 }
 
 function mapStateToProps(state) {
-    return {tokenToDisplay: state.token}
+    return {tokenToDisplay: state.token, connectToDisplay : state.isConnect}
     }
 
 export default connect(

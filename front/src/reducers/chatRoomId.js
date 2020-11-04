@@ -3,7 +3,12 @@ export default function(chatRoomId = {idToSend : "", expediteur:"", destinataire
     if(action.type == 'sendId') {
       var newId = action.chatRoomId
       return newId;
-    } else {
+    } 
+    // else if(action.type ='disconnect') {
+    //   var newChatRoomId  = {idToSend : "", expediteur:"", destinataire : ""}
+    //   return newChatRoomId 
+    // }
+    else {
       return chatRoomId;
     }
     

@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
+
 import 'antd/dist/antd.less';
 import '../../App.less';
-import HeaderTalent from '../HeaderTalent';
 import { Card, Rate, Row, Col, Tag} from 'antd';
 import { PhoneOutlined, MailOutlined, HomeOutlined, EditOutlined, LinkedinOutlined } from '@ant-design/icons';
+
+import HeaderTalent from '../HeaderTalent';
+
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 function MonProfilTalentt(props) {
@@ -12,6 +16,12 @@ function MonProfilTalentt(props) {
     const[profil, setProfil]= useState({})
     const[domicile, setDomicile]= useState([48.85,2.33])
     const[polygone, setPolygone]= useState([])
+
+    const [isSignIn, setIsSignIn] = useState(props.connectToDisplay.isSignIn)
+    const [isTalent, setIsTalent] = useState(props.connectToDisplay.isTalent)
+    const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
+
+    const { Meta } = Card;
     
     const style= {
         titres:{
@@ -107,7 +117,11 @@ function MonProfilTalentt(props) {
    } else {
        var chercheUnEmploi ="Je ne cherche pas d'emploi en ce moment"
    }
-  
+
+   if(!isSignIn){
+    return <Redirect to="/"/>
+  }else{
+   
     return(
         <div>
           <HeaderTalent keyheader='5'/>
@@ -170,9 +184,10 @@ function MonProfilTalentt(props) {
         </div>
     )
 }
+}
 
 function mapStateToProps(state) {
-    return {profilToDisplay: state.profil, tokenToDisplay: state.token}
+    return {profilToDisplay: state.profil, tokenToDisplay: state.token, connectToDisplay :state.isConnect}
     }
 
 function mapDispatchToProps (dispatch) {
