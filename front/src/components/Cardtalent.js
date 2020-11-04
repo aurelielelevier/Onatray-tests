@@ -1,20 +1,50 @@
-import React, {useState,useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import 'antd/dist/antd.less';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {Col,Card,Modal, Image, Row,Rate, Divider} from 'antd';
-import {ExpandAltOutlined,SendOutlined,HeartOutlined,HeartFilled,} from "@ant-design/icons"
+import {Col,Card,Modal, Image, Row,Rate, Divider,Tag,Collapse} from 'antd';
+import {ExpandAltOutlined,SendOutlined,HeartFilled,PhoneOutlined, MailOutlined, HomeOutlined, LinkedinOutlined } from "@ant-design/icons";
+import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
+const { Panel } = Collapse
+
+const style= {
+    titres:{
+        color:"#4B6584",
+        fontWeight:'bold',
+    },
+    textCard:{
+        color:"#4B6584",
+        margin:'0px 20px'
+    },
+    textCard2:{
+        color:"#4B6584",
+        margin:'0px',
+        fontSize:'20px',
+        margin:'0px 20px'
+    }
+}
 
 function Cardtalent(props){
 
 const { Meta } = Card
 const [visible, setVisible] = useState(false)
+
 var experiences = props.talent.experience
 var formations =props.talent.formation
 var token=props.token
 var talent =props.talent
 var talentNameUC=props.talent.lastName.toUpperCase()
+if(props.talent.polygone){
+    var polygone=props.talent.perimetre.map(point => [point[1], point[0]])
+}
+
+if(props.talent.polygone){
+var domicile=[props.talent.adresselgtlat.coordinates[1], props.talent.adresselgtlat.coordinates[0]]
+}
+
+console.log('polygone',polygone)
+console.log('domicile',domicile)
 
     const [chatRoomId, setCahtRoomId] = useState() 
     const [goToChatRoom, setGoToChatRoom] = useState(false) 
@@ -46,34 +76,107 @@ var onSendDm = async () => {
 console.log("experiences",experiences)
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
-    return(`${experience.firm}- ${experience.job} - ${experience.startingDate} - ${experience.endingDate} - ${experience.city}\n`)
+    return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
 })
 
 var listexperienceshorten= experiences.map((experience,i) =>{
-    if(experience && i<2){
-    return(`${experience.firm}- ${experience.job} - ${experience.city}\n`)}
-    else{
-        return(`  -  -  - \n`) 
-    }
+    if(experience && i<1){
+    return(<p>{experience.firm}- {experience.job} - {experience.city}</p>)}
 })
 }
 
 // condition mappant sur formation pour afficher les deux dernières formations de chaque talent
-
 if(formations !=undefined){
-var listformation= formations.map((formation,i) => {
-    return(`${formation.endingDate} - ${formation.city} - ${formation.school}`)
-})
+    var listformation= formations.map((formation,i) => {
+        return(<div> {formation.endingDate} - {formation.city} - {formation.school}</div>)
+    })
 
-var listformationshorten= formations.map((formation,i) =>{
-    if(i<2){
-    return(`${formation.endingDate} - ${formation.school}`)
+    var listformationshorten= formations.map((formation,i) =>{
+        if(i<1){
+        return(<p>{formation.endingDate} - {formation.school}</p>)
+            }          
+        })
 }
-})
+
+// conditions d'affichage de la modal talent
+
+// existance de formation et création d'un tableau
+if(talent.formation){
+    var formation = talent.formation.map((formation, i)=>{
+       return(
+           <Row>
+               <Col span={6} style={{padding:30}}> {formation.diploma}</Col>
+               <Col span={6} style={{padding:30}}> {formation.school}</Col>
+               <Col span={6} style={{padding:30}}> {formation.endingDate}</Col>
+               {/* <Col span={6} style={{padding:30}}> {formation.city}</Col> */}
+           </Row>
+           
+       )
+   })
+} else {
+   var formation = <div>Aucune formation renseignée pour le moment</div>
+}
+
+// existance d'expérience et création d'un tableau
+
+if(talent.experience){
+   var experience = talent.experience.map((experience, i)=>{
+      return(
+          <Row>
+              <Col span={6} style={{padding:30}}>Chez : {experience.firm}</Col>
+              <Col span={6} style={{padding:30}}> A : {experience.city}</Col>
+              <Col span={6} style={{padding:30}}> De {experience.startingDate} à {experience.endingDate}</Col>
+          </Row>
+          
+      )
+  })
+} else {
+  var experience = <div>Aucune expérience renseignée pour le moment</div>
+}
+
+// affichage de la situation professionnelle du talent
+if(talent.working){
+  var enposte = 'Actuellement en poste'
+} else {
+  var enposte = "Sans emploi pour le moment"
+}
+
+if(talent.lookingJob){
+  var jobs = 'en tant que '
+  for(var i=0; i<talent.lookingJob.length; i++){
+      if(i==talent.lookingJob.length-1){
+       jobs+= ' '+talent.lookingJob[i]+'.'
+      } else {
+       jobs+= ' '+talent.lookingJob[i]+','
+      }
+  }
+} else {
+  var jobs =''
+}
+
+//affichage des langues parlées par le talent
+if(talent.speakLangage){
+ var langues = ' '
+ for(var i=0; i<talent.speakLangage.length; i++){
+   if(i==talent.speakLangage.length-1){
+       langues+= ' '+talent.speakLangage[i]+'.'
+   } else {
+       langues+= ' '+talent.speakLangage[i]+','
+   }
+ }   
+} else {
+  var langues =''
+}
+
+if(talent.lookingForJob){
+  var chercheUnEmploi = <div>Je cherche un emploi en ce moment
+                       </div>
+} else {
+  var chercheUnEmploi ="Je ne cherche pas d'emploi en ce moment"
 }
 
 
-
+// conditions Chatroom
 if (goToChatRoom == true){
     return <Redirect to={`messageRoom?name=${currentUser}&desti=${talent.token}&room=${chatRoomId}`}/>
  }else{
@@ -89,11 +192,11 @@ return(
                 height='350px'
                 src={talent.avatar}
                 />
-            <Row style={{padding:'10px',display:'flex',flexDirection:'column',alignSelf:'stretch',height:'100%',borderBottomStyle:'solid',borderColor:'#a5b1c2',  borderBottomWidth:'1px', alignItems:'center' }} >
-                    <h2 style={{fontWeight:"bold"}}>{talent.firstName} {talentNameUC}</h2>
-                    <Divider style={{fontWeight:"bold"}}>Formation </Divider>
+            <Row style={{padding:'5px',display:'flex',flexDirection:'column',alignSelf:'stretch',height:'100%',borderBottomStyle:'solid',borderColor:'#a5b1c2',  borderBottomWidth:'1px', alignItems:'center' }} >
+                    <h2 style={{fontWeight:"bold", marginBottom:'2px'}}>{talent.firstName} {talentNameUC}</h2>
+                    <Divider style={{fontWeight:"bold", marginBottom:'2px'}}>Formation </Divider>
                     {listformationshorten}
-                    <Divider style={{fontWeight:"bold"}}>Expérience </Divider>
+                    <Divider style={{fontWeight:"bold",marginBottom:'2px'}}>Expérience </Divider>
                     {listexperienceshorten}
             </Row>
             <Row style={{display:'flex', fontSize:'25px',flexDirection:'row', height:'50px', alignItems:"center", padding:'8px'}} >
@@ -119,7 +222,59 @@ return(
                 justifyContent:'center',
                 textAlign:'center'}}
             >
-            <Row>
+        <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}></Row>
+          <Row>
+            <Col span={8} style={{backgroundColor:'#d1d8e0', height:'100%', padding:20}}>
+                <div style={{borderRadius:'50%',width:200, margin:'auto', height:200, border:'6px solid #4B6584', backgroundImage:`url(${talent.avatar})`, backgroundRepeat: 'no-repeat',
+                     backgroundSize: "cover",}}>
+                </div>
+                    <div className="site-card-border-less-wrapper" style={{marginTop:30, textAlign:'center'}}>
+                        <Card title={`${talent.firstName}   ${talent.lastName}`} bordered={false} style={{ width:'100%', fontWeight:'bold', color:'#4B6584' }}>
+                            <p><HomeOutlined style={{marginRight:'10px'}}/>{talent.adress}</p>
+                            <p><PhoneOutlined style={{marginRight:'10px'}}/>{talent.phone}</p>
+                            <p><MailOutlined style={{marginRight:'10px'}}/>{talent.email}</p>
+                            <p><Tag icon={<LinkedinOutlined />} color="#55acee">
+                                    LinkedIn
+                                </Tag></p>
+                        </Card>
+                        <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Ma note moyenne attribuée par les restaurants :</p> 
+                        <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                    </div>
+            </Col>
+
+            <Col span={16} style={{padding:30}}>
+            <Collapse accordion>
+                <Panel header="Formations" key="1">
+                {listformation}
+                </Panel>
+                <Panel header="Expériences" key="2">
+                {listexperience}
+                </Panel>
+                <Panel header="Langues parlées" key="2">
+                {langues}
+                </Panel>
+                <Panel header="Situation Professionnelle" key="2">
+                {enposte}
+                {chercheUnEmploi}{jobs}
+                </Panel>
+            </Collapse>
+             
+            <Row span={10}><h2 style={style.titres}>Zone de recherche :</h2> </Row> 
+                <div>
+                <Map center={domicile} zoom={12}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                    <Polygon positions={polygone} color="red" />
+                    {/* <Marker position={domicile}>
+                        <Popup> Mon domicile <br/></Popup>
+                    </Marker> */}
+                </Map>
+                </div>
+            </Col>
+          </Row>
+            {/* <Row>
                 <Col style={{width:'40%'}} span={10}>
                     <Image src={talent.avatar} />
                 </Col>
@@ -163,7 +318,7 @@ return(
                             <h4 style={{marginLeft:'15px'}}>E-mail: {talent.email} </h4>
                         </Col>
                 </Col>
-            </Row>
+            </Row> */}
         </Modal>
     </Col>
     )
