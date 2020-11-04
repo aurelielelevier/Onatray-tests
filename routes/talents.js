@@ -18,6 +18,22 @@ router.get('/', function(req, res, next) {
 
 router.post('/createAccount', async function(req,res,next){
 //console.log('its body',req.body)
+const zoneFrance= [
+  [ -5.3173828125, 48.458124202908934 ],
+  [ 2.1313476562500004, 51.26170001449684 ],
+  [ 8.811035156250002, 48.90783374365477 ],
+  [ 7.998046875000001, 43.70709714273101 ],
+  [ 3.2080078125000004, 42.228008913641865 ],
+  [ 1.4941406250000002, 42.293056273848215 ],
+  [ -2.0214843750000004, 43.06838615478111 ],
+  [ -5.3173828125, 48.458124202908934 ]
+]
+var polygoneFrance = {
+  type: "Polygon" ,
+  coordinates: [
+    zoneFrance
+  ]
+}
   var salt = uid2(32)
   var talentToCheck = await talentModel.findOne({email:req.body.talentEmail})
   var avatar = 'https://res.cloudinary.com/dpyqb49ha/image/upload/v1604324805/mucu7fy5dbhrxmhtf1dc.jpg'
@@ -31,6 +47,7 @@ router.post('/createAccount', async function(req,res,next){
       token: uid2(32), 
       phone : req.body.phone,
       avatar:avatar,
+      polygone: polygoneFrance,
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){

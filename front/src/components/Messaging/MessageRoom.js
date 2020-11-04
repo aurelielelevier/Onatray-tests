@@ -9,8 +9,8 @@ import Header from '../Header'
 import HeaderTalent from '../HeaderTalent'
 import HeaderRestaurant from '../HeaderRestaurant'
 
-import {Row, Col, Button, Input, Card, message } from 'antd'
-import { HeartOutlined, SendOutlined,ExpandAltOutlined} from "@ant-design/icons";
+import {Row, Col, Button, Input, Card, Badge } from 'antd'
+
 
 
 
@@ -24,13 +24,17 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [myToken, setMyToken] = useState('')
     const [sender, setSender] = useState('')
     const [desti, setDesti] = useState('')
-    //var talentInfo
     
     const [messageList, setMessageList] = useState([])
     const [messageToSend, setMessageToSend] = useState('')
     const [chatroom, setchatroom] = useState('')
     var chatRoomId ;
     var tokenDesti ;
+
+    const [restauName, setRestauName] = useState()
+    const [clientele, setClientele] = useState()
+    const [food, setFood] = useState()
+    const [restaurant, setRestaurant]= useState()
     
     const [avatar, setAvatar] = useState('')
     const [firstNameTalent, setFirstNameTalent] = useState('')
@@ -44,6 +48,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
     console.log(tokenToDisplay)
     console.log(connectToDisplay)
+
     if(!isSignIn){
         var header = <Header/>
       } else if (isSignIn && isRestau){
@@ -59,9 +64,14 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
         setchatroom(room)
         setSender(name)
         setDesti(desti)
-        tokenDesti = desti
         setMyToken(name)
+        tokenDesti = desti
+        // if(isRestau){
 
+        //     tokenDesti = desti
+        // }else if(isTalent){
+        //         tokenDesti = name
+        // }
 
         socket.emit('join', {name, room}, ({})=>{
             
@@ -97,36 +107,84 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
             }
             setMessageList(tempMessageTab)
-            console.log(response.card)
-            setAvatar(response.card.avatar)
-            setFirstNameTalent(response.card.firstName)
-            setLastNameTalent(response.card.lastName)
+            console.log(response)
 
-            if(response.card.working == true){
-                setIsWorking('En poste')
-            }else{
-                setIsWorking("N'as pas de poste")
-            }
-            if(response.card.lookingForJob == true){
-                setIsLookingFor("en recherche d'emploie")
-                //setLookingFor(response.card.lookingJob)
-                    var tempTab = []
-                for(let i=0;i<response.card.lookingJob.length;i++) {
-                    tempTab.push(<li>- {response.card.lookingJob[i]}</li>)
+            if(isRestau){
+                
+                setAvatar(response.card.avatar)
+                setFirstNameTalent(response.card.firstName)
+                setLastNameTalent(response.card.lastName)
+                if(response.card.working == true){
+                    setIsWorking('En poste')
+                } else {
+                    setIsWorking("N'as pas de poste")
                 }
-                setJobLookingFor(tempTab)
-            }else {
-                setIsLookingFor("ne recherche pas d'emploie pour le moment")
+                if(response.card.lookingForJob == true){
+                    setIsLookingFor("en recherche d'emploi")
+                    //setLookingFor(response.card.lookingJob)
+                        var tempTab = []
+                    for(let i=0;i<response.card.lookingJob.length;i++) {
+                        tempTab.push(<li>- {response.card.lookingJob[i]}</li>)
+                    }
+                    setJobLookingFor(tempTab)
+                } else {
+                    setIsLookingFor("ne recherche pas d'emploi pour le moment")
+                }  
+            }else if (isTalent){
+                console.log(response.card)
+                setAvatar(response.card.photo)
+                setRestauName(response.card.name)
+                
+                var tempTab = []
+                for(let i=0;i<response.card.clientele.length;i++){
+                        tempTab.push(<li>- {response.card.clientele[i]}</li>)
+                }
+                setClientele(tempTab)
+
+                var tempTabb = []
+                for(let i=0;i<response.card.typeOfFood.length;i++){
+                    tempTab.push(<li>- {response.card.typeOfFood[i]}</li>)
             }
-            
+                 setFood(tempTabb)
+            }
+
+              
+               
         }, [])
         
-  if(connectToDisplay.isTalent == true){
-        var cardTalentToDisplay;
+  if(isTalent){
+        var cardToDisplay = 
+        <Col style={{border:'1px solid black'}} offset={2} span={6}>
+        <Card  
+            cover={
+            <img
+                style={{height:'45vh'}}
+                alt="example"
+                src={avatar}
+            />
+            }
+            // actions={[
+            // <HeartOutlined key="setting" />,
+            // <ExpandAltOutlined key="ellipsis" />
+            // ]}
+                    >   
+            <Meta
+            //style={{height:'200px'}}
+            title={<h3>{restauName}</h3>}
+            />
+            <p>{restauName} est un restaurant ayant une clientèle : 
+            {clientele}  
+            </p>
+            <p>La nourriture servis est : {food} </p>
+            
+    </Card>
+        
+        </Col>
   }else{
 
-  var cardTalentToDisplay = <Col style={{border:'1px solid black'}} offset={2} span={6}>
-  <Card  
+  var cardToDisplay = 
+  <Col style={{border:'1px solid black'}} offset={2} span={6}>
+    <Card  
       cover={
       <img
         style={{height:'45vh'}}
@@ -144,12 +202,10 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
       title={<h3>{firstNameTalent} {lastNameTalent}</h3>}
       />
       
-      <p>Acutellement : {isWorking}, {isLookingFor} pour être : 
+      <p>Acutellement : {isWorking}, {isLookingFor} pour devenir : 
         {jobLookingFor}  
        </p>
-      
-     
-  </Card>
+    </Card>
 </Col>
   }
     
@@ -166,75 +222,84 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     var dataRecentMessage = messageList.map(function(message, i){
             if(message.token == myToken){
                 return (
-                <Row style={{display:'flex', justifyContent:'flex-end',}}>
-                    <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
-                        <Row style={{paddingBottom:5}}>
-                            <span style={{paddingLeft:5, fontSize:10}}>NOM </span>
-                            <Col span={24} style={{ backgroundColor:'#FED330',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                                <span >{message.message}</span>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
+                 <div>
+                     
+                    <Row style={{display:'flex', justifyContent:'flex-end',}}>
+                        <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                            <Row style={{paddingBottom:5}}>
+                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
+                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                    <span>{message.message}</span>  
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+
+                 </div>   
                 )
             }else {
                 return (
-                <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
-                    <Col span={8} style={{paddingLeft:5, display:'flex' ,flexDirection:'column'}} >
-                        <Row style={{paddingBottom:5}}>
-                            <span style={{paddingLeft:5, fontSize:10}}>NOM</span>
-                            <Col span={24} style={{ backgroundColor:'#a5b1c2',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
-                                <span >{message.message}</span>
-                            </Col>
+                <div>
+                    
+                    <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
+                        <Col span={10} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
+                            <Row style={{paddingBottom:5}}>
+                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name}</span> */}
+                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                    <span >{message.message}</span>
+                                </Col>
+                            </Row>
+                        </Col>
                     </Row>
-                   </Col>
-                </Row>
-
+                </div>
                    )
             }
     })
-    if(!isSignIn){
+if(!isSignIn){
     return (<Redirect to='/'/>)
     }else{
 
-        return(
-    
-            <Row>
-                <Col span={24}>
-                    {header}
-                    <Row style={{paddingTop:20, paddingBottom:20}}>
-                        <Col offset={2} span={2}>
-                        <Link to='/messagerie'>
-                            <Button type='primary'>
-                                Retour
-                            </Button>
-                        </Link>
-                        </Col>
-                    </Row>
-                    <Row >
-                        <Col style={{border:'1px solid grey',borderRadius:10, display:'flex',height:'70vh', flexDirection:'column-reverse'}} offset={2} span={13}>
-                            <Row>
-                                <Col offset={4} span={12}>
-                                <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
-                                <div style={{ margin: '24px 0' }} />
-                                </Col>
-                                <Col offset={1} span={4}>
-                                    <Button onClick={()=>sendMessage(messageToSend)} type="primary">Envoyer</Button>
-                                </Col>
-                            </Row>
-                                
-                            <div style={{overflowY: 'scroll'}}>
-                                {dataRecentMessage}
-                            </div>
-                                
-                        </Col>
-                            {cardTalentToDisplay}    
-                        
-                    </Row>
-                </Col>
-            </Row>
+    return(
+        <div>
+        
+        <Row>
+            <Col span={24}>
+                {header}
+    <Row style={{justifyContent:'center', backgroundColor:'#4b6584', color:'white', fontWeight:'bold', fontSize:'30px'}}>Discussion entre {firstNameTalent} et </Row>
             
-        )
+                <Row style={{paddingTop:20, paddingBottom:20}}>
+                    <Col offset={2} span={2}>
+                    <Link to='/messagerie'>
+                        <Button type='primary'>
+                            Retour
+                        </Button>
+                    </Link>
+                    </Col>
+                </Row>
+                <Row >
+                    <Col style={{border:'1px solid black', borderRadius:5,padding:10, display:'flex',height:'70vh', flexDirection:'column-reverse', backgroundColor:'#4b6584'}} offset={2} span={13}>
+                        <Row>
+                            <Col offset={4} span={12}>
+                            <TextArea onChange={(e)=>setMessageToSend(e.target.value)} value={messageToSend} placeholder="Votre message" autoSize />
+                            <div style={{ margin: '24px 0' }} />
+                            </Col>
+                            <Col offset={1} span={4}>
+                                <Button onClick={()=>sendMessage(messageToSend)} type="primary">Envoyer</Button>
+                            </Col>
+                        </Row>
+                            
+                        <div style={{overflowY: 'scroll', padding:30}}>
+                            {dataRecentMessage}
+                        </div>
+                            
+                    </Col>
+                        {cardToDisplay}    
+                    
+                </Row>
+            </Col>
+        </Row>
+        </div>
+    )
     }
 }
 function mapStateToProps(state) {

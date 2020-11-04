@@ -66,7 +66,7 @@ const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
 useEffect(() => {
 async function loaddata(){
 
-var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone, adresse:props.profilToDisplay.adresselgtlat.coordinates})
+var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
 var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
     method:'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded'},

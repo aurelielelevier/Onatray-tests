@@ -8,24 +8,18 @@ var encBase64 = require("crypto-js/enc-base64");
 var uniqid = require('uniqid');
 const fs = require('fs');
 
-
 var cloudinary = require('cloudinary').v2;
-
 cloudinary.config({ 
   cloud_name: 'dpyqb49ha', 
   api_key: '513712396958631', 
   api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
 });
 
-var chatRoomModel = require('../model/chatRoom')
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+var chatRoomModel = require('../model/chatRoom');
+const { isValidObjectId } = require('mongoose');
+
 
 router.post('/sign_in', async function(req,res,next){
-  console.log(req.body.password)
-  console.log(req.body.email)
   
   var talentToSearch = await talentModel.findOne({email : req.body.email})
   if(talentToSearch){
@@ -52,57 +46,32 @@ router.post('/sign_in', async function(req,res,next){
   }
 })
 
-// router.post('/sign_in',async function(req,res,next){
-//   //code erreur 1:réussi 2:champ vide 3:email déja utilisé
-//   if(req.body.email===''|| req.body.password===''){
-//     res.json({result:2})
-//   }else{
-//     var userToSearch = await usersModel.findOne({email:req.body.email })
-//     var hash = SHA256(req.body.password + userToSearch.salt).toString(encBase64);
-//     if(userToSearch.password === hash){
-//       res.json({result:1,token:userToSearch.token})
-//     }else{
-//       res.json({result:3})
-//     }
-//   }
-// })
-
 router.post('/upload/:token', async function(req, res, next) {
- 
-  var user = await talentModel.findOne({token:req.params.token})
+  // upload de la photo de profil et enregistrement sur Cloudinary, copie du lien en BDD
+  // si l'utilisateur fait partie des talents :
   if (await restaurantModel.findOne({token:req.params.token})){
     var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
     var resultCopy = await req.files.photo.mv(uniqidPhoto);
     var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
     await restaurantModel.updateOne({token:req.params.token}, {siret: resultCloudinary.url})
-    } else {
-      var uniqidPhoto = `./tmp/${uniqid()}${req.files.file.name}`
-      var resultCopy = await req.files.file.mv(uniqidPhoto);
-      var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
-      await talentModel.updateOne({token:req.params.token}, {avatar:resultCloudinary.url})
-      
+  } else {
+    // si l'utilisateur fait partie des restaurants :
+    var uniqidPhoto = `./tmp/${uniqid()}${req.files.file.name}`
+    var resultCopy = await req.files.file.mv(uniqidPhoto);
+    var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
+    await talentModel.updateOne({token:req.params.token}, {avatar:resultCloudinary.url})
     }
     fs.unlinkSync(uniqidPhoto)
-  
-    res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} );
-  // } else {
-  //   res.json({result: false, message:resultCopy});
-  // }
+    res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} )
 });
 
 router.post('/createChatRoom', async function(req,res,next){
-
-
   var expediteur = await restaurantModel.findOne(
     { token : req.body.expediteur }
  )
   var destinataire = await talentModel.findOne(
     {token : req.body.desti}
   )
-
-   // console.log('expe ID', expediteur )
-   // console.log('DESTI ID', destinataire)
-
     var chatRoomTocheck = await chatRoomModel.findOne({
       name : `chatRoomOf${req.body.expediteur}and${req.body.desti}`
     })
@@ -118,26 +87,30 @@ router.post('/createChatRoom', async function(req,res,next){
       await talentModel.updateOne({token : req.body.desti},{$addToSet:{chatRoom : newRoom.id}})
       res.json({result : ` création de chatRoomOf${req.body.expediteur}and${req.body.desti} id : ${newRoom.id}`, chatRoomId : newRoom.id})
     }
-
-
-})
+});
 
 router.post('/getOldMessage',async function(req,res,next){
   var talentToFind = await talentModel.findOne({token:req.body.token})
-  
-
-  let chatRoomId = req.body.chatRoomId
-  var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
-  if(chatRoomToFind){
-    res.json({result : chatRoomToFind.message, card: talentToFind})
-  }else {
-    res.json({result : 'no old messages', card: talentToFind})
+  console.log('token get old message',req.body.token)
+  if(talentToFind){
+    let chatRoomId = req.body.chatRoomId
+    var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
+    if(chatRoomToFind){
+      res.json({result : chatRoomToFind.message, card: talentToFind})
+    } else {
+      res.json({result : 'no old messages', card: talentToFind})
+    }
   }
-
-//console.log('body',req.body.token)
-
-
-
+   else{
+     var restauToFind = await restaurantModel.findOne({token:req.body.token})
+     let chatRoomId = req.body.chatRoomId
+     let chatRoomToFind = await chatRoomModel.findById(chatRoomId)
+     if(chatRoomToFind){
+       res.json({result:chatRoomToFind.message, card : restauToFind})
+     }else{
+       res.json({result : 'no old messages', card : restauToFind})
+     }
+   }
 })
 
 router.post('/getMyChatRoom', async function(req,res,next){
@@ -145,14 +118,12 @@ router.post('/getMyChatRoom', async function(req,res,next){
   var talentToFind = await talentModel.findOne({token: req.body.token}).populate('chatRoom').exec()
   console.log(talentToFind)
   if(talentToFind){
-    //console.log(talentToFind.chatRoom)
+    console.log(talentToFind.chatRoom)
     res.json({result : talentToFind.chatRoom})
-  }else{
+  } else {
     var restauToFind = await restaurantModel.findOne({token:req.body.token}).populate('chatRoom').exec()
-    //console.log(restauToFind.chatRoom)
     res.json({result : restauToFind.chatRoom})
   }
 })
-
 
 module.exports = router;
