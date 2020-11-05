@@ -42,12 +42,26 @@ var polygoneFrance = {
       firstName : req.body.firstName,
       lastName : req.body.lastName,
       email : req.body.email,
-      salt : salt,
       password : SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32), 
+      salt : salt,
       phone : req.body.phone,
       avatar:avatar,
+      lookingForJob:false,
+      working:false,
+      speakLangage:[],
+      adress:'',
+      adresselgtlat: {
+        type: "Point" ,
+        coordinates: [2.33,48.33]},
       polygone: polygoneFrance,
+      perimetre :[],
+      lookingJob:[],
+      typeofContract: [],
+      wishlistTalent:[],
+      experience:[],
+      formation:[],
+      chatRoom:[],
     })
     var talentSaved = await newTalent.save();
     if(talentSaved){

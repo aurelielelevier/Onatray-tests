@@ -5,7 +5,7 @@ import 'antd/dist/antd.less';
 import { Layout, Card, Row, Col, Modal, Rate} from 'antd';
 
 import { PhoneOutlined, MailOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 
 import ListeCardsRestaurants from './ListeCardsRestaurants'
@@ -209,7 +209,11 @@ function RestaurantsFavoris(props){
                                     </Popup>
                                 </Marker>)
                                 })}
-
+                                <Circle 
+                                    center={[props.adresseToDisplay.coordinates[1], props.adresseToDisplay.coordinates[0]]}
+                                    color="red" 
+                                    fillcolor='red'
+                                    radius={200}><Popup>Mon domicile</Popup></Circle>
                         </Map>
                         </div>
                     </Card>

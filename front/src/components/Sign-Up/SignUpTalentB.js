@@ -101,16 +101,10 @@ function SignUpTalentB(props){
         }
       
        
-            const [fileList, setFileList] = useState([
-              {
-                uid: '-1',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://res.cloudinary.com/dpyqb49ha/image/upload/v1604324805/mucu7fy5dbhrxmhtf1dc.jpg',
-              },
-            ]);
+            const [fileList, setFileList] = useState([]);
           
             const onChange = ({ fileList: newFileList }) => {
+                console.log('newfilelist', newFileList)
               setFileList(newFileList);
             };
           
