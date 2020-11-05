@@ -84,10 +84,12 @@ router.post('/createChatRoom', async function(req,res,next){
     //Si une salle de messagerie existe déja, on renvoie son ID
     if (chatRoomTocheck){
       res.json({result:`chat room déja existante entre ${req.body.expediteur} et ${req.body.desti} id : ${chatRoomTocheck.id}`, chatRoomId : chatRoomTocheck.id})
-    //Si elle n'existe pas, on en crée une et on renvoie également son ID
+    //Si elle n'existe pas, on en crée une, on la sauvegarde et on renvoie également son ID
     }else{
       var newRoom = await new chatRoomModel({
-        name : `chatRoomOf${req.body.expediteur}and${req.body.desti}`
+        name : `chatRoomOf${req.body.expediteur}and${req.body.desti}`,
+        expediteurName : expediteur.name,
+        destinataireName : `${destinataire.firstName} ${destinataire.lastName}`
       })
       await newRoom.save()
     //On update les modeles restaurant et talents pour leur ajouter l'ID de la salle de messagerie en clés étrangère 
@@ -107,9 +109,9 @@ router.post('/getOldMessage',async function(req,res,next){
     let chatRoomId = req.body.chatRoomId
     var chatRoomToFind = await chatRoomModel.findById(chatRoomId)
     if(chatRoomToFind){
-      res.json({result : chatRoomToFind.message, card: talentToFind})
+      res.json({result : chatRoomToFind.message, restau : chatRoomToFind.expediteurName, talent : chatRoomToFind.destinataireName, card: talentToFind})
     } else {
-      res.json({result : 'no old messages', card: talentToFind})
+      res.json({result : 'no old messages', restau : chatRoomToFind.expediteurName, talent : chatRoomToFind.destinataireName, card: talentToFind})
     }
   }
   //Sinon c'est que l'on est un talent et on recherche dans les restaurants

@@ -108,8 +108,9 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 setAvatar(response.card.avatar)
                 setFirstNameTalent(response.card.firstName)
                 setLastNameTalent(response.card.lastName)
-                setMyName(response.result[0].expediteur)
-                setHisName(response.result[0].destinataire)
+                setMyName(response.restau)
+                setHisName(response.talent)
+                
                 if(response.card.working == true){
                     setIsWorking('En poste')
                 } else {
@@ -130,9 +131,11 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 console.log(response.card)
                 setAvatar(response.card.photo)
                 setRestauName(response.card.name)
-                setMyName(response.result[0].destinataire)
-                setHisName(response.result[0].expediteur)
-                
+
+                if(response.result.length>0){
+                setMyName(response.talent)
+                setHisName(response.restau)
+                }
                 var tempTab = []
                 for(let i=0;i<response.card.clientele.length;i++){
                         tempTab.push(<li>- {response.card.clientele[i]}</li>)

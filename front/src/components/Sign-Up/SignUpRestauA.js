@@ -55,7 +55,7 @@ function SignUpRestauA(props){
     
 
     var sendFormValues = async () => {
-        console.log(JSON.stringify(lnglat))
+       
         
          var rawResponse =  await  fetch('restaurants/createAccount', {
             method:'POST',

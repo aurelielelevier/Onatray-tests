@@ -10,6 +10,7 @@ import HeaderTalent from './HeaderTalent'
 
 import { Button, Select, Form, Col, Row,Card } from 'antd';
 import Cardtalent from './Cardtalent'
+import { Redirect } from 'react-router-dom';
 
 const { Option } = Select
 const { Meta } = Card
@@ -127,6 +128,10 @@ var talentslist = talentaafficher.map((e,i) => {
         return (
            <Cardtalent key={i} src={e.src} talent={e} onliketalent={onliketalent} wishlistRestaurantID={wishlistRestaurantID} token={token} couleur={couleur}/>
         )})
+if(!isSignIn){
+  return  <Redirect to='/'/>
+}else{
+
 
 return(
                      
@@ -195,6 +200,7 @@ return(
 </div>
 
     )
+}
 }
 
 function mapStateToProps(state) {

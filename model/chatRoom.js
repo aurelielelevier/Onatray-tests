@@ -11,6 +11,8 @@ var messageSchema  = mongoose.Schema({
 
 var chatRoomSchema = mongoose.Schema({
     name: String,
+    expediteurName:String,
+    destinataireName:String,
     message : [messageSchema],
    });
    
