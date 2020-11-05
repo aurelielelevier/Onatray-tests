@@ -20,12 +20,13 @@ function HeaderTalent(props) {
     <Menu.Item>
       <Link to='/talent-mon-profil'>Mon profil</Link>
     </Menu.Item>
-    <Link to='/messagerie'>
-      < Menu.Item>Mes messages</Menu.Item>
-    </Link>
-    <Link to='/'>
-      <Menu.Item onClick={()=>{{props.onDisconnect()}}}> Déconnexion </Menu.Item> 
-    </Link>
+    
+    < Menu.Item>
+      <Link to='/messagerie'>Mes messages</Link>
+    </Menu.Item>
+    
+    <Menu.Item> <a href='/'>Déconnexion</a> </Menu.Item> 
+    
   </Menu>
   )
   

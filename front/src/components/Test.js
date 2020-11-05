@@ -30,7 +30,7 @@ function Test(){
        <div>HzBuqpnY6Qf3JCLQUtCvFu9j3B1Zt8tV
            <ImgCrop rotate>
                             <Upload
-                                action={"/upload/"+'HzBuqpnY6Qf3JCLQUtCvFu9j3B1Zt8tV'}
+                                action={"/upload/"+'5a4Oq5scR0f1Oiwvt4lnkzXzTXK2ABDE'}
                                 listType="picture-card"
                                 fileList={fileList}
                                 onChange={onChange}

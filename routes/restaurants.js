@@ -46,6 +46,7 @@ router.post('/createAccount', async function(req,res,next){
       chatRoom:[],
     })
     var restauSaved = await newRestau.save();
+    console.log(restauSaved)
     if(restauSaved){
       res.json({token:restauSaved.token, adresse:restauSaved.adresselgtlat, profil: restauSaved})
     }else{
