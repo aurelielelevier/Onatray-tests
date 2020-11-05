@@ -20,6 +20,7 @@ function SignInScrenn(props){
     const [isTalent, setIsTalent] = useState(false)
     const [isRestau, setIsRestau] = useState(false)
 
+
     var sendFormValues = async () => {
 
         let rawResponse = await fetch('/sign_in', {
@@ -32,7 +33,7 @@ function SignInScrenn(props){
         let response = await rawResponse.json()
         //console.log('reponse',response)
         if ( response.result == 'Error'){
-            setErrorMessage('Email ou mot de passe incorrect')
+            setErrorMessage(<p style={{color:'red'}}>Email ou mot de passe incorrect</p>)
          }
          else if(response.result === true && response.type==='talent'){
             console.log('response talent',response)
