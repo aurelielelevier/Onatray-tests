@@ -49,8 +49,7 @@ function ListeRestaurants(props){
     const [isRestau, setIsRestau] = useState(props.connectToDisplay.isRestau)
     
     const token = props.tokenToDisplay
-    console.log(props.tokenToDisplay)
-    console.log(props.connectToDisplay)
+
     function colorationCoeur(liste, whishlist){
         for(var i=0; i<liste.length; i++){
             if(whishlist.includes(liste[i]._id)){

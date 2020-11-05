@@ -48,8 +48,12 @@ function MonProfilTalentt(props) {
             setDomicile([profil.adresselgtlat.coordinates[1], profil.adresselgtlat.coordinates[0]])
         }
         cherche()
+        
+    },[]);
+
+    useEffect(()=>{
         props.onChargeProfil(profil)
-    },[])
+    },[profil]);
     
     if(profil.formation){
          var formation = profil.formation.map((formation, i)=>{

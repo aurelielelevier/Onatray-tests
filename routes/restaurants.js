@@ -3,7 +3,6 @@ var router = express.Router();
 
 var restaurantModel = require('../model/restaurants');
 var talentModel = require('../model/talents');
-
 var formationModel = require('../model/formation');
 var experienceModel = require('../model/experience');
 
@@ -20,9 +19,8 @@ cloudinary.config({
 });
 
 
-
 router.post('/createAccount', async function(req,res,next){
-  console.log(JSON.parse(req.body.lnglat))
+  // Création des profils, ajout en base de donnée avec un avatar non personnalisé, sécurisation du mot de passe
   var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
   var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
@@ -54,7 +52,6 @@ router.post('/createAccount', async function(req,res,next){
       res.json(false)
     }
   }
-
 })
 
 router.get('/getinformation', async function(req,res,next){
@@ -65,56 +62,45 @@ router.get('/getinformation', async function(req,res,next){
 router.post('/recherche-liste-talents',async function(req,res,next){
   var données= JSON.parse(req.body.criteres)
   var restaurant = await restaurantModel.findOne({token:req.body.token})
-var jobminuscule=données.posterecherché.toLowerCase()
-if (jobminuscule== 'tous les postes'){
-  console.log('tous les postes')
-  var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
-}else {
-  console.log(('chargement avec tri'))
-  var responseAenvoyer = await talentModel.find({
-    lookingJob:{$in:jobminuscule },
-    polygone: {
-      $geoIntersects: {
-         $geometry: {
-            type: "Point" ,
-            coordinates: restaurant.adresselgtlat.coordinates,
-         }
+  var jobminuscule=données.posterecherché.toLowerCase()
+  if (jobminuscule== 'tous les postes'){
+    var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+  }else {
+    var responseAenvoyer = await talentModel.find({
+      lookingJob:{$in:jobminuscule },
+      polygone: {
+        $geoIntersects: {
+          $geometry: {
+              type: "Point" ,
+              coordinates: restaurant.adresselgtlat.coordinates,
+          }
+        }
       }
-    }
-  }).populate('formation').populate('experience').exec()
-}
-let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
-let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
+    }).populate('formation').populate('experience').exec()
+  }
+  let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
+  let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 
   res.json({liste:responseAenvoyer,restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
  })
 
 
  router.post('/addToWishList', async function (req,res,next){
-
-
   var user = await restaurantModel.findOne({token: req.body.token})
     var talent = await talentModel.findOne({_id: req.body.id})
-      console.log(talent)  
-
       if(user.wishlistRestaurant.includes(talent.id)){ 
-           await restaurantModel.updateOne({token: req.body.token}, { $pull: {wishlistRestaurant:{ $in:`${req.body.id}` }} })
-      console.log('retrait whishlist')  
-    } else {
-       await restaurantModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistRestaurant:req.body.id}})
-      console.log('ajout whishlist')}
-
-
-var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
-var wishlist= await restaurantModel.findOne({token:req.body.token})
-console.log("wishlist.wishlistRestaurant",wishlist.wishlistRestaurant)
-
- res.json({restaurantwishlistid:wishlist.wishlistRestaurant,liste:responseAenvoyer})
+        await restaurantModel.updateOne({token: req.body.token}, { $pull: {wishlistRestaurant:{ $in:`${req.body.id}` }} })  
+      } else {
+        await restaurantModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistRestaurant:req.body.id}})
+      }
+  var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
+  var wishlist= await restaurantModel.findOne({token:req.body.token})
+  
+  res.json({restaurantwishlistid:wishlist.wishlistRestaurant,liste:responseAenvoyer})
  })
 
 
 router.put('/informations', async function(req,res,next){
-  console.log('its body', req.body)
   var clientele = JSON.parse(req.body.clientele)
   var type = JSON.parse(req.body.restaurantOption)
   var cuisine = JSON.parse(req.body.foodOption)
@@ -125,7 +111,6 @@ router.put('/informations', async function(req,res,next){
 
 router.get('/profil/:token', async function( req, res, next){  
    var user = await (await restaurantModel.findOne({token: req.params.token})) 
-    console.log(user)   
     res.json(user) })
 
 module.exports = router;
