@@ -21,7 +21,7 @@ function SignUpTalentC(props){
     const [polygoneinverse, setPolygoneinverse] = useState([])
     const[adresse, setAdresse] = useState('')
     const[adressesProposees, setAdressesProposees] = useState('')
-    const [latlngDomicile, setLatlngDomicile] = useState({coordinates: [48.8534, 2.3488]})
+    const [latlngDomicile, setLatlngDomicile] = useState({coordinates: [ 2.3488, 48.8534]})
 
     const token = props.tokenToDisplay
 
@@ -120,7 +120,7 @@ function SignUpTalentC(props){
             <Row style={{justifyContent:'center'}}>
                 <Button type='primary' onClick={(e) => {setPolygone([]); setPolygoneinverse([])}}> Recommencer</Button>
                         ou 
-                <Link to={'/talent-mon-profil'}><Button type='primary' onClick={() => {envoiPolygone(); envoiAdresse()} }> Valider le périmètre</Button></Link>
+                <Link to={'/talent-mon-profil'}><Button type='primary' onClick={() => {envoiPolygone(); envoiAdresse()} }> Valider et poursuivre</Button></Link>
             </Row>
             
             <Row>

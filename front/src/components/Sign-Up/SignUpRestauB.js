@@ -245,6 +245,7 @@ function SignUpRestauB(props){
         </Row>
         <Row style={{justifyContent:'center', paddingTop:40}}>
             <Upload {...photo}>
+                Téléchargez votre photo ici :
                 <Button icon={<UploadOutlined />}>Télécharger une photo</Button>
             </Upload>
             
