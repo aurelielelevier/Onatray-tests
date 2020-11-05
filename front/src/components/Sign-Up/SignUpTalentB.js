@@ -6,7 +6,7 @@ import {Link, Redirect} from 'react-router-dom'
 
 import Header from '../Header'
 
-import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select, Upload} from 'antd';
+import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select, Upload, DatePicker} from 'antd';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 
@@ -43,7 +43,9 @@ function SignUpTalentB(props){
     })
 
     const onFinish =  values => {
-       // console.log(' its values',values)
+        console.log(' its values',values)
+      
+
         var langageToSend =  JSON.stringify(languageChoosen)
         var jobToSend =  JSON.stringify(jobChoosen)
         var formationToSend =  JSON.stringify(values.formation)
@@ -153,7 +155,6 @@ function SignUpTalentB(props){
                         <Step title="Créer un compte" />
                         <Step title="Renseigner vos informations" />
                         <Step title="Où voulez vous travailler ?" />
-                        {/* <Step title="Récapitulatif"/> */}
                     </Steps>
                 </Col>
                 <Col span={4}></Col>
@@ -213,7 +214,9 @@ function SignUpTalentB(props){
                                                     fieldKey={[field.fieldKey, 'year']}
                                                     rules={[{ required: true, message: 'Missing last name' }]}
                                                 >
-                                                <Input placeholder="Année d'obtention" />
+                                                {/* <Input style={{ width: '50%' }} defaultValue="input content" /> */}
+                                                <DatePicker placeholder="Date d'obtention" style={{ width: '100%' }} />
+                                                {/* <Input placeholder="Année d'obtention" /> */}
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -269,25 +272,16 @@ function SignUpTalentB(props){
                                                         <Input placeholder="Poste" />
                                                         </Form.Item>
                                                     </Col> 
-                                                    <Col span={5}>
+                                                    <Col span={10}>
                                                         <Form.Item
                                                             style={{paddingLeft:30}}
                                                             {...field}
-                                                            name={[field.name, 'startDate']}
-                                                            fieldKey={[field.fieldKey, 'startDate']}
+                                                            name={[field.name, 'rangeDate']}
+                                                            fieldKey={[field.fieldKey, 'rangeDate']}
                                                             rules={[{ required: true, message: 'champ vide'}]}
                                                         >
-                                                        <Input placeholder="Date de début"/>
-                                                        </Form.Item>
-                                                    </Col>
-                                                    <Col span={5}>
-                                                        <Form.Item
-                                                            style={{paddingLeft:30}}
-                                                            {...field}
-                                                            name={[field.name, 'endDate']}
-                                                            fieldKey={[field.fieldKey, 'endDate']}
-                                                        >
-                                                        <Input placeholder="Date de fin" />
+                                                        {/* <Input placeholder="Date de début"/> */}
+                                                        <DatePicker.RangePicker style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
                                             </Row>
