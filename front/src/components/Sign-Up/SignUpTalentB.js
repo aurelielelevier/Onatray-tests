@@ -331,7 +331,7 @@ function SignUpTalentB(props){
                        
                         <Row style={{justifyContent:'center', paddingTop:40}}>
                             <Upload {...photo}>
-                                <Button icon={<UploadOutlined />}>Télécharger une photo</Button>
+                                <Button icon={<UploadOutlined />}>Télécharger une photo de profil</Button>
                             </Upload>
             
                         </Row>
