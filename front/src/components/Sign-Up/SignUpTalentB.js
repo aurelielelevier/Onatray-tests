@@ -82,44 +82,76 @@ function SignUpTalentB(props){
 
     if(enRecherche == true ){
         var inputToDisplay = 
+            <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
+            <span style={{paddingRight:10}}>Postes ?</span>
+            <Select 
+            onChange={(e)=>setJobChoosen(e)}
+            style={{width:'150px'}}
+            mode='multiple'>
+            <OptGroup label="En salle">
+            <Option value='Voiturier'>Voiturier</Option>
+            <Option value='Serveur'>Serveur</Option>
+            <Option value='Garçon de café'>Garçon de café</Option>
+            <Option value='Plongeur'>Plongeur</Option>
+            <Option value='Runner'>Runner</Option>
+            <Option value='Sommelier'>Sommelier</Option>
+            <Option value='Chef de rang'>Chef de rang</Option>
+            <Option value="Maître d'hôtel">Maître d'hôtel</Option>
+            <Option value='Manager'>Manager</Option>
+            </OptGroup>
+            <OptGroup label="En cuisine">
+            <Option value='Chef de cuisine'>Chef de cuisine</Option>
+            <Option value='chefDePartie'>Chef de partie</Option>
+            <Option value='Commis de cuisine'>Commis de cuisine</Option>
+            <Option value="Pizzaiolo">Pizzaiolo</Option>
+            <Option value="Pâtissier">Pâtissier</Option>
+            </OptGroup>
+            </Select>
+        </Col>
+      
+        }
+        if(enRecherche == true ){
+            var inputContractToDisplay = 
+            <Col offset={11} span={8}>
+            <span>Contrat ?  </span>
+            <Select
+            onChange={(e)=>setContrat(e)}
+            style={{width:'150px'}}
+            mode='multiple'
+            >
+              <Option value="CDD">CDD</Option>
+              <Option value="CDI">CDI</Option>
+              <Option value="Extra">Extra</Option>      
+            </Select>
+        </Col>
+        }
+      
+       
+            const [fileList, setFileList] = useState([]);
+          
+            const onChange = ({ fileList: newFileList }) => {
+                console.log('newfilelist', newFileList)
+              setFileList(newFileList);
+            };
+          
+            const onPreview = async file => {
+              let src = file.url;
+              if (!src) {
+                src = await new Promise(resolve => {
+                  const reader = new FileReader();
+                  reader.readAsDataURL(file.originFileObj);
+                  reader.onload = () => resolve(reader.result);
+                });
+              }
+              const image = new Image();
+              image.src = src;
+              const imgWindow = window.open(src);
+              imgWindow.document.write(image.outerHTML);
+            }
         
-        <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
-        <span style={{paddingRight:10}}>Postes ?</span>
-        <Select 
-        onChange={(e)=>setJobChoosen(e)}
-        style={{width:'150px'}}
-        mode='multiple'>
-        <OptGroup label="En salle">
-        <Option value='Chef de rang'>Chef de rang</Option>
-        <Option value='manager'>Manager</Option>
-        <Option value='runner'>Runner</Option>
-        <Option value='sommelier'>Sommelier</Option>
-        </OptGroup>
-        <OptGroup label="En cuisine">
-        <Option value='chef'>Chef </Option>
-        <Option value='chefDePartie'>Chef de partie</Option>
-        <Option value='second'>Second</Option>
-        <Option value='plongeur'>Plongeur</Option>
-        </OptGroup>
-        </Select>
-    </Col>
+        
     
-    }
-    if(enRecherche == true ){
-        var inputContractToDisplay = 
-        <Col offset={11} span={8}>
-        <span>Contrat ?  </span>
-        <Select
-        onChange={(e)=>setContrat(e)}
-        style={{width:'150px'}}
-        mode='multiple'
-        >
-            <Option value="CDD">CDD</Option>
-            <Option value="CDI">CDI</Option>
-            <Option value="Extra">Extra</Option>      
-        </Select>
-    </Col>
-    }
+    
 
     if(redirect){
         return ( 

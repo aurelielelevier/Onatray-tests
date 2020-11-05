@@ -278,7 +278,7 @@ return(
                 </Map>
                 </div>
             </Col>
-          </Row>
+        </Row>
         </Modal>
     </Col>
     )

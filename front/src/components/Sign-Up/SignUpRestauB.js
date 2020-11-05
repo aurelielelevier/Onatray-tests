@@ -150,10 +150,13 @@ function SignUpRestauB(props){
                     name={'clientele'}
                     className="basic-multi-select"
                     classNamePrefix="select">
-                   <Option value='touristique'>Touristique</Option>
-                   <Option value='quartier'>De Quartier</Option>
-                   <Option value='jeune'>Jeune</Option>
-                   <Option value='agée'>Agée</Option>
+                   <Option value='Touristique'>Touristique</Option>
+                   <Option value='Quartier'>De Quartier</Option>
+                   <Option value='Jeune'>Jeune</Option>
+                   <Option value='Agée'>Agée</Option>
+                   <Option value='Familiale'>Familiale</Option>
+                   <Option value="Business">Business</Option>
+                   <Option value='En famille'>En famille</Option>
                    {dataClienteleOptionToAdd}
                     </Select>
                     </Form.Item>
@@ -172,7 +175,7 @@ function SignUpRestauB(props){
         </Row>
         <Row  style={{paddingTop:40}}>
             <Col offset={3} span={3}>
-                <span>Restaurant</span>
+                <span>Ambiance</span>
             </Col>
             <Col span={18}>
             <Row>
@@ -186,10 +189,10 @@ function SignUpRestauB(props){
                     className="basic-multi-select"
                     classNamePrefix="select"
                     >
-                    <Option value='calme'>Calme</Option>
-                    <Option value='animé'>Animé</Option>
-                    <Option value='branché'>Branché</Option>
-                    <Option value='sobre'>Sobre</Option>
+                    <Option value='Calme'>Calme</Option>
+                    <Option value='Animé'>Animé</Option>
+                    <Option value='Branché'>Branché</Option>
+                    <Option value='Sobre'>Sobre</Option>
                     {dataRestaurantOptionToAdd}
                     </Select>
                     </Form.Item>
@@ -223,10 +226,17 @@ function SignUpRestauB(props){
                     className="basic-multi-select"
                     classNamePrefix="select"
                     >
-                    <Option value='francaise'>Française</Option>
-                    <Option value='italienne'>Italienne</Option>
-                    <Option value='japonaise'>Japonaise</Option>
-                    <Option value='healthy'>Healthy</Option>
+                    <Option value='Française'>Française</Option>
+                    <Option value='Italienne'>Italienne</Option>
+                    <Option value='Japonaise'>Japonaise</Option>
+                    <Option value='Chinois'>Chinois</Option>
+                    <Option value='Healthy'>Healthy</Option>
+                    <Option value='Viande'>Viande</Option>
+                    <Option value='Poisson'>Poisson</Option>
+                    <Option value='Pizza'>Pizza</Option>
+                    <Option value='Burger'>Burger</Option>
+                    <Option value='Végétarienne'>Végétarienne</Option>
+                    <Option value='Vegan'>Vegan</Option>
                     {dataFoodOptionToAdd}
                     </Select>
                     </Form.Item>
