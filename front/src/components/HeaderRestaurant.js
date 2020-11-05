@@ -20,12 +20,10 @@ const menu = (
       <Link to='/restaurant-mon-profil'>Mon profil</Link>
     </Menu.Item>
     <Menu.Item>
-    <Link to='/messagerie'>Mes messages</Link>
+      <Link to='/messagerie'>Mes messages</Link>
     </Menu.Item>
-    <Menu.Item 
-    //onClick={()=>{{props.onDisconnect()}}}
-    >
-      Déconnexion 
+    <Menu.Item>
+     <a href='/'>Déconnexion</a>
     </Menu.Item> 
   </Menu>
 )

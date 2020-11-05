@@ -137,6 +137,7 @@ router.post('/envoi-adresse', async function(req, res, next){
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
+  console.log('donnees.zone', donnees.zone)
   var responseAenvoyer = await restaurantModel.find(
      { 
       adresselgtlat: {
