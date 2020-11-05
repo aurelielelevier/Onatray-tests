@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import 'antd/dist/antd.less';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {Col,Card,Modal, Image, Row,Rate, Divider,Tag,Collapse} from 'antd';
+import {Col,Card,Modal, Image, Row,Rate, Divider,Tag,Collapse, Badge} from 'antd';
 import {ExpandAltOutlined,SendOutlined,HeartFilled,PhoneOutlined, MailOutlined, HomeOutlined, LinkedinOutlined } from "@ant-design/icons";
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
@@ -70,6 +70,9 @@ var onSendDm = async () => {
          props.onSendChatRoomId({idToSend : idToSend, expediteur : currentUser, destinataire : props.name})
          setGoToChatRoom(true)
  }
+
+
+
 
 
 // condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
@@ -199,6 +202,8 @@ return(
                     {listformationshorten}
                     <Divider style={{fontWeight:"bold",marginBottom:'2px'}}>Expérience </Divider>
                     {listexperienceshorten}
+                    {talent.countFave<=0?<span style={{marginBottom:'0px'}}>N'est dans aucune wishlist de restaurateurs</span>:
+                    <span>Est dans {talent.countFave} wishlist de restaurateurs</span>}
             </Row>
             <Row style={{display:'flex', fontSize:'25px',flexDirection:'row', height:'50px', alignItems:"center", padding:'8px'}} >
                 <Col flex={1}  style={{display:'flex',justifyContent:'center'}}>
@@ -237,6 +242,8 @@ return(
                             <p><Tag icon={<LinkedinOutlined />} color="#55acee">
                                     LinkedIn
                                 </Tag></p>
+                        {talent.countFave<=0?<span style={{marginBottom:'0px'}}>N'est dans aucune wishlist de restaurateurs</span>:
+                        <span>Est dans {talent.countFave} wishlist de restaurateurs</span>}
                         </Card>
                         <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Ma note moyenne attribuée par les restaurants :</p> 
                         <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
@@ -245,7 +252,7 @@ return(
 
             <Col span={16} style={{padding:30}}>
             <Collapse accordion>
-                <Panel header="Formations" key="1">
+                <Panel header="Formations" key="2">
                 {listformation}
                 </Panel>
                 <Panel header="Expériences" key="2">
@@ -268,58 +275,10 @@ return(
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         />
                     <Polygon positions={polygone} color="red" />
-                    {/* <Marker position={domicile}>
-                        <Popup> Mon domicile <br/></Popup>
-                    </Marker> */}
                 </Map>
                 </div>
             </Col>
           </Row>
-            {/* <Row>
-                <Col style={{width:'40%'}} span={10}>
-                    <Image src={talent.avatar} />
-                </Col>
-                <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}} span={14}>
-                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
-                        <h1 style={{marginLeft:'15px', marginBottom:'2px'}}>Nom: {talentNameUC}</h1>
-                        <h1 style={{marginLeft:'15px',marginBottom:'2px'}}>Prenom:  {talent.firstName}</h1>
-                        <h2 style={{marginLeft:'15px'}}>Adresse:  {talent.adress}</h2>
-                    </Row>
-                    
-                        <h2 style={{marginLeft:'15px'}}>Formation: </h2>
-                        
-                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
-                        {listformation}
-                    </Row> 
-                        <h2 style={{marginLeft:'15px'}}>Experience: </h2>
-                    <Row style={{display:"flex", flexDirection:'column',alignItems:"start", marginLeft:'15px'}}>
-                        {listexperience}
-                    </Row> 
-                    <Row>
-                        <h2 style={{marginLeft:'15px'}}>Note des précédents employeurs: </h2>
-                    </Row>
-                    <Row tyle={{display:"flex", flexDirection:'row',alignItems:"start"}}>
-                        <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
-                            <h3 style={{marginLeft:'20px'}}>Ponctualité : </h3>
-                            <h3 style={{marginLeft:'20px'}}>Rigueur : </h3>
-                            <h3 style={{marginLeft:'20px'}}>Gestion du stress : </h3>
-                            <h3 style={{marginLeft:'20px'}}>Amabilité : </h3>
-                            <h3 style={{marginLeft:'20px'}}>Efficacité : </h3>
-                        </Col>
-                        <Col style={{display:"flex", flexDirection:'column',alignItems:"start"}}>
-                            <Rate disabled defaultValue={2} />
-                            <Rate disabled defaultValue={2} />
-                            <Rate disabled defaultValue={2} />
-                            <Rate disabled defaultValue={2} />
-                            <Rate disabled defaultValue={2} />
-                        </Col>
-                    </Row>
-                        <Col style={{display:"flex", flexDirection:'row', alignItems:"start", justifyContent:"center"}}>
-                            <h4 style={{marginLeft:'15px'}}>Téléphone: {talent.phone} </h4>
-                            <h4 style={{marginLeft:'15px'}}>E-mail: {talent.email} </h4>
-                        </Col>
-                </Col>
-            </Row> */}
         </Modal>
     </Col>
     )

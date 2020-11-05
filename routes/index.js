@@ -53,16 +53,16 @@ router.post('/upload/:token', async function(req, res, next) {
     var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
     var resultCopy = await req.files.photo.mv(uniqidPhoto);
     var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
-    await restaurantModel.updateOne({token:req.params.token}, {siret: resultCloudinary.url})
+    await restaurantModel.updateOne({token:req.params.token}, {photo: resultCloudinary.url})
   } else {
     // si l'utilisateur fait partie des restaurants :
-    var uniqidPhoto = `./tmp/${uniqid()}${req.files.file.name}`
+    var uniqidPhoto = `/tmp/${uniqid()}${req.files.file.name}`
     var resultCopy = await req.files.file.mv(uniqidPhoto);
     var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
     await talentModel.updateOne({token:req.params.token}, {avatar:resultCloudinary.url})
     }
     fs.unlinkSync(uniqidPhoto)
-    res.json({result: true, message: 'File uploaded!', cloudinary: resultCloudinary} )
+    res.json({result: true, message: 'File uploaded!'} )
 });
 
 router.post('/createChatRoom', async function(req,res,next){

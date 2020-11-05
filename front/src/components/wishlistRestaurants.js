@@ -54,7 +54,7 @@ var header = <HeaderTalent/>
 
 const token = props.tokenToDisplay
 const [posterecherché,setposterecherché]= useState('tous les postes')
-const [typedecontrat,settypedecontrat]= useState('')
+const [typedecontrat,settypedecontrat]= useState('Tous type de contrat')
 const [wishlistRestaurantID,setwishlistRestaurantID]=useState([])
 const [talentaafficher,settalentaafficher]=useState([])
 const [rechercheeffectuée,setrechercheeffectuée]=useState(false)
@@ -63,20 +63,21 @@ const [zone, setZone] = useState(zoneFrance)
 
 
 // Recupération wishlist et liste des talents
-useEffect(() => {
-var getwishlistRestaurant= async ()=> {
-        var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
-        var rechercheListe =await fetch(`/restaurants/recherche-liste-talents`, {
-            method:'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `token=${token}&criteres=${criteres}`
-        })
-        var response = await rechercheListe.json()
-        settalentaafficher(response.liste)
-        setwishlistRestaurantID(response.restaurantwishlistid)
-}
-getwishlistRestaurant()
-},[])
+
+// useEffect(() => {
+// // var getwishlistRestaurant= async ()=> {
+// //         var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+// //         var rechercheListe =await fetch(`/restaurants/recherche-liste-talents`, {
+// //             method:'POST',
+// //             headers: {'Content-Type':'application/x-www-form-urlencoded'},
+// //             body: `token=${token}&criteres=${criteres}`
+// //         })
+// //         var response = await rechercheListe.json()
+// //         settalentaafficher(response.liste)
+// //         setwishlistRestaurantID(response.restaurantwishlistid)
+// // }
+// // getwishlistRestaurant()
+// // },[])
 
 
 // Mise a jour de la liste des talents en fonction des filtres de recherche utilisés
@@ -89,17 +90,22 @@ useEffect(()=>{
         if(typedecontrat==[]){
             settypedecontrat(listetypedecontrat)
         }
-    var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone})
+    var criteres = JSON.stringify({posterecherché: posterecherché, zone:zone,typedecontrat:typedecontrat})
     var rechercheListe = await fetch(`/restaurants/recherche-liste-talents`, {
         method:'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
         body: `token=${token}&criteres=${criteres}`
     })
     var response = await rechercheListe.json()
+   
+    setwishlistRestaurantID(response.restaurantwishlistid)
     settalentaafficher(response.liste)
+    console.log('response',response)
      }
     cherche()
 },[posterecherché,typedecontrat,rechercheeffectuée])
+
+console.log('wishlistRestaurantID',wishlistRestaurantID,'talentaafficher',talentaafficher)
 
 // fonction permettant d'ajouter ou supprimer de la wishlist
 async function onliketalent (id){
@@ -141,6 +147,7 @@ return(
                     
                             className="basic-multi-select"
                             classNamePrefix="select">
+                            <Option value='Tous les postes'>Tous les postes</Option>
                             <Option value='Serveur'>Serveur</Option>
                             <Option value='Cuisiner'>Cuisinier</Option>
                             <Option value='Manager'>Manager</Option>
@@ -164,6 +171,7 @@ return(
                         name={'language'}
                         className="basic-multi-select"
                         classNamePrefix="select">
+                            <Option value='Tous type de contrat'>Tous type de contrat</Option>
                             <Option value='CDI'>CDI</Option>
                             <Option value='CDD'>CDD</Option>
                             <Option value='Mi Temps'>Mi Temps</Option>

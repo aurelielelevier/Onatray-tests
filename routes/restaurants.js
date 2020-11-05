@@ -13,17 +13,13 @@ var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 
 var cloudinary = require('cloudinary').v2;
-
 cloudinary.config({ 
   cloud_name: 'dpyqb49ha', 
   api_key: '513712396958631', 
   api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
 });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+
 
 router.post('/createAccount', async function(req,res,next){
   console.log(JSON.parse(req.body.lnglat))
@@ -42,8 +38,14 @@ router.post('/createAccount', async function(req,res,next){
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
+      clientele: [],
+      pricing:[],
+      typeOfRestaurant:[],
+      typeOfFood:[],
+      wishlistRestaurant:[],
+      experience:[],
       adresselgtlat: JSON.parse(req.body.lnglat),
-
+      chatRoom:[],
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){
@@ -61,13 +63,13 @@ router.get('/getinformation', async function(req,res,next){
  })
 
 router.post('/recherche-liste-talents',async function(req,res,next){
-  var données= JSON.parse(req.body.criteres)
-  var restaurant = await restaurantModel.findOne({token:req.body.token})
+var données= JSON.parse(req.body.criteres)
+var restaurant = await restaurantModel.findOne({token:req.body.token})
 var jobminuscule=données.posterecherché.toLowerCase()
 
 var typedecontrat=données.typedecontrat
 
-console.log(typedecontrat,jobminuscule)
+// Permet de récupérer les talents à afficher en fonction des fitlres appliqués
 if (jobminuscule== 'tous les postes'){
     if(typedecontrat == 'Tous type de contrat'){
       var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
@@ -97,8 +99,13 @@ if (jobminuscule== 'tous les postes'){
 let restaurantwishlistexpand = await restaurantModel.findOne({token:req.body.token}).populate('wishlistRestaurant').exec()
 let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 
+
   res.json({liste:responseAenvoyer,restaurantwishlist:restaurantwishlistexpand,restaurantwishlistid:restaurantwishlistid.wishlistRestaurant})
  })
+
+ 
+
+
 
 
  router.post('/addToWishList', async function (req,res,next){
@@ -106,19 +113,18 @@ let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 
   var user = await restaurantModel.findOne({token: req.body.token})
     var talent = await talentModel.findOne({_id: req.body.id})
-      console.log(talent)  
 
       if(user.wishlistRestaurant.includes(talent.id)){ 
            await restaurantModel.updateOne({token: req.body.token}, { $pull: {wishlistRestaurant:{ $in:`${req.body.id}` }} })
       console.log('retrait whishlist')  
+      await talentModel.findByIdAndUpdate(talent.id,{$inc:{countFave:-1,"metrics.orders": 1}})
     } else {
        await restaurantModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistRestaurant:req.body.id}})
+       await talentModel.findByIdAndUpdate(talent.id,{$inc:{countFave:+1,"metrics.orders": 1}})
       console.log('ajout whishlist')}
-
 
 var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
 var wishlist= await restaurantModel.findOne({token:req.body.token})
-console.log("wishlist.wishlistRestaurant",wishlist.wishlistRestaurant)
 
  res.json({restaurantwishlistid:wishlist.wishlistRestaurant,liste:responseAenvoyer})
  })

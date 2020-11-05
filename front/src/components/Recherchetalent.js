@@ -113,6 +113,7 @@ async function onliketalent (id){
     var response= await saveReq.json()
     settalentaafficher(response.liste)
     setwishlistRestaurantID(response.restaurantwishlistid)
+        
 }
 
 // Création de la liste de talent à afficher et 
