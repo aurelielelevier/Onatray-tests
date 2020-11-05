@@ -37,7 +37,7 @@ router.post('/createAccount', async function(req,res,next){
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
       clientele: [],
-      pricing:[],
+      pricing:4,
       typeOfRestaurant:[],
       typeOfFood:[],
       wishlistRestaurant:[],
