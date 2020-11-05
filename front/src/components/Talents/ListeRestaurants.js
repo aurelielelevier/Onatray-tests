@@ -366,7 +366,7 @@ function ListeRestaurants(props){
                                 />
                                 {/* Affiche un marker à l'adresse de tous les restaurants avec une Popup qui mentionne leurs coordonnées  */}
                                  {listedesRestaurants.map((restaurant,i)=>{ 
-                                     if(restaurant.adresselgtlat.coordinates[1] && restaurant.adresselgtlat.coordinates[0]){
+                                    //  if(restaurant.adresselgtlat.coordinates && restaurant.adresselgtlat.coordinates){
                                         return (<Marker position={[restaurant.adresselgtlat.coordinates[1], restaurant.adresselgtlat.coordinates[0]]}>
                                                     <Popup ><div onClick={()=> onclick(restaurant)}>
                                                             <strong>{restaurant.name}</strong> <br/>
@@ -376,7 +376,7 @@ function ListeRestaurants(props){
                                                             </div> 
                                                     </Popup>
                                                 </Marker>)
-                                         }
+                                        //  }
                                     })
                                 }
                                 <Circle 

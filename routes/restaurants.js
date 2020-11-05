@@ -55,6 +55,7 @@ router.post('/createAccount', async function(req,res,next){
   }
 })
 
+// Affichage de tous les talents de la BDD
 router.get('/getinformation', async function(req,res,next){
   let talentlist = await talentModel.find().populate('formation').populate('experience').exec()
   res.json({talentlist:talentlist})
@@ -68,10 +69,13 @@ var jobminuscule=données.posterecherché.toLowerCase()
 var typedecontrat=données.typedecontrat
 
 // Permet de récupérer les talents à afficher en fonction des fitlres appliqués
+// Condition avec toutes les postes
 if (jobminuscule== 'tous les postes'){
     if(typedecontrat == 'Tous type de contrat'){
       var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
         }else{
+// Permet de récupérer les talents à afficher en fonction des fitlres appliqués
+// Condition avec toute type de contrat
         var responseAenvoyer=await talentModel.find({typeofContract:{$in:typedecontrat}}).populate('formation').populate('experience').exec()
   }}else if(typedecontrat == 'Tous type de contrat'){
     if(jobminuscule== 'tous les postes'){

@@ -57,12 +57,10 @@ var onSendDm = async () => {
          })
 
          let response = await rawResponse.json()
-         console.log(response.result)
 
          idToSend = response.chatRoomId
 
          setCahtRoomId(idToSend)
-         console.log(chatRoomId)
 
          props.onSendChatRoomId({idToSend : idToSend, expediteur : currentUser, destinataire : props.name})
          setGoToChatRoom(true)
@@ -73,7 +71,6 @@ var onSendDm = async () => {
 
 
 // condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
-console.log("experiences",experiences)
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
     return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
@@ -84,7 +81,6 @@ var listexperienceshorten= experiences.map((experience,i) =>{
     return(<p>{experience.firm}- {experience.job} - {experience.city}</p>)}
 })
 }
-console.log('formations',formations)
 
 // condition mappant sur formation pour afficher les deux dernières formations de chaque talent
 if(formations !=undefined){
@@ -277,7 +273,7 @@ return(
                 </Map>
                 </div>
             </Col>
-          </Row>
+        </Row>
         </Modal>
     </Col>
     )

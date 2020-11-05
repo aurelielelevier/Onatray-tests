@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom'
 
 import 'antd/dist/antd.less';
 import '../../App.less';
-import { Card, Rate, Row, Col, Tag} from 'antd';
+import { Card, Rate, Row, Col, Tag,Collapse} from 'antd';
 import { PhoneOutlined, MailOutlined, HomeOutlined, EditOutlined, LinkedinOutlined } from '@ant-design/icons';
 
 import HeaderTalent from '../HeaderTalent';
@@ -13,6 +13,7 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 function MonProfilTalentt(props) {
  
+    const { Panel } = Collapse
     const[profil, setProfil]= useState({})
     const[domicile, setDomicile]= useState([48.85,2.33])
     const[polygone, setPolygone]= useState([])
@@ -129,7 +130,58 @@ function MonProfilTalentt(props) {
     return(
         <div>
           <HeaderTalent keyheader='5'/>
-          <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Mon profil</Row>
+          <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}></Row>
+          <Row>
+            <Col span={8} style={{backgroundColor:'#d1d8e0', height:'100%', padding:20}}>
+                <div style={{borderRadius:'50%',width:200, margin:'auto', height:200, border:'6px solid #4B6584', backgroundImage:`url(${profil.avatar})`, backgroundRepeat: 'no-repeat',
+                     backgroundSize: "cover",}}>
+                </div>
+                    <div className="site-card-border-less-wrapper" style={{marginTop:30, textAlign:'center'}}>
+                        <Card title={`${profil.firstName}   ${profil.lastName}`} bordered={false} style={{ width:'100%', fontWeight:'bold', color:'#4B6584' }}>
+                            <p><HomeOutlined style={{marginRight:'10px'}}/>{profil.adress}</p>
+                            <p><PhoneOutlined style={{marginRight:'10px'}}/>{profil.phone}</p>
+                            <p><MailOutlined style={{marginRight:'10px'}}/>{profil.email}</p>
+                            <p><Tag icon={<LinkedinOutlined />} color="#55acee">
+                                    LinkedIn
+                                </Tag></p>
+                        {profil.countFave<=0?<span style={{marginBottom:'0px'}}>N'est dans aucune wishlist de restaurateurs</span>:
+                        <span>Est dans {profil.countFave} wishlist de restaurateurs</span>}
+                        </Card>
+                        <p style={{color:"#4B6584", marginTop:'20px', fontWeight:"bold"}}>Ma note moyenne attribuée par les restaurants :</p> 
+                        <p style={style.textCard}><Rate disabled defaultValue={2} />2 (10 votes)</p>
+                    </div>
+            </Col>
+
+            <Col span={16} style={{padding:30}}>
+            <Collapse accordion>
+                <Panel header="Formations" key="2">
+                {formation}
+                </Panel>
+                <Panel header="Expériences" key="2">
+                {experience}
+                </Panel>
+                <Panel header="Langues parlées" key="2">
+                {langues}
+                </Panel>
+                <Panel header="Situation Professionnelle" key="2">
+                <p>{enposte}</p>
+                {chercheUnEmploi}{jobs}
+                </Panel>
+            </Collapse>
+             
+            <Row span={10}><h2 style={style.titres}>Zone de recherche :</h2> </Row> 
+                <div>
+                <Map center={domicile} zoom={12}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                    <Polygon positions={polygone} color="red" />
+                </Map>
+                </div>
+            </Col>
+        </Row>
+          {/* <Row style={{justifyContent:'center', color:'white', fontWeight:'bold', fontSize:'30px', backgroundColor:'#4B6584'}}>Mon profil</Row>
           <Row>
             <Col span={8} style={{backgroundColor:'#d1d8e0', height:'100%', padding:20}}>
                 <div style={{borderRadius:'50%',width:200, margin:'auto', height:200, border:'6px solid #4B6584', backgroundImage:`url(${profil.avatar})`, backgroundRepeat: 'no-repeat',
@@ -183,7 +235,7 @@ function MonProfilTalentt(props) {
                     </Map>
                     </div>
             </Col>
-          </Row>
+          </Row> */}
          
         </div>
     )
