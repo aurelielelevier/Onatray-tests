@@ -130,7 +130,6 @@ router.put('/informations', async function(req,res,next){
   var type = JSON.parse(req.body.restaurantOption)
   var cuisine = JSON.parse(req.body.foodOption)
   var prix = JSON.parse(req.body.pricing)
-  console.log(prix, 'prix', type, 'type', cuisine, 'cuisine')
   await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix, siret:req.body.avatar})
 })
 
