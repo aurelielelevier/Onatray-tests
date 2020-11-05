@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import 'antd/dist/antd.less';
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import '../App.less';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import {Col,Card,Modal, Image, Row,Rate, Divider,Tag,Collapse, Badge} from 'antd';
 import {ExpandAltOutlined,SendOutlined,HeartFilled,PhoneOutlined, MailOutlined, HomeOutlined, LinkedinOutlined } from "@ant-design/icons";
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
@@ -29,6 +30,7 @@ function Cardtalent(props){
 
 const { Meta } = Card
 const [visible, setVisible] = useState(false)
+const [domicile, setDomicile] =useState([props.talent.adresselgtlat.coordinates[1], props.talent.adresselgtlat.coordinates[0]])
 
 var experiences = props.talent.experience
 var formations =props.talent.formation
@@ -40,16 +42,11 @@ if(props.talent.polygone != undefined){
     var polygone=props.talent.perimetre.map(point => [point[1], point[0]])
 }
 
-if(props.talent.domicile != undefined){
-var domicile=[props.talent.adresselgtlat.coordinates[1], props.talent.adresselgtlat.coordinates[0]]
-}
 
-
-
-    const [chatRoomId, setCahtRoomId] = useState() 
-    const [goToChatRoom, setGoToChatRoom] = useState(false) 
-    const  currentUser = props.currentToken ;
-    var idToSend ;
+const [chatRoomId, setCahtRoomId] = useState() 
+const [goToChatRoom, setGoToChatRoom] = useState(false) 
+const  currentUser = props.currentToken ;
+var idToSend ;
 
 var onSendDm = async () => {
      // fonction qui crée une chat room entre deux personnes 
@@ -60,12 +57,10 @@ var onSendDm = async () => {
          })
 
          let response = await rawResponse.json()
-         console.log(response.result)
 
          idToSend = response.chatRoomId
 
          setCahtRoomId(idToSend)
-         console.log(chatRoomId)
 
          props.onSendChatRoomId({idToSend : idToSend, expediteur : currentUser, destinataire : props.name})
          setGoToChatRoom(true)
@@ -76,7 +71,6 @@ var onSendDm = async () => {
 
 
 // condition mappant sur experiences pour afficher les deux dernières expériences de chaque talent
-console.log("experiences",experiences)
 if(experiences!= undefined){
 var listexperience=experiences.map((experience,i) => {
     return(<p>{experience.firm}- {experience.job} - {experience.startingDate} - {experience.endingDate} - {experience.city}</p>)
@@ -87,7 +81,6 @@ var listexperienceshorten= experiences.map((experience,i) =>{
     return(<p>{experience.firm}- {experience.job} - {experience.city}</p>)}
 })
 }
-console.log('formations',formations)
 
 // condition mappant sur formation pour afficher les deux dernières formations de chaque talent
 if(formations !=undefined){
@@ -190,10 +183,12 @@ if (goToChatRoom == true){
 
 return(
 
-    <Col className="gutter-row" span={4} style={{padding:'0px',display:'flex',flexDirection:'column',alignSelf:'stretch',margin:'5px',borderStyle:'solid',borderWidth:'1px',borderColor:'#95a5a6'}}>
+
+
+    <Col className="gutter-row" span={4} style={{ padding:'0px',display:'flex',flexDirection:'column',alignSelf:'stretch',margin:'5px',borderStyle:'solid',borderWidth:'1px',borderColor:'#95a5a6'}}>
            <Image
                 width='100%'
-                height='350px'
+                height='100%'
                 src={talent.avatar}
                 />
             <Row style={{padding:'5px',display:'flex',flexDirection:'column',alignSelf:'stretch',height:'100%',borderBottomStyle:'solid',borderColor:'#a5b1c2',  borderBottomWidth:'1px', alignItems:'center' }} >
