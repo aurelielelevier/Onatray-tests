@@ -6,9 +6,9 @@ import {Link, Redirect} from 'react-router-dom'
 
 import Header from '../Header'
 
-import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select, Upload, DatePicker} from 'antd';
-import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import ImgCrop from 'antd-img-crop';
+import { Row, Col, Steps, Form, Input, Button, Space, Checkbox, Select, Upload, DatePicker, message} from 'antd';
+import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined, UploadOutlined} from '@ant-design/icons';
+
 
 const { Step } = Steps;
 const { Option, OptGroup } = Select;
@@ -17,7 +17,6 @@ const { Option, OptGroup } = Select;
 
 function SignUpTalentB(props){
     
-   
     const [isHotellerie, setIsHotellerie] = useState([])
 
     const [jobChoosen, setJobChoosen] = useState([])
@@ -61,78 +60,74 @@ function SignUpTalentB(props){
         setRedirect(true)
     }
 
-        if(enRecherche == true ){
-            var inputToDisplay = 
+    const photo = {
+        name: 'photo',
+        action: `/upload/${props.tokenToDisplay}`,
+        headers: {
+          authorization: 'authorization-text',
+        },
+        async onChange(info) {
             
-            <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
-            <span style={{paddingRight:10}}>Postes ?</span>
-            <Select 
-            onChange={(e)=>setJobChoosen(e)}
-            style={{width:'150px'}}
-            mode='multiple'>
-            <OptGroup label="En salle">
-            <Option value='Chef de rang'>Chef de rang</Option>
-            <Option value='manager'>Manager</Option>
-            <Option value='runner'>Runner</Option>
-            <Option value='sommelier'>Sommelier</Option>
-            </OptGroup>
-            <OptGroup label="En cuisine">
-            <Option value='chef'>Chef </Option>
-            <Option value='chefDePartie'>Chef de partie</Option>
-            <Option value='second'>Second</Option>
-            <Option value='plongeur'>Plongeur</Option>
-            </OptGroup>
-            </Select>
-        </Col>
-      
-        }
-        if(enRecherche == true ){
-            var inputContractToDisplay = 
-            <Col offset={11} span={8}>
-            <span>Contrat ?  </span>
-            <Select
-            onChange={(e)=>setContrat(e)}
-            style={{width:'150px'}}
-            mode='multiple'
-            >
-              <Option value="CDD">CDD</Option>
-              <Option value="CDI">CDI</Option>
-              <Option value="Extra">Extra</Option>      
-            </Select>
-        </Col>
-        }
-      
-       
-            const [fileList, setFileList] = useState([]);
-          
-            const onChange = ({ fileList: newFileList }) => {
-                console.log('newfilelist', newFileList)
-              setFileList(newFileList);
-            };
-          
-            const onPreview = async file => {
-              let src = file.url;
-              if (!src) {
-                src = await new Promise(resolve => {
-                  const reader = new FileReader();
-                  reader.readAsDataURL(file.originFileObj);
-                  reader.onload = () => resolve(reader.result);
-                });
-              }
-              const image = new Image();
-              image.src = src;
-              const imgWindow = window.open(src);
-              imgWindow.document.write(image.outerHTML);
-            }
+          if (info.file.status !== 'uploading') {
+            console.log('INFO UPLOADING',info);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+            
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+          }
+        },
+      };
+
+    if(enRecherche == true ){
+        var inputToDisplay = 
         
+        <Col span={11} style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-start'}}>
+        <span style={{paddingRight:10}}>Postes ?</span>
+        <Select 
+        onChange={(e)=>setJobChoosen(e)}
+        style={{width:'150px'}}
+        mode='multiple'>
+        <OptGroup label="En salle">
+        <Option value='Chef de rang'>Chef de rang</Option>
+        <Option value='manager'>Manager</Option>
+        <Option value='runner'>Runner</Option>
+        <Option value='sommelier'>Sommelier</Option>
+        </OptGroup>
+        <OptGroup label="En cuisine">
+        <Option value='chef'>Chef </Option>
+        <Option value='chefDePartie'>Chef de partie</Option>
+        <Option value='second'>Second</Option>
+        <Option value='plongeur'>Plongeur</Option>
+        </OptGroup>
+        </Select>
+    </Col>
+    
+    }
+    if(enRecherche == true ){
+        var inputContractToDisplay = 
+        <Col offset={11} span={8}>
+        <span>Contrat ?  </span>
+        <Select
+        onChange={(e)=>setContrat(e)}
+        style={{width:'150px'}}
+        mode='multiple'
+        >
+            <Option value="CDD">CDD</Option>
+            <Option value="CDI">CDI</Option>
+            <Option value="Extra">Extra</Option>      
+        </Select>
+    </Col>
+    }
 
-      if(redirect){
-          return ( 
-              <Redirect to='/signUpTalentC'></Redirect>
-          )
-      }else {
+    if(redirect){
+        return ( 
+            <Redirect to='/signUpTalentC'></Redirect>
+        )
+    }else {
 
-      
+    
         
     return(
         <div>
@@ -333,19 +328,14 @@ function SignUpTalentB(props){
                             {inputToDisplay}
                             {inputContractToDisplay}
                         </Row>
-                        <Row style={{paddingTop:30, textAlign:'center'}}>
-                        <ImgCrop rotate>
-                            <Upload
-                                action={"/upload/"+props.tokenToDisplay}
-                                listType="picture-card"
-                                fileList={fileList}
-                                onChange={onChange}
-                                onPreview={onPreview}
-                            >
-                                {fileList.length < 1 && '+ Upload'}
+                       
+                        <Row style={{justifyContent:'center', paddingTop:40}}>
+                            <Upload {...photo}>
+                                <Button icon={<UploadOutlined />}>Télécharger une photo</Button>
                             </Upload>
-                            </ImgCrop>
+            
                         </Row>
+                        
                         <Row style={{paddingTop:50}}>
                             <Col offset={22}>
                                 <Form.Item>

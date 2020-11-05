@@ -48,16 +48,16 @@ router.post('/sign_in', async function(req,res,next){
 
 router.post('/upload/:token', async function(req, res, next) {
   // upload de la photo de profil et enregistrement sur Cloudinary, copie du lien en BDD
-  // si l'utilisateur fait partie des talents :
+  // si l'utilisateur fait partie des restaurants :
   if (await restaurantModel.findOne({token:req.params.token})){
-    var uniqidPhoto = `./tmp/${uniqid()}${req.files.photo.name}`
+    var uniqidPhoto = `/tmp/${uniqid()}${req.files.photo.name}`
     var resultCopy = await req.files.photo.mv(uniqidPhoto);
     var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
     await restaurantModel.updateOne({token:req.params.token}, {photo: resultCloudinary.url})
   } else {
-    // si l'utilisateur fait partie des restaurants :
-    var uniqidPhoto = `/tmp/${uniqid()}${req.files.file.name}`
-    var resultCopy = await req.files.file.mv(uniqidPhoto);
+    // si l'utilisateur fait partie des talents :
+    var uniqidPhoto = `/tmp/${uniqid()}${req.files.photo.name}`
+    var resultCopy = await req.files.photo.mv(uniqidPhoto);
     var resultCloudinary = await cloudinary.uploader.upload(uniqidPhoto);
     await talentModel.updateOne({token:req.params.token}, {avatar:resultCloudinary.url})
     }
