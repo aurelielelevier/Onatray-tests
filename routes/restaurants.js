@@ -13,17 +13,13 @@ var SHA256 = require("crypto-js/sha256");
 var encBase64 = require("crypto-js/enc-base64");
 
 var cloudinary = require('cloudinary').v2;
-
 cloudinary.config({ 
   cloud_name: 'dpyqb49ha', 
   api_key: '513712396958631', 
   api_secret: 'VQta0R5Tlg-lEsbYWnLjh-AnN1I' 
 });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+
 
 router.post('/createAccount', async function(req,res,next){
   console.log(JSON.parse(req.body.lnglat))
@@ -42,8 +38,14 @@ router.post('/createAccount', async function(req,res,next){
       website : req.body.restaurantWebsite,
       phone : req.body.phoneRestaurant,
       adress : req.body.restaurantAdress,
+      clientele: [],
+      pricing:[],
+      typeOfRestaurant:[],
+      typeOfFood:[],
+      wishlistRestaurant:[],
+      experience:[],
       adresselgtlat: JSON.parse(req.body.lnglat),
-
+      chatRoom:[],
     })
     var restauSaved = await newRestau.save();
     if(restauSaved){

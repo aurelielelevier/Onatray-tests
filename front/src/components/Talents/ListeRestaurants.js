@@ -10,7 +10,7 @@ import HeaderTalent from '../HeaderTalent'
 import HeaderScreen from '../Header'
 import HeaderRestaurant from '../HeaderRestaurant'
 
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -376,7 +376,11 @@ function ListeRestaurants(props){
                                                 </Marker>)
                                     })
                                 }
-
+                                <Circle 
+                                    center={latlngDomicile}
+                                    color="red" 
+                                    fillcolor='red'
+                                    radius={200}><Popup>Mon domicile</Popup></Circle>
                         </Map>
                         </div>
                     </Card>
