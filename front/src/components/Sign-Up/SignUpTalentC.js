@@ -55,8 +55,10 @@ function SignUpTalentC(props){
       }, [adresse])
 
       async function envoiPolygone(){
+        
         // Envoi du tableau des points du périmètre défini vers le backend pour un enregistrement en base de données 
         var listePoints = JSON.stringify(polygoneinverse)
+        console.log(polygoneinverse)
          await fetch('/talents/envoi-secteur', {
           method:'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},

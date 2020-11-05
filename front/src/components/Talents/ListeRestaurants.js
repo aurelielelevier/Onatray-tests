@@ -86,6 +86,7 @@ function ListeRestaurants(props){
             if(typeRestaurantcochee == []){
                 setTypeRestaurantcochee(listeTypes)
             }
+           
             var criteres = JSON.stringify({ambiance: ambianceCochee, cuisine: typeCuisinecochee, prix: prixCoche, type:typeRestaurantcochee, zone:zone})
             var rechercheListe = await fetch(`/talents/recherche-liste-restaurants`, {
                 method:'POST',
@@ -100,6 +101,7 @@ function ListeRestaurants(props){
     }, [])
     
     useEffect(() => {
+        console.log('zone', zone)
         async function cherche(){
             if(ambianceCochee==[]){
                 setAmbiancecochee(listeAmbiances)
@@ -333,7 +335,7 @@ function ListeRestaurants(props){
         <Row style={style.row} >
 
             <Button onClick={()=>{{ 
-                                    setZone(props.zoneToDisplay);
+                                    setZone(props.profilToDisplay.perimetre);
                                 }}
                             } 
                             type="primary"
@@ -428,7 +430,7 @@ const style= {
 }
   
 function mapStateToProps(state) {
-return {tokenToDisplay: state.token, connectToDisplay:state.isConnect ,adresseToDisplay: state.adresse, zoneToDisplay: state.zone}
+return {tokenToDisplay: state.token, connectToDisplay:state.isConnect ,adresseToDisplay: state.adresse, profilToDisplay: state.profil, zoneToDisplay: state.zone}
 }
 
 export default connect(
