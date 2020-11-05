@@ -117,12 +117,13 @@ router.post('/getOldMessage',async function(req,res,next){
   //Sinon c'est que l'on est un talent et on recherche dans les restaurants
    else{
      var restauToFind = await restaurantModel.findOne({token:req.body.token})
+     console.log(restauToFind)
      let chatRoomId = req.body.chatRoomId
      let chatRoomToFind = await chatRoomModel.findById(chatRoomId)
      if(chatRoomToFind){
-       res.json({result:chatRoomToFind.message, card : restauToFind})
+       res.json({result:chatRoomToFind.message,restau : chatRoomToFind.expediteurName, talent : chatRoomToFind.destinataireName, card : restauToFind})
      }else{
-       res.json({result : 'no old messages', card : restauToFind})
+       res.json({result : 'no old messages',restau : chatRoomToFind.expediteurName, talent : chatRoomToFind.destinataireName, card : restauToFind})
      }
    }
 })

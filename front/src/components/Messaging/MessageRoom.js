@@ -144,8 +144,10 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
 
                 var tempTabb = []
                 for(let i=0;i<response.card.typeOfFood.length;i++){
-                    tempTab.push(<li>- {response.card.typeOfFood[i]}</li>)
+                    console.log(response.card.typeOfFood[i])
+                    tempTabb.push(<li>- {response.card.typeOfFood[i]}</li>)
             }
+                console.log(tempTabb)
                  setFood(tempTabb)
             }
 
@@ -252,7 +254,7 @@ if(!isSignIn){
         <Row>
             <Col span={24}>
                 {header}
-    <Row style={{justifyContent:'center', backgroundColor:'#4b6584', color:'white', fontWeight:'bold', fontSize:'30px'}}>Discussion entre {firstNameTalent} et </Row>
+    <Row style={{justifyContent:'center', backgroundColor:'#4b6584', color:'white', fontWeight:'bold', fontSize:'30px'}}>  Ma discussion avec {hisName}  </Row>
             
                 <Row style={{paddingTop:20, paddingBottom:20}}>
                     <Col offset={2} span={2}>
