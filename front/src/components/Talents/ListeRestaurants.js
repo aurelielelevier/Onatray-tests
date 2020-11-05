@@ -18,8 +18,8 @@ import { Redirect } from 'react-router-dom';
 const { Meta } = Card;
 const { Option } = Select
 const listePrix = [0, 1, 2]
-const listeCuisines = ['francaise', 'italienne', 'japonaise', 'healthy' ]
-const listeTypes = ['touristique', 'quartier', 'jeune', 'agée']
+const listeCuisines = ['francaise', 'italienne', 'japonaise', 'chinoise', 'healthy', 'viande', 'poisson', 'pizza', 'burger', 'vegetarienne', 'vegan' ]
+const listeTypes = ['touristique', 'quartier', 'jeune', 'agée', 'familiale', 'business']
 const listeAmbiances = ['calme', 'animé', 'branché', 'sobre']
 
 const zoneFrance= [
