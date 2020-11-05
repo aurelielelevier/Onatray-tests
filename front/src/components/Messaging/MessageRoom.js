@@ -24,6 +24,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [myToken, setMyToken] = useState('')
     const [sender, setSender] = useState('')
     const [desti, setDesti] = useState('')
+    const [myName, setMyName] = useState('')
+    const [hisName, setHisName] = useState('')
     
     const [messageList, setMessageList] = useState([])
     const [messageToSend, setMessageToSend] = useState('')
@@ -46,8 +48,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
     const [isSignIn, setIsSignIn] = useState(connectToDisplay.isSignIn)
     const [isTalent, setIsTalent] = useState(connectToDisplay.isTalent)
     const [isRestau, setIsRestau] = useState(connectToDisplay.isRestau)
-    console.log(tokenToDisplay)
-    console.log(connectToDisplay)
+    
 
     if(!isSignIn){
         var header = <Header/>
@@ -66,12 +67,6 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
         setDesti(desti)
         setMyToken(name)
         tokenDesti = desti
-        // if(isRestau){
-
-        //     tokenDesti = desti
-        // }else if(isTalent){
-        //         tokenDesti = name
-        // }
 
         socket.emit('join', {name, room}, ({})=>{
             
@@ -100,6 +95,7 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
             })
             
             let response = await rawResponse.json()
+            console.log('reponse.result',response.result)
             
             var messageTab = response.result
             var tempMessageTab = []
@@ -107,13 +103,13 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 tempMessageTab.push({message : messageTab[i].content, token : messageTab[i].tokenExpe})
             }
             setMessageList(tempMessageTab)
-            console.log(response)
 
             if(isRestau){
-                
                 setAvatar(response.card.avatar)
                 setFirstNameTalent(response.card.firstName)
                 setLastNameTalent(response.card.lastName)
+                setMyName(response.result[0].expediteur)
+                setHisName(response.result[0].destinataire)
                 if(response.card.working == true){
                     setIsWorking('En poste')
                 } else {
@@ -134,6 +130,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                 console.log(response.card)
                 setAvatar(response.card.photo)
                 setRestauName(response.card.name)
+                setMyName(response.result[0].destinataire)
+                setHisName(response.result[0].expediteur)
                 
                 var tempTab = []
                 for(let i=0;i<response.card.clientele.length;i++){
@@ -153,61 +151,48 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
         }, [])
         
   if(isTalent){
-        var cardToDisplay = 
+    var cardToDisplay = 
         <Col style={{border:'1px solid black'}} offset={2} span={6}>
-        <Card  
-            cover={
-            <img
-                style={{height:'45vh'}}
-                alt="example"
-                src={avatar}
-            />
-            }
-            // actions={[
-            // <HeartOutlined key="setting" />,
-            // <ExpandAltOutlined key="ellipsis" />
-            // ]}
-                    >   
-            <Meta
-            //style={{height:'200px'}}
-            title={<h3>{restauName}</h3>}
-            />
-            <p>{restauName} est un restaurant ayant une clientèle : 
-            {clientele}  
-            </p>
-            <p>La nourriture servis est : {food} </p>
-            
-    </Card>
-        
+            <Card  
+                cover={
+                <img
+                    style={{height:'45vh'}}
+                    alt="example"
+                    src={avatar}
+                />
+                }
+                        >   
+                <Meta
+                title={<h3>{restauName}</h3>}
+                />
+                <p>{restauName} est un restaurant ayant une clientèle : 
+                {clientele}  
+                </p>
+                <p>La nourriture servis est : {food} </p>
+            </Card>
         </Col>
-  }else{
-
-  var cardToDisplay = 
-  <Col style={{border:'1px solid black'}} offset={2} span={6}>
-    <Card  
-      cover={
-      <img
-        style={{height:'45vh'}}
-        alt="example"
-        src={avatar}
-      />
-      }
-      // actions={[
-      // <HeartOutlined key="setting" />,
-      // <ExpandAltOutlined key="ellipsis" />
-      // ]}
-      >   
-      <Meta
-      //style={{height:'200px'}}
-      title={<h3>{firstNameTalent} {lastNameTalent}</h3>}
-      />
-      
-      <p>Acutellement : {isWorking}, {isLookingFor} pour devenir : 
-        {jobLookingFor}  
-       </p>
-    </Card>
-</Col>
   }
+    else{
+        var cardToDisplay = 
+            <Col style={{border:'1px solid black'}} offset={2} span={6}>
+                <Card  
+                cover={
+                <img
+                    style={{height:'45vh'}}
+                    alt="example"
+                    src={avatar}
+                />
+                }
+                >   
+                <Meta
+                title={<h3>{firstNameTalent} {lastNameTalent}</h3>}
+                />
+                <p>Acutellement : {isWorking}, {isLookingFor} pour devenir : 
+                    {jobLookingFor}  
+                </p>
+                </Card>
+            </Col>
+    }
     
 
     var sendMessage = async (message) =>  {
@@ -218,7 +203,6 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
             setMessageToSend('')
         }
         
-
     var dataRecentMessage = messageList.map(function(message, i){
             if(message.token == myToken){
                 return (
@@ -227,8 +211,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     <Row style={{display:'flex', justifyContent:'flex-end',}}>
                         <Col span={8} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                             <Row style={{paddingBottom:5}}>
-                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name} </span> */}
-                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                <span style={{paddingLeft:5, fontSize:10}}>{myName} </span>
+                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-end', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                     <span>{message.message}</span>  
                                 </Col>
                             </Row>
@@ -244,8 +228,8 @@ function MessageRoom({location, connectToDisplay, tokenToDisplay}){
                     <Row style={{display:'flex',overflowY: 'scroll', justifyContent:'flex-start',}}>
                         <Col span={10} style={{paddingRight:5, display:'flex' ,flexDirection:'column'}} >
                             <Row style={{paddingBottom:5}}>
-                                {/* <span style={{paddingLeft:5, fontSize:10}}>{message.name}</span> */}
-                                <Col span={24} style={{ backgroundColor:'#F7D555',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
+                                <span style={{paddingLeft:5, fontSize:10}}>{hisName}</span> 
+                                <Col span={24} style={{ backgroundColor:'#d1d8e0',minHeight:'40px', borderRadius:10, display:'flex', justifyContent:'flex-start', alignItems:'center', paddingRight:10, paddingLeft:10}} >  
                                     <span >{message.message}</span>
                                 </Col>
                             </Row>
