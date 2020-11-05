@@ -90,7 +90,8 @@ function MonProfilTalentt(props) {
    } else {
        var enposte = "Je n'ai pas d'emploi pour le moment"
    }
-   if(profil.lookingJob){
+if(enposte =="Je n'ai pas d'emploi pour le moment"){var jobs=''} 
+else if(profil.lookingJob){
        var jobs = 'en tant que '
        for(var i=0; i<profil.lookingJob.length; i++){
            if(i==profil.lookingJob.length-1){
