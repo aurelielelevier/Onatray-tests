@@ -17,7 +17,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/createAccount', async function(req,res,next){
-//console.log('its body',req.body)
 const zoneFrance= [
   [ -5.3173828125, 48.458124202908934 ],
   [ 2.1313476562500004, 51.26170001449684 ],
@@ -87,7 +86,6 @@ router.post('/informations', async function(req,res,next){
   var langage = JSON.parse(req.body.langage)
 
   await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job, typeofContract:req.body.contrat})
-  console.log(req.body.experience)
   
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
@@ -120,7 +118,6 @@ router.post('/informations', async function(req,res,next){
 router.post('/envoi-secteur', async function(req, res, next){
  
   var listePoints = await JSON.parse(req.body.liste);
-  console.log(listePoints)
   listePoints.push(listePoints[0]);
   await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse, polygone: {
     type: "Polygon" ,
@@ -132,7 +129,6 @@ router.post('/envoi-secteur', async function(req, res, next){
 
 router.post('/envoi-adresse', async function(req, res, next){
   var lnglat = JSON.parse(req.body.lnglat)
-  console.log(req.body.adresse)
   await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
 })
 
@@ -175,13 +171,10 @@ router.get('/detail-restaurant/:id', async function(req, res, next){
 router.post('/whishlist', async function( req, res, next){
   var user = await talentModel.findOne({token: req.body.token})
   var restaurant = await restaurantModel.findOne({_id: req.body.restaurant})
-  console.log(user)
   if(user.wishlistTalent.includes(restaurant._id)){
     await talentModel.updateOne({token: req.body.token}, { $pull: { wishlistTalent: { $in:  `${req.body.restaurant}` }} })
-    console.log('retrait whishlist')
   } else {
     await talentModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistTalent: req.body.restaurant}})
-    console.log('ajout whishlist')
   }
   
   var response = await restaurantModel.find()
@@ -190,13 +183,11 @@ router.post('/whishlist', async function( req, res, next){
 })
 
 router.get('/affiche-whishlist/:token', async function( req, res, next){
-  console.log(req.params)
   var user = await talentModel.findOne({token: req.params.token}).populate('wishlistTalent').exec()
   res.json(user.wishlistTalent)
 })
 
 router.get('/profil/:token', async function( req, res, next){
-  console.log(req.params.token)
   var user = await (await talentModel.findOne({token: req.params.token}).populate('experience').populate('formation').exec())
   res.json(user)
 })
