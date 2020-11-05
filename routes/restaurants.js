@@ -3,7 +3,6 @@ var router = express.Router();
 
 var restaurantModel = require('../model/restaurants');
 var talentModel = require('../model/talents');
-
 var formationModel = require('../model/formation');
 var experienceModel = require('../model/experience');
 
@@ -20,9 +19,8 @@ cloudinary.config({
 });
 
 
-
 router.post('/createAccount', async function(req,res,next){
-  console.log(JSON.parse(req.body.lnglat))
+  // Création des profils, ajout en base de donnée avec un avatar non personnalisé, sécurisation du mot de passe
   var avatar = "https://cdn.pixabay.com/photo/2016/11/29/12/54/bar-1869656_1280.jpg"
   var salt = uid2(32)
   var restauToCheck = await restaurantModel.findOne({email:req.body.restaurantEmail})
@@ -54,7 +52,6 @@ router.post('/createAccount', async function(req,res,next){
       res.json(false)
     }
   }
-
 })
 
 router.get('/getinformation', async function(req,res,next){
@@ -109,8 +106,6 @@ let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 
 
  router.post('/addToWishList', async function (req,res,next){
-
-
   var user = await restaurantModel.findOne({token: req.body.token})
     var talent = await talentModel.findOne({_id: req.body.id})
 
@@ -131,7 +126,6 @@ var wishlist= await restaurantModel.findOne({token:req.body.token})
 
 
 router.put('/informations', async function(req,res,next){
-  console.log('its body', req.body)
   var clientele = JSON.parse(req.body.clientele)
   var type = JSON.parse(req.body.restaurantOption)
   var cuisine = JSON.parse(req.body.foodOption)
@@ -142,7 +136,6 @@ router.put('/informations', async function(req,res,next){
 
 router.get('/profil/:token', async function( req, res, next){  
    var user = await (await restaurantModel.findOne({token: req.params.token})) 
-    console.log(user)   
     res.json(user) })
 
 module.exports = router;

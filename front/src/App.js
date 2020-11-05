@@ -31,7 +31,6 @@ import token from './reducers/token'
 import isConnect from './reducers/isConnect';
 import restoaafficher from './reducers/restoaafficher';
 import adresse from './reducers/adresse';
-import zone from './reducers/zone';
 import profil from './reducers/profil';
 
 import ChatroomId from './reducers/chatRoomId'
@@ -39,7 +38,7 @@ import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
 import WishlistRestaurants from './components/wishlistRestaurants';
 
-const store = createStore(combineReducers({token, isConnect, restoaafficher, adresse, zone, profil, ChatroomId}));
+const store = createStore(combineReducers({token, isConnect, restoaafficher, adresse, profil, ChatroomId}));
 
 export default function App() {
   return (

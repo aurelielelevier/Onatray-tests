@@ -80,9 +80,9 @@ function mapDispatchToProps(dispatch) {
           dispatch( {type: 'restoaafficher', id} ) 
       }
     }
-  }
+}
 
-  export default connect(
-    null, 
-    mapDispatchToProps
-  )(ListeCardsRestaurants);
+export default connect(
+null, 
+mapDispatchToProps
+)(ListeCardsRestaurants);
