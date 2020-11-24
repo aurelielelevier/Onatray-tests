@@ -1,5 +1,6 @@
 var app = require('../app');
 var request = require('supertest');
+var restaurantModel = require('../model/restaurants');
 
 let token ='' 
 
@@ -52,4 +53,8 @@ test('cherche profil', async(done)=>{
         .expect(200)
     expect(result.body).toBeDefined()
     done()
+})
+
+afterAll(async()=>{
+    await restaurantModel.deleteOne({token:token})
 })

@@ -1,5 +1,6 @@
 var app = require('../app');
 var request = require('supertest');
+var talentModel = require('../model/talents')
 
 let token ='' 
 
@@ -8,8 +9,6 @@ test('create account', async(done)=>{
         .post('/talents/createAccount')
         .send({'firstName':'test', 'lastName':'TEST', 'email':'a@a.test', 'password':'password', 'phone':'0000000000'})
         .expect(200)
-
-console.log('RES BODY TOKEN',res.body.token)
     expect(res.body.token).toBeDefined()
     token = res.body.token
     done()
@@ -115,4 +114,8 @@ test('détail profil2', async(done)=>{
         .expect(200)
     expect(talent.body.working).toBeFalsy()
     done()
+});
+
+afterAll(async()=>{
+    await talentModel.deleteOne({token:token})
 })

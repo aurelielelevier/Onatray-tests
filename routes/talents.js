@@ -91,7 +91,6 @@ router.post('/informations', async function(req,res,next){
   
   var formation = JSON.parse(req.body.formation)
   var experience = JSON.parse(req.body.experience)
-  console.log('CONSOLE LOG REQ BODY EXPERIENCE',JSON.parse(req.body.experience))
 
   for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
@@ -105,7 +104,6 @@ router.post('/informations', async function(req,res,next){
   }
   
   for(let i=0; i<experience.length;i++){
-    console.log(experience[i])
     var newExperience = await new experienceModel({
     firm : experience[i].firm,
     city : experience[i].city,
