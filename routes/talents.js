@@ -85,13 +85,13 @@ router.post('/informations', async function(req,res,next){
   
   var job = JSON.parse(req.body.job)
   var langage = JSON.parse(req.body.langage)
-  var typeofContract=JSON.parse(req.body.contrat)
+  //var typeofContract=JSON.parse(req.body.contrat)
 
   await talentModel.updateOne({token:req.body.token},{speakLangage:langage, working:req.body.poste, lookingForJob: req.body.recherche, lookingJob:job, typeofContract:req.body.contrat})
   
   var formation = JSON.parse(req.body.formation)
-  console.log('formation',formation)
   var experience = JSON.parse(req.body.experience)
+  console.log('CONSOLE LOG REQ BODY EXPERIENCE',JSON.parse(req.body.experience))
 
   for (let i=0;i<formation.length;i++){
   var newFormation = await new formationModel({
@@ -105,6 +105,7 @@ router.post('/informations', async function(req,res,next){
   }
   
   for(let i=0; i<experience.length;i++){
+    console.log(experience[i])
     var newExperience = await new experienceModel({
     firm : experience[i].firm,
     city : experience[i].city,
@@ -115,29 +116,32 @@ router.post('/informations', async function(req,res,next){
   await newExperience.save();
   await talentModel.updateOne({token:req.body.token},{$addToSet:{experience:newExperience.id}})
   }
+  var user = await talentModel.findOne({token:req.body.token})
+  res.json(user)
 })
 
 
 router.post('/envoi-secteur', async function(req, res, next){
- 
   var listePoints = await JSON.parse(req.body.liste);
   listePoints.push(listePoints[0]);
-  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints,adress:req.body.adresse, polygone: {
+  await talentModel.updateOne({ token: req.body.token }, {perimetre: listePoints, polygone: {
     type: "Polygon" ,
     coordinates: [
       listePoints
     ]
  }})
+ var user = await talentModel.findOne({token: req.body.token})
+ res.json(user)
 })
 
 router.post('/envoi-adresse', async function(req, res, next){
   var lnglat = JSON.parse(req.body.lnglat)
-  await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
+  var user = await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
+  res.json(user)
 })
 
 router.post(`/recherche-liste-restaurants`, async function(req, res, next){
   var donnees = JSON.parse(req.body.restaurant)
-  console.log('donnees', donnees)
   var responseAenvoyer = await restaurantModel.find(
      { 
       adresselgtlat: {

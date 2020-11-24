@@ -6,7 +6,7 @@ var options = {
     useNewUrlParser: true,
 }
 
-mongoose.connect('mongodb+srv://aurelie:aurelie93@cluster0.5gyqg.mongodb.net/onatray?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://aurelie:aurelie93@cluster0.5gyqg.mongodb.net/onatrayreact?retryWrites=true&w=majority',
     options,
     function(err){
         if(!err){

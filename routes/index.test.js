@@ -1,11 +1,11 @@
 var app = require('../app');
 var request = require('supertest');
 
-
 test('signin talent', async(done)=>{
+    
     let resTalent = await request(app)
         .post('/sign_in')
-        .send({'email':'aline.lefevre@gmail.com', 'password':'aline'})
+        .send({'email':'alskjf@a.test', 'password':'password'})
         .expect(200)
     expect(resTalent.body.type).toStrictEqual('talent')
     expect(resTalent.body.result).toStrictEqual(true)
@@ -16,7 +16,7 @@ test('signin talent', async(done)=>{
 test('signin false informations', async(done)=>{
     let resFalse = await request(app)
         .post('/sign_in')
-        .send({'email':'a@b.com', 'password':'aaa'})
+        .send({'email':'test@test.com', 'password':'aaa'})
         .expect(200)
     expect(resFalse.body.result).toStrictEqual('Error')
     done()
@@ -25,7 +25,7 @@ test('signin false informations', async(done)=>{
 test('signin restaurant', async(done)=>{
     let resRestaurant = await request(app)
         .post('/sign_in')
-        .send({'email':'chezsam@gmail.com', 'password':'sam'})
+        .send({'email':'test@test.com', 'password':'test'})
         .expect(200)
     expect(resRestaurant.body.type).toStrictEqual('restaurant')
     expect(resRestaurant.body.result).toStrictEqual(true)
