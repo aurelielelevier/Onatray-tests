@@ -6,11 +6,15 @@ var options = {
     useNewUrlParser: true,
 }
 
-mongoose.connect('mongodb+srv://Baptiste:12345@cluster0.s5jcn.mongodb.net/OnaTray?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://aurelie:aurelie93@cluster0.5gyqg.mongodb.net/onatray?retryWrites=true&w=majority',
     options,
     function(err){
-        console.log(err);
-    }
+        if(!err){
+            console.log('connecté Mongo DB')
+        } else {
+            console.log(err)
+        }
+    } 
 )
 
 module.exports = mongoose

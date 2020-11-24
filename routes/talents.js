@@ -34,7 +34,7 @@ var polygoneFrance = {
   ]
 }
   var salt = uid2(32)
-  var talentToCheck = await talentModel.findOne({email:req.body.talentEmail})
+  var talentToCheck = await talentModel.findOne({email:req.body.email})
   var avatar = 'https://res.cloudinary.com/dpyqb49ha/image/upload/v1604324805/mucu7fy5dbhrxmhtf1dc.jpg'
   if(talentToCheck === null){
     var newTalent = await new talentModel({
