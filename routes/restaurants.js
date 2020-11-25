@@ -135,10 +135,13 @@ router.put('/informations', async function(req,res,next){
   var cuisine = JSON.parse(req.body.foodOption)
   var prix = JSON.parse(req.body.pricing)
   await restaurantModel.updateOne({token:req.body.token},{clientele: clientele, typeOfRestaurant : type, typeOfFood: cuisine, pricing : prix, siret:req.body.avatar})
+  let user = await restaurantModel.findOne({token:req.body.token})
+  res.json(user)
 })
 
 router.get('/profil/:token', async function( req, res, next){  
-   var user = await (await restaurantModel.findOne({token: req.params.token})) 
-    res.json(user) })
+   var user = await restaurantModel.findOne({token: req.params.token})
+   res.json(user) 
+})
 
 module.exports = router;

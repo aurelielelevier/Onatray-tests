@@ -74,7 +74,8 @@ test('envoi adresse', async(done)=>{
         .post('/talents/envoi-adresse')
         .send({'token': token, 'adresse':'12 RUE DE PARIS 75000 PARIS', 'lnglat':lnglat})
         .expect(200)
-    expect(result.body).toBeDefined()
+    expect(result.body.adress).toBeDefined()
+    expect(result.body.adresselgtlat).toBeDefined()
     done()
 })
 
@@ -108,19 +109,13 @@ test('détail restaurant', async(done)=>{
 
 test('détail profil', async(done)=>{
     let talent = await request(app)
-        .get('/talents/profil/lfiQLZ19mZCEB1WcdZSps0yRnfJ1qz61')
+        .get(`/talents/profil/${token}`)
         .expect(200)
-    expect(talent.body.working).toBeFalsy()
+    expect(talent.body.working).toBeTruthy()
+    expect(talent.body.token).toStrictEqual(token)
     done()
 })
 
-test('détail profil2', async(done)=>{
-    let talent = await request(app)
-        .get('/talents/profil/lfiQLZ19mZCEB1WcdZSps0yRnfJ1qz61')
-        .expect(200)
-    expect(talent.body.working).toBeFalsy()
-    done()
-});
 
 afterAll(async()=>{
     await talentModel.deleteOne({token:token})

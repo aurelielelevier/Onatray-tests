@@ -1,6 +1,7 @@
 var app = require('../app');
 var request = require('supertest');
 var restaurantModel = require('../model/restaurants');
+jest.setTimeout(30000);
 
 let token ='' 
 
@@ -38,7 +39,7 @@ describe('wishlist', () => {
 })
 
 
-test('affichage liste restaurants', async(done)=>{
+test('affichage liste talents', async(done)=>{
     let res = await request(app)
         .get('/restaurants/getinformation')
         .expect(200)
@@ -46,12 +47,28 @@ test('affichage liste restaurants', async(done)=>{
     done()
 })
 
+test('mise a jour profil', async(done)=>{
+    let clientele = JSON.stringify(['touristique'])
+    let restaurantOption = JSON.stringify(['calme'])
+    let foodOption = JSON.stringify(['pizza'])
+   
+    let result = await request(app)
+        .put(`/restaurants/informations`)
+        .send({'token':token, 'clientele':clientele, 'restaurantOption':restaurantOption, 'foodOption':foodOption, 'pricing':0 })
+        .expect(200)
+    expect(result.body.name).toStrictEqual('RESTO TEST')
+    expect(result.body.typeOfRestaurant).toEqual(expect.arrayContaining(['calme']))
+    expect(result.body.clientele).toEqual(expect.arrayContaining(['touristique']))
+    expect(result.body.typeOfFood).toEqual(expect.arrayContaining(['pizza']))
+    expect(result.body.pricing).toStrictEqual(0)
+    done()
+})
 
 test('cherche profil', async(done)=>{
     let result = await request(app)
-        .get('/restaurants/profil/UVOEKrqPZK3qSunuTGbjj2ptoQdDrRz9')
+        .get(`/restaurants/profil/${token}`)
         .expect(200)
-    expect(result.body).toBeDefined()
+    expect(result.body.name).toStrictEqual('RESTO TEST')
     done()
 })
 

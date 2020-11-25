@@ -134,7 +134,8 @@ router.post('/envoi-secteur', async function(req, res, next){
 
 router.post('/envoi-adresse', async function(req, res, next){
   var lnglat = JSON.parse(req.body.lnglat)
-  var user = await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
+   await talentModel.updateOne({token: req.body.token}, {adress:req.body.adresse, adresselgtlat:lnglat})
+   var user = await talentModel.findOne({token: req.body.token})
   res.json(user)
 })
 
