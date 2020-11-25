@@ -46,7 +46,6 @@ router.post('/createAccount', async function(req,res,next){
       chatRoom:[],
     })
     var restauSaved = await newRestau.save();
-    console.log(restauSaved)
     if(restauSaved){
       res.json({token:restauSaved.token, adresse:restauSaved.adresselgtlat, profil: restauSaved})
     }else{
@@ -116,12 +115,12 @@ let restaurantwishlistid = await restaurantModel.findOne({token:req.body.token})
 
       if(user.wishlistRestaurant.includes(talent.id)){ 
            await restaurantModel.updateOne({token: req.body.token}, { $pull: {wishlistRestaurant:{ $in:`${req.body.id}` }} })
-      console.log('retrait whishlist')  
+      
       await talentModel.findByIdAndUpdate(talent.id,{$inc:{countFave:-1,"metrics.orders": 1}})
     } else {
        await restaurantModel.updateOne({token: req.body.token}, {$addToSet:{ wishlistRestaurant:req.body.id}})
        await talentModel.findByIdAndUpdate(talent.id,{$inc:{countFave:+1,"metrics.orders": 1}})
-      console.log('ajout whishlist')}
+      }
 
 var responseAenvoyer=await talentModel.find().populate('formation').populate('experience').exec()
 var wishlist= await restaurantModel.findOne({token:req.body.token})

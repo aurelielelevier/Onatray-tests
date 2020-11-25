@@ -1,8 +1,9 @@
 var app = require('../app');
 var request = require('supertest');
+jest.setTimeout(30000);
 
 describe('signin', () => {
-    
+
     test('signin talent', async(done)=>{
         
         let resTalent = await request(app)

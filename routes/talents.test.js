@@ -1,6 +1,7 @@
 var app = require('../app');
 var request = require('supertest');
 var talentModel = require('../model/talents')
+jest.setTimeout(30000);
 
 let token ='' 
 
@@ -42,11 +43,15 @@ test('ajoute informations', async(done)=>{
     const experience = JSON.stringify([{firm:'a', rangeDate:['01/01/2018','30/10/2020'], city:'aaaa', job:'cuisinier'}])
     let res = await request(app)
         .post('/talents/informations')
-        .send({'token':token, 'job':'[]', 'langage':langage, 'contrat':"['CDI']", 'recherche':true, 'formation':formation, 'experience':experience, 'poste':true })
+        .send({'token':token, 'job':'[]', 'langage':langage, 'contrat':['CDI'], 'recherche':true, 'formation':formation, 'experience':experience, 'poste':true })
         .expect(200)
     expect(res.body.token).toBeDefined()
     expect(res.body.formation).toHaveLength(1)
     expect(res.body.experience).toHaveLength(1)
+    expect(res.body.lookingJob).toBeTruthy()
+    expect(res.body.working).toBeTruthy()
+    expect(res.body.speakLangage).toEqual(expect.arrayContaining(['espagnol']))
+    expect(res.body.typeofContract).toEqual(expect.arrayContaining(['CDI']))
     done()
 });
 
@@ -59,6 +64,7 @@ test('envoi secteur', async(done)=>{
         .expect(200)
     expect(result.body).toBeDefined()
     expect(result.body.perimetre).toEqual(expect.arrayContaining([[0,1], [2,3], [0,1]]))
+    expect(result.body.polygone.coordinates).toEqual(expect.arrayContaining([[[0,1], [2,3], [0,1]]]))
     done()
 })
 
